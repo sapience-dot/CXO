@@ -1,14 +1,14 @@
-# Blinksmart Rollout Dashboard
+# Blinksmart Experience Playbook
 
-A single-page planning dashboard for the Blinksmart device rollout at Sapience Automata. It tracks every customer deployment across the 11 stages, from inventory readiness to closure, and shows who is accountable at each step.
+A single-page playbook for creating the Blinksmart customer experience at Sapience Automata. It follows every customer through the 11 stages of the journey, from inventory readiness to closure, and shows what the customer should feel and who is accountable at each step.
 
 ## What's inside
 
-| Tab | What it does |
+| Section | What it does |
 |---|---|
-| **Overview** | Devices live vs. target, devices in the pipeline, at-risk and blocked deployments, deployments over their stage SLA, a devices-by-stage chart, go-lives in the next 30 days, and where work is sitting by team. |
-| **Pipeline** | One row per customer rollout: devices, current stage, business days in stage against the SLA, accountable team, status and go-live date. "Move to next stage" restarts the stage clock. |
-| **Stage playbook** | For each stage: entry and exit criteria, SLA target, handoff, documents and systems, escalation path, and the full RACI team. Mark each stage as confirmed once agreed. |
+| **Overview** | A one-line briefing of what needs you today, the customer journey with every customer placed on their current stage, blocked and late customers with their escalation path, go-lives and decisions in the next 30 days, progress against the quarter's target, and which team is holding the most customers. |
+| **Customers** | One row per customer rollout: where they are in the journey, devices, business days in the current stage against its limit, the accountable team, status and go-live date. "Move to" advances a customer and restarts the stage clock. |
+| **Stage playbook** | For each stage: the experience promise (what the customer should feel), the customer moment, entry and exit criteria, SLA, handoff, documents and systems, escalation path and the full RACI team. Confirm each stage once it is agreed. |
 | **Who does what** | The RACI matrix for 15 roles across 11 stages, with exactly one Accountable owner per stage. Search, filter by role, matrix or card layout. |
 | **Decisions** | Open decisions with an owner, a decide-by date and the outcome. |
 
@@ -40,9 +40,16 @@ If the repository is public, the dashboard code is public, but your data is not:
 
 ## Customizing
 
-All stage definitions, SLA defaults (in business days) and the baseline RACI are at the top of the `<script>` block in `index.html`, in the `STAGES` and `ROLES` arrays. Changes you make in the dashboard are saved as overrides on top of these defaults. "Reset RACI" returns the matrix and stage details to the defaults without touching deployments, decisions or contacts.
+All stage definitions, experience promises, SLA defaults (in business days) and the baseline RACI are at the top of the `<script>` block in `index.html`, in the `STAGES` and `ROLES` arrays. Changes you make in the dashboard are saved as overrides on top of these defaults. "Reset to defaults" returns the matrix and stage details to the defaults without touching customers, decisions or contacts.
 
 ## Files
 
 - `index.html` — the whole app (HTML, CSS and JavaScript in one file)
 - `README.md` — this file
+
+## Keyboard shortcuts
+
+- `N` adds a customer
+- `/` jumps to search on the Customers and Who does what pages
+- Arrow keys move between sections in the side navigation
+- `Esc` closes the edit panel

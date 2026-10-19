@@ -318,7 +318,80 @@ mark{background:var(--hit);color:inherit;border-radius:3px;padding:0 1px}
 textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--bg);color:var(--ink);resize:vertical;min-height:64px}
 .drawer input,.drawer select{background:var(--bg);width:100%}
 .note{font-size:13px;background:var(--warn-bg);color:var(--warn-fg);padding:9px 11px;border-radius:9px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:30;max-width:calc(100vw - 32px);box-shadow:var(--shadow)}
+.toast{display:flex;gap:14px;align-items:center;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:30;max-width:calc(100vw - 32px);box-shadow:var(--shadow)}
+.tbtn{border:0;background:none;color:inherit;font-weight:700;text-decoration:underline;padding:0}
+.mot{font-size:11px;font-weight:700;color:var(--ink);border-left:3px solid var(--hue);padding-left:6px;line-height:1.2}
+.flow-head{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.flow-head div{display:flex;flex-direction:column}
+.flow-head b{font-family:var(--display);font-size:21px;font-weight:800;line-height:1.1}
+.flow-head span{font-size:12px;color:var(--muted)}
+.frow{display:grid;grid-template-columns:86px minmax(0,1fr) 66px;gap:8px;align-items:center;font-size:12.5px}
+.frow .track{position:relative;height:10px;background:var(--surface-2);border-radius:0 4px 4px 0}
+.frow .track i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:0 4px 4px 0;min-width:2px}
+.frow .track i.over{background:var(--warn-fg)}
+.frow .track b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
+.frow .n{text-align:right;color:var(--muted)}
+.frows{display:grid;gap:7px}
+.nps{font-weight:700}
+.nps.pro{color:var(--ok-fg)}.nps.det{color:var(--crit-fg)}.nps.pas{color:var(--warn-fg)}
+.f-check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
+.f-check input{margin-top:3px;width:auto}
+/* ---- UI audit fixes ---- */
+.needs li.full,.upcoming li.full{display:block;padding:8px 0}
+.seg{min-width:0}
+.seg .sname{flex-direction:column;align-items:flex-start;gap:1px;min-width:0;hyphens:manual}
+.seg .sname i{font-size:12px}
+@media (max-width:700px){.seg .sname{flex-direction:row;gap:6px}}
+.seg.ghost{min-height:0;cursor:default}
+.seg.ghost:hover{background:none}
+.mx thead th.corner{padding:12px 14px;vertical-align:bottom;background:var(--surface-2);font-size:12.5px;color:var(--muted);font-weight:500}
+.toolbar #reset{margin-left:auto}
+.dt th:first-child,.dt td:first-child{min-width:210px}
+.dt td.jt{width:140px}
+.flow-empty{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+@media (max-width:1280px) and (min-width:861px){.shell{grid-template-columns:200px minmax(0,1fr)}}
+@media (max-width:1180px) and (min-width:701px){
+  .journey{grid-template-columns:repeat(6,minmax(0,1fr));min-width:0}
+  .seg:nth-child(6){border-right:0}
+  .seg:nth-child(n+7){border-top:1px solid var(--line)}
+}
+@media (max-width:700px){
+  .journey{grid-template-columns:1fr;min-width:0}
+  .journey::after{display:none}
+  .journey-wrap{overflow:visible}
+  .seg{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name big" "dots unit" "own own";align-items:center;gap:4px 12px;min-height:0;border-right:0;border-bottom:1px solid var(--line);border-left:4px solid var(--hue);padding:12px 12px 12px 14px}
+  .seg:last-child{border-bottom:0}
+  .seg .sname{grid-area:name;font-size:14px}
+  .seg .big{grid-area:big;font-size:22px;text-align:right}
+  .seg .unit{grid-area:unit;text-align:right}
+  .seg .unit + .unit{display:none}
+  .seg .dots{grid-area:dots;margin-top:0}
+  .seg .own{grid-area:own}
+  .seg .mot{display:none}
+  .seg.ghost{grid-template-areas:"name big"}
+  .key{gap:6px 12px}
+  .filters{display:grid;grid-template-columns:1fr 1fr}
+  .filters input{grid-column:1/-1}
+  .filters select,.filters input{width:100%}
+  table.dt{min-width:0}
+  .dt thead{display:none}
+  .dt,.dt tbody{display:block}
+  .dt tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .dt tbody td{display:block;padding:0;border:0;min-width:0!important;width:auto!important;text-align:left!important}
+  .dt tbody td::before{content:attr(data-l);display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:2px}
+  .dt tbody td:first-child,.dt tbody td.jt{grid-column:1/-1}
+  .dt tbody td:first-child::before,.dt tbody td.jt::before,.dt tbody td.act::before{display:none}
+  .dt tbody td.act{grid-column:1/-1}
+  .dt tbody td.act:empty{display:none}
+  .dt tbody tr:hover td{background:none}
+  .strip{width:100%}
+}
+@media (max-width:480px){
+  .upcoming li{grid-template-columns:52px minmax(0,1fr)}
+  .upcoming li .pill{grid-column:2;justify-self:start}
+  .page-head .row-flex{width:100%}
+  .page-head .row-flex .btn.primary{order:-1}
+}
 </style>
 </head>
 <body>
@@ -342,7 +415,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
     <section id="p-overview" role="tabpanel" style="display:flex;flex-direction:column;gap:24px">
       <div class="page-head">
         <div><div class="greet" id="greet"></div><p class="briefing" id="briefing"></p></div>
-        <div class="row-flex"><button class="btn" id="editPlan">Set targets</button><button class="btn primary" id="addDep">Add customer</button></div>
+        <div class="row-flex"><button class="btn" id="brief">Copy weekly brief</button><button class="btn" id="editPlan">Set targets</button><button class="btn primary" id="addDep">Add customer</button></div>
       </div>
       <div class="panel pad">
         <div class="head-row"><h2>The customer journey</h2><span class="ctx" id="jnote"></span></div>
@@ -354,7 +427,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
       </div>
       <div class="trio">
         <div class="panel pad target" id="targetPanel"></div>
-        <div class="panel pad"><div class="head-row"><h2>Where work is sitting</h2></div><div class="hbars" id="load"></div></div>
+        <div class="panel pad"><div class="head-row"><h2>Flow</h2><span class="ctx">Average business days per stage</span></div><div id="load"></div></div>
         <div class="panel pad"><div class="head-row"><h2>Playbook readiness</h2></div><div class="checks" id="ready"></div></div>
       </div>
       <details class="panel pad log"><summary><h2>Your recent changes</h2></summary><ul class="feed" id="feed"></ul></details>
@@ -472,7 +545,20 @@ const STAGES=[
   entry:"All tickets and RMAs for the account closed.",exit:"Feedback collected, closure report filed, renewal or expansion opportunity logged.",
   sla:"Feedback within 7 days of resolution; quarterly business review",to:"Sales / Business Development",handoff:"Renewal and expansion opportunities with feedback summary",
   docs:"Customer Feedback Form\nCRM",esc:"Low satisfaction score → Customer Success lead → Management"}];
-const STAGE_FIELDS=[["promise","Experience promise (what the customer should feel)"],["moment","Customer moment (what they experience)"],["entry","Start when"],["exit","Done when"],["sla","SLA target"],["days","Overdue after (business days)"],["to","Hands off to"],["handoff","What is handed over"],["docs","Documents and systems"],["esc","If it stalls, escalate to"]];
+const EXTRA=[
+ [false,"Stock confirmed within 2 business days for every order","Nothing. This stage is internal."],
+ [false,"Quote-to-order time; invoices issued without corrections","Order confirmation with agreed terms, the invoice and one named contact"],
+ [false,"Orders with a delivery plan shared within 1 business day","Order ID and delivery plan with expected dates"],
+ [false,"QA first-pass yield; dead-on-arrival rate","QA confirmation that every device is tested and ready to ship"],
+ [false,"On-time, in-full delivery rate","Dispatch notice with tracking, then delivery confirmation"],
+ [true,"On-time installation rate; first-time-right installs","Install schedule agreed in advance; completion report with photos"],
+ [false,"Training completed and acceptance signed within 3 business days","Welcome pack, training recording and support contacts"],
+ [true,"Devices reporting on day 1; active use at day 30","Day-7 and day-30 check-ins with a usage summary"],
+ [true,"First response time; tickets resolved within SLA; ticket CSAT","Acknowledgement within the hour, updates until resolved"],
+ [true,"RMA turnaround; repeat-failure rate","Replacement date confirmed; swap scheduled around their shifts"],
+ [false,"NPS; renewal and expansion rate","Thank-you, feedback survey and quarterly review invitation"]];
+STAGES.forEach((s,i)=>{s.mot=EXTRA[i][0];s.kpi=EXTRA[i][1];s.comms=EXTRA[i][2]});
+const STAGE_FIELDS=[["promise","Experience promise (what the customer should feel)"],["moment","Customer moment (what they experience)"],["kpi","Proof it worked (the metric that shows the promise was kept)"],["comms","What we tell the customer, and when"],["entry","Start when"],["exit","Done when"],["sla","SLA target"],["days","Overdue after (business days)"],["to","Hands off to"],["handoff","What is handed over"],["docs","Documents and systems"],["esc","If it stalls, escalate to"]];
 
 const ROLES=[
  {k:"customer",name:"Customer / End User",sub:"Driver / Fleet Manager",external:true,cells:["","C|Provides details, confirms order","","I|Receives QA update","I|Receives delivery info","C|Provides vehicle access & approval","C|Accepts handover, attends training","C|Uses device, responds to alerts","C|Raises support tickets","C|Approves repairs / replacement","C|Provides feedback, renewal interest"]},
@@ -519,27 +605,38 @@ const h0=(location.hash||"").slice(1);if(TABS.some(t=>t[0]===h0))ui.tab=h0;
 const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
 const iso=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`};
 const parse=s=>{if(!s)return null;const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
-function bdays(from){const f=parse(from);if(!f)return 0;const t=today();let n=0,d=new Date(f),g=0;while(d<t&&g++<2000){d.setDate(d.getDate()+1);const w=d.getDay();if(w!==0&&w!==6)n++}return n}
+function bdays(from,to){const f=parse(from);if(!f)return 0;const t=to?parse(to):today();if(!t)return 0;let n=0,d=new Date(f),g=0;while(d<t&&g++<2000){d.setDate(d.getDate()+1);const w=d.getDay();if(w!==0&&w!==6)n++}return n}
 const daysTo=s=>{const d=parse(s);return d?Math.round((d-today())/864e5):null};
 const fmtDate=s=>{const d=parse(s);return d?d.toLocaleDateString(undefined,{day:"numeric",month:"short"}):"Not set"};
 function ago(isoT){const s=(Date.now()-new Date(isoT))/1000;if(!(s>=0))return"";if(s<60)return"just now";const m=s/60;if(m<60)return`${Math.floor(m)} min ago`;const h=m/60;if(h<24)return`${Math.floor(h)} h ago`;const d=h/24;if(d<14)return`${Math.floor(d)} d ago`;return new Date(isoT).toLocaleDateString()}
 const addB=n=>{const d=today();let k=0;while(k<n){d.setDate(d.getDate()-1);const w=d.getDay();if(w&&w!==6)k++}return iso(d)};
 const addD=n=>{const d=today();d.setDate(d.getDate()+n);return iso(d)};
+const money=v=>{v=Number(v)||0;if(v>=100)return `₹${(v/100).toLocaleString("en-IN",{maximumFractionDigits:v>=1000?0:1})} Cr`;return `₹${v.toLocaleString("en-IN",{maximumFractionDigits:1})} L`};
+const val=d=>Number(d.value||0);
+const npsOf=d=>d.nps===""||d.nps==null?null:Number(d.nps);
+const npsClass=n=>n==null?"":n>=9?"pro":n<=6?"det":"pas";
+const subB=(isoS,n)=>{const d=parse(isoS);let k=0;while(k<n){d.setDate(d.getDate()-1);const w=d.getDay();if(w&&w!==6)k++}return iso(d)};
+function mkHist(stage,since,durs){const h=[{s:stage,at:since}];let at=since;for(let s=stage-1;s>=1;s--){at=subB(at,durs[s-1]??2);h.unshift({s,at})}return h}
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
 const plural=(n,w,p)=>`${n.toLocaleString()} ${n===1?w:(p||w+"s")}`;
 
 /* ---------- sample (preview only, never saved) ---------- */
-const SAMPLE=[
- {id:"x1",customer:"Example Fleet Co.",devices:120,stage:6,since:addB(7),golive:addD(9),status:"risk",note:"Two depots haven't confirmed vehicle access"},
- {id:"x2",customer:"Example Logistics",devices:80,stage:4,since:addB(1),golive:addD(18),status:"on"},
- {id:"x3",customer:"Example Transit",devices:250,stage:2,since:addB(4),golive:addD(40),status:"blocked",note:"Waiting on a purchase order"},
- {id:"x4",customer:"Example Couriers",devices:45,stage:8,since:addB(10),golive:addD(-6),status:"on"},
- {id:"x5",customer:"Example Cold Chain",devices:60,stage:5,since:addB(2),golive:addD(12),status:"on"},
- {id:"x6",customer:"Example Rentals",devices:30,stage:10,since:addB(9),golive:addD(-30),status:"risk",note:"3 units awaiting replacement"},
- {id:"x7",customer:"Example Buses",devices:140,stage:1,since:addB(1),golive:addD(28),status:"on"}];
+const SAMPLE=(()=>{const L=[
+ ["x1","Example Fleet Co.",120,6,addB(7),addD(9),"risk","Two depots haven't confirmed vehicle access",180,"",[2,3,1,3,4]],
+ ["x2","Example Logistics",80,4,addB(1),addD(18),"on","",95,"",[1,2,1]],
+ ["x3","Example Transit",250,2,addB(4),addD(40),"blocked","Waiting on a purchase order",420,"",[3]],
+ ["x4","Example Couriers",45,8,addB(10),addD(-6),"on","",60,9,[2,2,1,2,3,7,4]],
+ ["x5","Example Cold Chain",60,5,addB(2),addD(12),"on","",85,"",[1,2,1,2]],
+ ["x6","Example Rentals",30,10,addB(9),addD(-30),"risk","3 units awaiting replacement",40,5,[2,2,1,3,4,6,3,20,3]],
+ ["x7","Example Buses",140,1,addB(1),addD(28),"on","",210,"",[]]];
+ return L.map(([id,customer,devices,stage,since,golive,status,note,value,nps,durs])=>{const history=mkHist(stage,since,durs);const lv=history.find(h=>h.s===8);return {id,customer,devices,stage,since,golive,status,note,value,nps,history,liveAt:lv?lv.at:""}})})();
 const deps=()=>sample?SAMPLE.map(x=>({...x,sample:true})):Object.entries(over.deployments).map(([id,x])=>({id,...x}));
 const overdue=d=>d.status!=="done"&&bdays(d.since)>Number(stage(d.stage).days||0);
 const needsAttn=d=>d.status==="blocked"||d.status==="risk"||overdue(d);
 const accountable=n=>{const o=owners(n);return o.length===1?o[0]:null};
+function stageTimes(){const per={};deps().forEach(d=>{const h=d.history||[];for(let i=0;i<h.length-1;i++){(per[h[i].s]=per[h[i].s]||[]).push(bdays(h[i].at,h[i+1].at))}});return per}
+function cycleTimes(){return deps().filter(d=>d.liveAt&&(d.history||[]).length).map(d=>bdays(d.history[0].at,d.liveAt))}
+function bottleneck(){const per=stageTimes();let best=null;STAGES.forEach(s0=>{const a=per[s0.n];if(!a||!a.length)return;const r=avg(a)/Number(stage(s0.n).days||1);if(r>1&&(!best||r>best.r))best={n:s0.n,r,avg:avg(a)}});return best}
 
 /* ---------- store ---------- */
 function loadLocal(){try{const s=localStorage.getItem(LKEY);if(s){const p=JSON.parse(s);COLLS.forEach(c=>over[c]=p[c]||{})}}catch(e){}}
@@ -587,22 +684,24 @@ function renderOverview(){
   else{const parts=[];
     parts.push(attn.length?`<span class="${blocked.length?"c":"w"}">${plural(attn.length,"customer")} ${attn.length===1?"needs":"need"} you</span>${blocked.length?`, ${blocked.length} blocked`:""}.`:`Every customer is on track.`);
     parts.push(` <b>${liveDev.toLocaleString()}</b> devices are live${p.deviceTarget?`, ${Math.round(liveDev/p.deviceTarget*100)}% of ${esc(p.label.toLowerCase()==="this quarter"?"this quarter's":p.label+"'s")} target`:""}, and <b>${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()}</b> are on their way.`);
+    const atRisk=attn.reduce((s,d)=>s+val(d),0);if(atRisk)parts.push(` <span class="w">${money(atRisk)}</span> of contract value is at risk.`);
     b=parts.join("")}
   $("briefing").innerHTML=b;
-  renderJourney(active);renderNeeds(active);renderGolives(all);renderTarget(p,all,liveDev);renderLoad(active);renderReady();renderFeed()}
+  renderJourney(active);renderNeeds(active);renderGolives(all);renderTarget(p,all,liveDev);renderLoad();renderReady();renderFeed()}
 function renderJourney(active){const el=$("journey");
-  if(!deps().length){$("jnote").textContent="";el.innerHTML=`<div class="journey-wrap"><div class="journey">${STAGES.map(s=>`<div class="seg" style="--hue:${s.hue};cursor:default"><span class="sname"><i>${s.n}</i>${esc(s.short)}</span><span class="big zero">0</span></div>`).join("")}</div></div>
+  if(!deps().length){$("jnote").textContent="";el.innerHTML=`<div class="journey-wrap"><div class="journey">${STAGES.map(s=>`<div class="seg ghost" style="--hue:${s.hue}"><span class="sname"><i>${s.n}</i>${esc(s.short)}</span><span class="big zero">0</span></div>`).join("")}</div></div>
     <div class="empty-journey"><p>Each customer appears as a dot on the stage they're in, so you can see the whole experience at a glance.</p><div class="row-flex">${canWrite?`<button class="btn primary" data-act="add">Add your first customer</button>`:""}<button class="btn" data-act="sample">Preview with sample data</button></div></div>`;
     el.onclick=e=>{const b=e.target.closest("[data-act]");if(!b)return;if(b.dataset.act==="add")depEditor();else{sample=true;render()}};return}
   $("jnote").textContent=`${plural(active.length,"active customer")}. Select a stage to see them.`;
   el.innerHTML=`<div class="journey-wrap"><div class="journey">${STAGES.map(s0=>{const s=stage(s0.n),ds=active.filter(d=>d.stage===s.n),dev=ds.reduce((a,d)=>a+Number(d.devices||0),0),o=accountable(s.n);
-    return `<button class="seg" data-stage="${s.n}" style="--hue:${s.hue}" aria-label="Stage ${s.n}, ${esc(s.name)}: ${plural(dev,"device")}, ${plural(ds.length,"customer")}"><span class="sname"><i>${s.n}</i>${esc(s.short)}<span class="sd ${confirmed(s.n)?"ok":""}" title="${confirmed(s.n)?"Playbook confirmed":"Playbook still proposed"}"></span></span>
-      <span class="big ${dev?"":"zero"}">${dev.toLocaleString()}</span><span class="unit">${dev?"devices":"no devices"}</span>
+    return `<button class="seg" data-stage="${s.n}" style="--hue:${s.hue}" aria-label="Stage ${s.n}, ${esc(s.name)}: ${plural(dev,"device")}, ${plural(ds.length,"customer")}"><span class="sname"><i>${s.n}</i>${esc(s.short)}</span>
+      <span class="big ${dev?"":"zero"}">${dev.toLocaleString()}</span><span class="unit">${dev?"devices":"no devices"}</span>${ds.reduce((a,d)=>a+val(d),0)?`<span class="unit" style="font-weight:700;color:var(--ink)">${money(ds.reduce((a,d)=>a+val(d),0))}</span>`:""}${s.mot?'<span class="mot">Moment of truth</span>':""}
       <span class="dots">${ds.slice(0,12).map(d=>`<span class="${d.status} ${overdue(d)?"late":""}" data-dep="${d.id}"></span>`).join("")}${ds.length>12?`<em>+${ds.length-12}</em>`:""}</span>
       <span class="own">${o?esc(short(o.name)):"No owner"}</span></button>`}).join("")}</div></div>
-    <div class="key"><span><i style="background:var(--accent)"></i>On track</span><span><i style="box-shadow:inset 0 0 0 3px var(--warn-fg)"></i>At risk</span><span><i style="background:var(--crit-fg)"></i>Blocked</span><span><i style="background:var(--muted);outline:2px solid var(--warn-fg);outline-offset:1px"></i>Over the stage's time limit</span></div>`;
+    <div class="key"><span style="border-left:3px solid var(--accent);padding-left:6px">Moment of truth: where the experience is won or lost</span><span><i style="background:var(--accent)"></i>On track</span><span><i style="box-shadow:inset 0 0 0 3px var(--warn-fg)"></i>At risk</span><span><i style="background:var(--crit-fg)"></i>Blocked</span><span><i style="background:var(--muted);outline:2px solid var(--warn-fg);outline-offset:1px"></i>Over the stage's time limit</span></div>`;
   const tip=$("tip");
-  el.onmouseover=e=>{const dot=e.target.closest("[data-dep]"),seg=e.target.closest(".seg");if(!seg){tip.hidden=true;return}
+  const canHover=matchMedia("(hover:hover)").matches;
+  el.onmouseover=e=>{if(!canHover)return;const dot=e.target.closest("[data-dep]"),seg=e.target.closest(".seg");if(!seg){tip.hidden=true;return}
     let html;if(dot){const d=deps().find(x=>x.id===dot.dataset.dep);if(!d)return;html=`<b>${esc(d.customer)}</b>${plural(Number(d.devices||0),"device")}, ${(STATUS[d.status]||STATUS.on)[0]}<br>${bdays(d.since)} of ${stage(d.stage).days} business days in this stage${d.note?`<br>${esc(d.note)}`:""}`}
     else{const s=stage(+seg.dataset.stage);html=`<b>${s.n}. ${esc(s.name)}</b>${esc(s.promise)}`}
     tip.innerHTML=html;tip.hidden=false;const r=(dot||seg).getBoundingClientRect();let x=r.left+r.width/2-130;x=Math.max(8,Math.min(x,innerWidth-268));let y=r.bottom+8;if(y+120>innerHeight)y=r.top-8-tip.offsetHeight;tip.style.left=x+"px";tip.style.top=y+"px"};
@@ -612,12 +711,13 @@ function renderNeeds(active){const items=[];
   active.filter(d=>d.status==="blocked").forEach(d=>{const s=stage(d.stage);items.push({k:"crit",t:`<b>${esc(d.customer)}</b> is blocked in ${esc(s.short)}`,s:d.note?esc(d.note):`Escalate: ${esc(s.esc.split("\n")[0])}`,act:"Open",go:()=>depEditor(d.id)})});
   active.filter(d=>d.status!=="blocked"&&overdue(d)).forEach(d=>{const s=stage(d.stage),over=bdays(d.since)-s.days;items.push({k:"warn",t:`<b>${esc(d.customer)}</b> is ${plural(over,"day")} past the ${esc(s.short)} limit`,s:`Escalate: ${esc(s.esc.split("\n")[0])}`,act:"Open",go:()=>depEditor(d.id)})});
   active.filter(d=>d.status==="risk"&&!overdue(d)).forEach(d=>items.push({k:"warn",t:`<b>${esc(d.customer)}</b> is at risk in ${esc(stage(d.stage).short)}`,s:d.note?esc(d.note):"No note added",act:"Open",go:()=>depEditor(d.id)}));
+  deps().filter(d=>{const n=npsOf(d);return n!=null&&n<=6}).forEach(d=>items.push({k:"warn",t:`<b>${esc(d.customer)}</b> scored ${npsOf(d)} out of 10`,s:"Detractor. Call within 48 hours to recover the relationship.",act:"Open",go:()=>depEditor(d.id)}));
   Object.entries(over.decisions).filter(([,x])=>x.status!=="decided"&&x.due&&daysTo(x.due)<=7).forEach(([id,x])=>items.push({k:daysTo(x.due)<0?"crit":"info",t:`Decide: ${esc(x.title)}`,s:daysTo(x.due)<0?"Overdue":`Due ${fmtDate(x.due)}`,act:"Decide",go:()=>decEditor(id)}));
   STAGES.forEach(s=>{if(owners(s.n).length!==1)items.push({k:"warn",t:`Stage ${s.n} has ${owners(s.n).length?"more than one":"no"} Accountable owner`,s:"Every stage needs exactly one owner",act:"Fix",go:()=>go("raci")})});
   $("needsCount").textContent=items.length?plural(items.length,"item"):"";
   const el=$("attn");
   el.innerHTML=items.length?items.slice(0,6).map((x,i)=>`<li><span class="sev ${x.k}"></span><div><div class="t">${x.t}</div><div class="s">${x.s}</div></div><button class="btn small" data-i="${i}">${x.act}</button></li>`).join("")+(items.length>6?`<li><span class="sev info"></span><div class="t">${items.length-6} more</div><button class="btn small" data-more>See all</button></li>`:"")
-   :`<li><div class="calm">${deps().length?"Nothing is blocked, at risk or late.":"Risks, delays and decisions due will appear here."}</div></li>`;
+   :`<li class="full"><div class="calm">${deps().length?"Nothing is blocked, at risk or late.":"Risks, delays and decisions due will appear here."}</div></li>`;
   el.onclick=e=>{const b=e.target.closest("[data-i]");if(b){items[+b.dataset.i].go();return}if(e.target.closest("[data-more]"))go("pipeline",{pStatus:"attn"})}}
 function renderGolives(all){const up=all.filter(d=>d.status!=="done"&&d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=30).sort((a,b)=>a.golive<b.golive?-1:1);
   const dec=Object.entries(over.decisions).filter(([,x])=>x.status!=="decided"&&x.due&&daysTo(x.due)>7&&daysTo(x.due)<=30);
@@ -625,19 +725,22 @@ function renderGolives(all){const up=all.filter(d=>d.status!=="done"&&d.golive&&
     ...dec.map(([id,x])=>({date:x.due,html:`<div><b>Decision due</b><div class="ctx">${esc(x.title)}</div></div><span class="pill">Open</span>`,go:()=>decEditor(id)}))].sort((a,b)=>a.date<b.date?-1:1).slice(0,6);
   const el=$("golives");
   el.innerHTML=rows.length?rows.map((r,i)=>{const d=parse(r.date);return `<li data-i="${i}" style="cursor:pointer"><span class="date"><b>${d.getDate()}</b><span>${d.toLocaleDateString(undefined,{month:"short"})}</span></span>${r.html}</li>`}).join("")
-    :`<li><span class="ctx">No go-lives or decisions due in the next 30 days.</span></li>`;
+    :`<li class="full"><span class="ctx">No go-lives or decisions due in the next 30 days.</span></li>`;
   el.onclick=e=>{const li=e.target.closest("[data-i]");if(li&&!sample)rows[+li.dataset.i].go()}}
 function renderTarget(p,all,liveDev){const el=$("targetPanel"),pct=p.deviceTarget?Math.min(100,Math.round(liveDev/p.deviceTarget*100)):0;
   const liveAcc=all.filter(d=>d.stage>=8||d.status==="done").length;
   el.innerHTML=`<div class="head-row"><h2>${esc(p.label)}</h2>${canWrite?`<button class="btn ghost small" id="tEdit">Edit</button>`:""}</div>
    <div class="val">${liveDev.toLocaleString()}${p.deviceTarget?` <small>of ${Number(p.deviceTarget).toLocaleString()} devices live</small>`:` <small>devices live</small>`}</div>
    ${p.deviceTarget?`<div class="meter" role="img" aria-label="${pct}% of target"><i style="width:${pct}%"></i></div><span class="ctx">${pct}% of target. Live means stage 8 or later.</span>`:`<p class="ctx" style="margin:12px 0 0">Set a device target to track the quarter's progress.</p>`}
-   <div class="splits"><div><b>${liveAcc}${p.accountTarget?`<span class="ctx" style="font-family:var(--body);font-weight:600"> / ${p.accountTarget}</span>`:""}</b><span>Customers live</span></div><div><b>${all.filter(d=>d.status!=="done"&&d.stage<8).length}</b><span>In rollout</span></div><div><b>${all.filter(d=>d.status==="done").length}</b><span>Closed</span></div></div>`;
+   <div class="splits"><div><b>${liveAcc}${p.accountTarget?`<span class="ctx" style="font-family:var(--body);font-weight:600"> / ${p.accountTarget}</span>`:""}</b><span>Customers live</span></div><div><b>${money(all.filter(d=>d.stage>=8||d.status==="done").reduce((s,d)=>s+val(d),0))}</b><span>Contract value live</span></div><div>${(()=>{const n=all.map(npsOf).filter(x=>x!=null);if(!n.length)return `<b>—</b><span>NPS (no scores yet)</span>`;const pro=n.filter(x=>x>=9).length,det=n.filter(x=>x<=6).length,sc=Math.round((pro-det)/n.length*100);return `<b class="nps ${sc>=30?"pro":sc<0?"det":"pas"}">${sc>0?"+":""}${sc}</b><span>NPS from ${plural(n.length,"customer")}</span>`})()}</div></div>`;
   const e=$("tEdit");if(e)e.onclick=planEditor}
-function renderLoad(active){const counts={};active.forEach(d=>{const o=accountable(d.stage);if(o)counts[o.k]=(counts[o.k]||0)+1});
-  const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6),max=Math.max(1,...rows.map(r=>r[1]));
-  $("load").innerHTML=rows.length?`<p class="ctx" style="margin:-6px 0 4px">Active customers by the team accountable for their current stage</p>`+rows.map(([k,n])=>`<div class="hrow" title="${esc(roleBy(k).name)}: ${plural(n,"customer")}"><span class="t">${esc(short(roleBy(k).name))}</span><span class="track"><i style="width:${Math.round(n/max*100)}%"></i></span><span class="n">${n}</span></div>`).join("")
-    :`<p class="ctx" style="margin:0">Once customers are added, this shows which team is holding the most of them right now.</p>`}
+function renderLoad(){const per=stageTimes(),cyc=cycleTimes(),bn=bottleneck(),el=$("load");
+  const rows=STAGES.map(s0=>{const s=stage(s0.n),a=per[s.n]||[];return {s,avg:avg(a),n:a.length,lim:Number(s.days)}});
+  const max=Math.max(...rows.map(r=>Math.max(r.lim,r.avg||0)),1);
+  const hasHist=rows.some(r=>r.n);
+  el.innerHTML=(hasHist?`<div class="flow-head"><div><b>${cyc.length?Math.round(avg(cyc)):"—"}</b><span>${cyc.length?"Order to live (avg business days)":"Order to live: no customer live yet"}</span></div><div><b>${bn?esc(stage(bn.n).short):"On pace"}</b><span>${bn?`Bottleneck: ${Math.round(bn.avg)} vs ${stage(bn.n).days} day limit`:"No stage is running over its limit"}</span></div></div>`:`<p class="flow-empty">Flow builds up as customers move through stages. Until then, the ticks show each stage's time limit.</p>`)+`
+   <div class="frows">${rows.map(r=>`<div class="frow" title="${esc(r.s.name)}: ${r.n?`average ${r.avg.toFixed(1)} business days over ${plural(r.n,"pass","passes")}`:"no completed passes yet"}; limit ${r.lim}"><span>${r.s.n}. ${esc(r.s.short)}</span><span class="track">${r.n?`<i class="${r.avg>r.lim?"over":""}" style="width:${Math.round(r.avg/max*100)}%"></i>`:""}<b style="left:${Math.round(r.lim/max*100)}%"></b></span><span class="n">${r.n?(r.avg>=10?Math.round(r.avg):r.avg.toFixed(1)):"–"} / ${r.lim}</span></div>`).join("")}</div>
+   <p class="ctx" style="margin:10px 0 0">Bar: average time spent. Tick: the stage's limit. Built from each customer's stage history.</p>`}
 function renderReady(){const ownOk=STAGES.filter(s=>owners(s.n).length===1).length,conf=STAGES.filter(s=>confirmed(s.n)).length,cr=contactRoles(),cont=cr.filter(r=>contact(r.k).name).length;
   const row=(id,l,v,t)=>`<button id="${id}"><span class="r"><span>${l}</span><span>${v} of ${t}</span></span><span class="meter"><i class="${v<t?"part":""}" style="width:${Math.round(v/t*100)}%"></i></span></button>`;
   $("ready").innerHTML=row("rd2","Stages confirmed",conf,11)+row("rd1","Stages with one owner",ownOk,11)+row("rd3","Teams with a named contact",cont,cr.length);
@@ -664,26 +767,30 @@ function renderPipeline(){
   if(ui.pq)list=list.filter(d=>(d.customer||"").toLowerCase().includes(ui.pq.toLowerCase()));
   const rank=d=>d.status==="done"?5:d.status==="blocked"?0:overdue(d)?1:d.status==="risk"?2:3;
   list.sort((a,b)=>rank(a)-rank(b)||a.stage-b.stage);
-  const el=$("pipe");
+  const el=$("pipe");$("addDep2").hidden=!canWrite||!deps().length;
   if(!deps().length){el.innerHTML=`<div class="empty-state"><b>No customers yet</b><p>Add one row per customer rollout with its devices, current stage and go-live date. The overview, risks and time limits build from these rows.</p><div class="row-flex" style="justify-content:center">${canWrite?`<button class="btn primary" data-act="add">Add customer</button>`:""}<button class="btn" data-act="sample">Preview with sample data</button></div></div>`;
     el.onclick=e=>{const b=e.target.closest("[data-act]");if(!b)return;if(b.dataset.act==="add")depEditor();else{sample=true;render()}};return}
   if(!list.length){el.innerHTML=`<div class="empty-state"><p>No customers match these filters.</p><button class="btn small" data-act="clear">Clear filters</button></div>`;el.onclick=e=>{if(e.target.closest("[data-act]"))go("pipeline",{pq:"",pStage:0,pStatus:""})};return}
-  el.innerHTML=`<div class="tscroll"><table class="dt"><thead><tr><th scope="col">Customer</th><th scope="col">Journey</th><th scope="col">Stage</th><th scope="col" style="text-align:right">Devices</th><th scope="col">Time in stage</th><th scope="col">Accountable now</th><th scope="col">Status</th><th scope="col">Go-live</th><th scope="col"><span class="ctx">Action</span></th></tr></thead><tbody>${list.map(d=>{const s=stage(d.stage),bd=bdays(d.since),o=accountable(d.stage),c=o?contact(o.k):null,late=overdue(d),gl=daysTo(d.golive);
-    return `<tr data-row="${d.id}"><td><span class="cust">${esc(d.customer)}</span>${d.sample?'<span class="sample">Sample</span>':""}${d.note?`<div class="ctx">${esc(d.note)}</div>`:""}</td>
-     <td><span class="strip" aria-label="Stage ${d.stage} of 11">${STAGES.map(x=>`<i style="--hue:${x.hue}" class="${x.n<d.stage||d.status==="done"?"past":x.n===d.stage?"now":""}"></i>`).join("")}</span></td>
-     <td style="white-space:nowrap">${s.n}. ${esc(s.short)}</td>
-     <td style="text-align:right">${Number(d.devices||0).toLocaleString()}</td>
-     <td class="${late?"late":""}" style="white-space:nowrap">${d.status==="done"?"Closed":`${bd} of ${s.days} days`}</td>
-     <td>${o?esc(short(o.name)):'<span class="late">No owner</span>'}${c&&c.name?`<div class="ctx">${esc(c.name)}</div>`:""}</td>
-     <td><span class="pill ${(STATUS[d.status]||STATUS.on)[1]}">${(STATUS[d.status]||STATUS.on)[0]}</span></td>
-     <td style="white-space:nowrap">${fmtDate(d.golive)}${gl!=null&&d.status!=="done"&&gl<0&&d.stage<8?'<div class="late" style="font-size:12px">Date passed</div>':""}</td>
-     <td>${!d.sample&&canWrite&&d.status!=="done"?`<button class="btn small" data-adv="${d.id}">${d.stage<11?`Move to ${stage(d.stage+1).short}`:"Close"}</button>`:""}</td></tr>`}).join("")}</tbody></table></div>
-   <div class="pad ctx">${plural(list.length,"customer")} and ${plural(list.reduce((a,d)=>a+Number(d.devices||0),0),"device")} shown. Time in stage counts business days.</div>`;
+  el.innerHTML=`<div class="tscroll"><table class="dt"><thead><tr><th scope="col">Customer</th><th scope="col">Journey</th><th scope="col">Stage</th><th scope="col" style="text-align:right">Devices</th><th scope="col" style="text-align:right">Value</th><th scope="col">NPS</th><th scope="col">Time in stage</th><th scope="col">Accountable now</th><th scope="col">Status</th><th scope="col">Go-live</th><th scope="col"><span class="ctx">Action</span></th></tr></thead><tbody>${list.map(d=>{const s=stage(d.stage),bd=bdays(d.since),o=accountable(d.stage),c=o?contact(o.k):null,late=overdue(d),gl=daysTo(d.golive);
+    return `<tr data-row="${d.id}"><td data-l="Customer"><span class="cust">${esc(d.customer)}</span>${d.sample?'<span class="sample">Sample</span>':""}${d.note?`<div class="ctx">${esc(d.note)}</div>`:""}</td>
+     <td data-l="Journey" class="jt"><span class="strip" aria-label="Stage ${d.stage} of 11">${STAGES.map(x=>`<i style="--hue:${x.hue}" class="${x.n<d.stage||d.status==="done"?"past":x.n===d.stage?"now":""}"></i>`).join("")}</span></td>
+     <td data-l="Stage" style="white-space:nowrap">${s.n}. ${esc(s.short)}</td>
+     <td data-l="Devices" style="text-align:right">${Number(d.devices||0).toLocaleString()}</td>
+     <td data-l="Value" style="text-align:right;white-space:nowrap">${val(d)?money(val(d)):"–"}</td>
+     <td data-l="NPS">${npsOf(d)!=null?`<span class="nps ${npsClass(npsOf(d))}">${npsOf(d)}</span>`:'<span class="ctx">–</span>'}</td>
+     <td data-l="Time in stage" class="${late?"late":""}" style="white-space:nowrap">${d.status==="done"?"Closed":`${bd} of ${s.days} days`}</td>
+     <td data-l="Accountable now">${o?esc(short(o.name)):'<span class="late">No owner</span>'}${c&&c.name?`<div class="ctx">${esc(c.name)}</div>`:""}</td>
+     <td data-l="Status"><span class="pill ${(STATUS[d.status]||STATUS.on)[1]}">${(STATUS[d.status]||STATUS.on)[0]}</span></td>
+     <td data-l="Go-live" style="white-space:nowrap">${fmtDate(d.golive)}${gl!=null&&d.status!=="done"&&gl<0&&d.stage<8?'<div class="late" style="font-size:12px">Date passed</div>':""}</td>
+     <td class="act">${!d.sample&&canWrite&&d.status!=="done"?`<button class="btn small" data-adv="${d.id}">${d.stage<11?`Move to ${stage(d.stage+1).short}`:"Close"}</button>`:""}</td></tr>`}).join("")}</tbody></table></div>
+   <div class="pad ctx">${plural(list.length,"customer")}, ${plural(list.reduce((a,d)=>a+Number(d.devices||0),0),"device")} and ${money(list.reduce((a,d)=>a+val(d),0))} shown. Time in stage counts business days.</div>`;
   el.onclick=e=>{const a=e.target.closest("[data-adv]");if(a){advance(a.dataset.adv);return}const r=e.target.closest("[data-row]");if(r&&!sample)depEditor(r.dataset.row)}}
-async function advance(id){const d=over.deployments[id];if(!d)return;
-  if(d.stage>=11){await put("deployments",id,{...d,status:"done",since:iso(today())});toast(`${d.customer} closed`);return}
-  const n=d.stage+1,o=accountable(n);await put("deployments",id,{...d,stage:n,since:iso(today()),status:d.status==="blocked"?"on":d.status});
-  toast(`${d.customer} moved to ${stage(n).short}.${o?` ${short(o.name)} is now accountable.`:""}`)}
+async function advance(id){const d=over.deployments[id];if(!d)return;const prev={...d};const undo=()=>{const {at,...rest}=prev;put("deployments",id,rest);toast("Change undone")};
+  const h=[...(d.history||[{s:d.stage,at:d.since}])];
+  if(d.stage>=11){await put("deployments",id,{...d,status:"done",since:iso(today()),closedAt:iso(today()),history:h});toast(`${d.customer} closed`,undo);return}
+  const n=d.stage+1,o=accountable(n);h.push({s:n,at:iso(today())});
+  await put("deployments",id,{...d,stage:n,since:iso(today()),status:d.status==="blocked"?"on":d.status,history:h,liveAt:d.liveAt||(n>=8?iso(today()):"")});
+  toast(`${d.customer} moved to ${stage(n).short}.${o?` ${short(o.name)} is now accountable.`:""}`,undo)}
 
 /* ---------- playbook ---------- */
 function renderPlaybook(){
@@ -694,9 +801,9 @@ function renderPlaybook(){
   $("pb").innerHTML=`<div style="--hue:${s.hue};display:flex;flex-direction:column;gap:22px">
    <div class="pb-top"><div class="pb-title"><h3>${s.n}. ${esc(s.name)}</h3><span class="ctx">${esc(s.sub)}</span></div>
      <div class="row-flex"><span class="pill dot ${ok?"ok":"warn"}">${ok?`Confirmed${ov&&ov.at?" "+ago(ov.at):""}`:"Proposed"}</span>${canWrite?`<button class="btn small" id="editStage">Edit</button><button class="btn small ${ok?"":"primary"}" id="confStage">${ok?"Mark as proposed":"Confirm this stage"}</button>`:""}</div></div>
-   <div class="promise"><span class="lab">The customer should feel</span><q>${esc(s.promise)}</q><span class="moment">${esc(s.moment)}</span></div>
+   <div class="promise"><span class="lab">${s.mot?'<span class="pill warn" style="margin-right:8px">Moment of truth</span>':""}The customer should feel</span><q>${esc(s.promise)}</q><span class="moment">${esc(s.moment)}</span></div>
    <div class="handoff"><span class="box">${o.length===1?`<i class="chip A">A</i>${esc(o[0].name)}`:'<span class="late">No owner</span>'}</span>${c&&c.name?`<span class="ctx">${esc(c.name)}${c.contact?", "+esc(c.contact):""}</span>`:""}<span class="arrow" aria-hidden="true">→</span><span>${esc(s.handoff)}</span><span class="arrow" aria-hidden="true">→</span><span class="box">${esc(s.to)}</span></div>
-   <div class="pb-grid">${f("entry","Start when")}${f("exit","Done when")}<div class="field"><h4>SLA target</h4><p>${esc(s.sla)}</p><span class="ctx">Flagged as late after ${plural(Number(s.days),"business day")}</span></div>${f("esc","If it stalls, escalate to")}${f("docs","Documents and systems")}
+   <div class="pb-grid">${f("kpi","Proof it worked")}${f("comms","What we tell the customer")}${f("entry","Start when")}${f("exit","Done when")}<div class="field"><h4>SLA target</h4><p>${esc(s.sla)}</p><span class="ctx">Flagged as late after ${plural(Number(s.days),"business day")}</span></div>${f("esc","If it stalls, escalate to")}${f("docs","Documents and systems")}
     <div class="field"><h4>Team</h4><div class="who-row">${group("A")}${group("R")}</div><div class="who-row">${group("C")}${group("I")}</div></div></div>
    <div class="row-flex" style="justify-content:space-between">${s.n>1?`<button class="btn small" data-jump="${s.n-1}">Previous: ${esc(STAGES[s.n-2].short)}</button>`:"<span></span>"}${nx?`<button class="btn small" data-jump="${nx.n}">Next: ${esc(nx.short)}</button>`:""}</div></div>`;
   const e=$("editStage");if(e)e.onclick=()=>stageEditor(s.n);const cb=$("confStage");if(cb)cb.onclick=()=>toggleConfirm(s.n);
@@ -730,6 +837,7 @@ function raciCards(){let hits=0;const cards=STAGES.map(s=>{const rows=ROLES.filt
 
 /* ---------- decisions ---------- */
 function renderDecisions(){const list=Object.entries(over.decisions).map(([id,x])=>({id,...x})).sort((a,b)=>((a.status==="decided")-(b.status==="decided"))||((a.due||"9999")<(b.due||"9999")?-1:(a.due||"9999")>(b.due||"9999")?1:0));
+  $("addDec").hidden=!canWrite||!list.length;
   $("decs").innerHTML=list.length?list.map(d=>{const dd=daysTo(d.due),open=d.status!=="decided";return `<div class="decrow ${open?"":"closed"}"><div><div class="t">${esc(d.title)}</div><div class="meta"><span>Owner: ${d.owner&&roleBy(d.owner)?esc(roleBy(d.owner).name):"Unassigned"}</span>${d.due?`<span class="${open&&dd<0?"late":""}">${open?"Decide by":"Due"} ${fmtDate(d.due)}${open&&dd<0?", overdue":""}</span>`:""}${!open&&d.outcome?`<span>Outcome: ${esc(d.outcome)}</span>`:""}</div>${d.context?`<div class="ctx" style="margin-top:6px;max-width:72ch">${esc(d.context)}</div>`:""}</div>
     <div class="row-flex"><span class="pill ${open?(dd!=null&&dd<0?"crit":"warn"):"ok"}">${open?"Open":"Decided"}</span>${canWrite?`<button class="btn small" data-dec="${d.id}">${open?"Decide":"Edit"}</button>`:""}</div></div>`}).join("")
    :`<div class="empty-state"><b>No decisions logged</b><p>Record the calls that shape the customer experience, like who owns renewals, so they don't get lost.</p>${canWrite?'<button class="btn primary" data-new>Add decision</button>':""}</div>`;
@@ -750,14 +858,20 @@ function depEditor(id){if(!canWrite)return;const d=id?over.deployments[id]:{cust
    body:`<div class="f"><label for="df-c">Customer</label><input type="text" id="df-c" value="${esc(d.customer)}" placeholder="Customer or fleet name"></div>
     <div class="f2"><div class="f"><label for="df-n">Devices</label><input type="number" id="df-n" min="0" step="1" value="${esc(d.devices)}"></div>
     <div class="f"><label for="df-st">Status</label><select id="df-st">${Object.entries(STATUS).map(([k,[l]])=>`<option value="${k}" ${k===d.status?"selected":""}>${l}</option>`).join("")}</select></div></div>
+    <div class="f2"><div class="f"><label for="df-v">Contract value (₹ lakh)</label><input type="number" id="df-v" min="0" step="0.1" value="${esc(d.value??"")}"></div>
+    <div class="f"><label for="df-nps">Latest NPS score (0 to 10)</label><input type="number" id="df-nps" min="0" max="10" step="1" value="${esc(d.nps??"")}"></div></div>
     <div class="f"><label for="df-s">Current stage</label><select id="df-s">${STAGES.map(s=>`<option value="${s.n}" ${s.n===d.stage?"selected":""}>${s.n}. ${esc(s.name)}</option>`).join("")}</select></div>
     <div class="f2"><div class="f"><label for="df-since">In this stage since</label><input type="date" id="df-since" value="${esc(d.since)}"></div>
     <div class="f"><label for="df-g">Target go-live</label><input type="date" id="df-g" value="${esc(d.golive)}"></div></div>
     <div class="f"><label for="df-note">Note or blocker</label><textarea id="df-note" placeholder="What's holding it up, or what happens next">${esc(d.note)}</textarea></div>`,
    extra:id?`<button class="btn small" id="df-del">Delete</button>`:"",
-   init(){armDelete("df-del",async()=>{await del("deployments",id);toast("Customer deleted")});$("df-s").onchange=()=>{$("df-since").value=iso(today())}},
+   init(){armDelete("df-del",async()=>{const prev={...over.deployments[id]};delete prev.at;await del("deployments",id);toast("Customer deleted",()=>{put("deployments",id,prev);toast("Customer restored")})});$("df-s").onchange=()=>{$("df-since").value=iso(today())}},
    async save(){const c=$("df-c").value.trim();if(!c){toast("Add a customer name first");$("df-c").focus();return false}
-     const o={customer:c,devices:Math.max(0,parseInt($("df-n").value,10)||0),stage:+$("df-s").value,since:$("df-since").value||iso(today()),golive:$("df-g").value,status:$("df-st").value,note:$("df-note").value.trim()};
+     const npsRaw=$("df-nps").value.trim();const nps=npsRaw===""?"":Math.min(10,Math.max(0,parseInt(npsRaw,10)||0));
+     const o={customer:c,devices:Math.max(0,parseInt($("df-n").value,10)||0),value:Math.max(0,parseFloat($("df-v").value)||0),nps,stage:+$("df-s").value,since:$("df-since").value||iso(today()),golive:$("df-g").value,status:$("df-st").value,note:$("df-note").value.trim()};
+     const old=id?over.deployments[id]:null;let h=old&&old.history?[...old.history]:(old?[{s:old.stage,at:old.since}]:[]);
+     if(!old||old.stage!==o.stage)h.push({s:o.stage,at:o.since});else if(h.length)h[h.length-1]={...h[h.length-1],at:o.since};
+     o.history=h;o.liveAt=(old&&old.liveAt)||(o.stage>=8?o.since:"");if(o.status==="done")o.closedAt=(old&&old.closedAt)||iso(today());
      sample=false;await put("deployments",id||("d"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),o);toast(id?"Changes saved":"Customer added")}})}
 function decEditor(id){if(!canWrite)return;const d=id?over.decisions[id]:{title:"",owner:"",due:"",status:"open",outcome:"",context:""};if(!d)return;
   openEditor({title:id?"Decision":"Add decision",ctx:id?d.title:"A call that needs making, with an owner and a date",saveLabel:id?"Save changes":"Add decision",
@@ -767,7 +881,7 @@ function decEditor(id){if(!canWrite)return;const d=id?over.decisions[id]:{title:
     <div class="f"><label for="xf-s">Status</label><select id="xf-s"><option value="open" ${d.status!=="decided"?"selected":""}>Open</option><option value="decided" ${d.status==="decided"?"selected":""}>Decided</option></select></div>
     <div class="f"><label for="xf-out">Outcome</label><textarea id="xf-out" placeholder="What was decided">${esc(d.outcome)}</textarea></div>`,
    extra:id?`<button class="btn small" id="xf-del">Delete</button>`:"",
-   init(){armDelete("xf-del",async()=>{await del("decisions",id);toast("Decision deleted")})},
+   init(){armDelete("xf-del",async()=>{const prev={...over.decisions[id]};delete prev.at;await del("decisions",id);toast("Decision deleted",()=>{put("decisions",id,prev);toast("Decision restored")})})},
    async save(){const t=$("xf-t").value.trim();if(!t){toast("Describe the decision first");$("xf-t").focus();return false}
      await put("decisions",id||("x"+Date.now().toString(36)),{title:t,context:$("xf-c").value.trim(),owner:$("xf-o").value,due:$("xf-d").value,status:$("xf-s").value,outcome:$("xf-out").value.trim()});toast(id?"Changes saved":"Decision added")}})}
 function planEditor(){if(!canWrite)return;const p=plan();
@@ -787,14 +901,14 @@ function cellEditor(rk,n){const r=roleBy(rk),s=stage(n),x=cell(rk,n);let pick=x.
      if(pick==="A")for(const q of owners(n).filter(q=>q.k!==rk)){moved.push(short(q.name));await writeCell(q.k,n,{v:"R",t:cell(q.k,n).t})}
      await writeCell(rk,n,{v:pick,t});toast(moved.length?`Saved. ${moved.join(", ")} is now Responsible.`:"Saved")}})}
 async function writeCell(rk,n,val){const b=BASE[cid(rk,n)];if(b.v===val.v&&b.t===val.t)await del("cells",cid(rk,n));else await put("cells",cid(rk,n),{v:val.v,t:val.t,role:rk,stage:n})}
-async function writeStage(n,fields){const base=STAGES[n-1],o={};STAGE_FIELDS.forEach(([k])=>o[k]=k==="days"?Number(fields[k])||base.days:fields[k]);
-  const diff=STAGE_FIELDS.some(([k])=>o[k]!==base[k])||fields.confirmed;
+async function writeStage(n,fields){const base=STAGES[n-1],o={};STAGE_FIELDS.forEach(([k])=>o[k]=k==="days"?Number(fields[k])||base.days:fields[k]);o.mot=!!fields.mot;
+  const diff=STAGE_FIELDS.some(([k])=>o[k]!==base[k])||o.mot!==base.mot||fields.confirmed;
   if(diff)await put("stages","s"+n,{...o,confirmed:!!fields.confirmed,stage:n});else await del("stages","s"+n)}
 function stageEditor(n){const s=stage(n);
   openEditor({title:`${n}. ${s.name}`,ctx:"Edit the playbook for this stage",saveLabel:"Save stage",
-   body:STAGE_FIELDS.map(([k,l])=>`<div class="f"><label for="sf-${k}">${l}</label>${k==="days"?`<input type="number" min="1" id="sf-${k}" value="${esc(s[k])}">`:["sla","to","promise"].includes(k)?`<input type="text" id="sf-${k}" value="${esc(s[k])}">`:`<textarea id="sf-${k}">${esc(s[k])}</textarea>`}</div>`).join(""),
-   async save(){const o={confirmed:confirmed(n)};STAGE_FIELDS.forEach(([k])=>o[k]=$("sf-"+k).value.trim());await writeStage(n,o);toast("Stage saved")}})}
-async function toggleConfirm(n){const s=stage(n),o={confirmed:!confirmed(n)};STAGE_FIELDS.forEach(([k])=>o[k]=s[k]);await writeStage(n,o);
+   body:`<label class="f-check"><input type="checkbox" id="sf-mot" ${s.mot?"checked":""}><span><b>Moment of truth</b><br><span class="ctx">A stage where the customer decides whether we kept our promise</span></span></label>`+STAGE_FIELDS.map(([k,l])=>`<div class="f"><label for="sf-${k}">${l}</label>${k==="days"?`<input type="number" min="1" id="sf-${k}" value="${esc(s[k])}">`:["sla","to","promise"].includes(k)?`<input type="text" id="sf-${k}" value="${esc(s[k])}">`:`<textarea id="sf-${k}">${esc(s[k])}</textarea>`}</div>`).join(""),
+   async save(){const o={confirmed:confirmed(n),mot:$("sf-mot").checked};STAGE_FIELDS.forEach(([k])=>o[k]=$("sf-"+k).value.trim());await writeStage(n,o);toast("Stage saved")}})}
+async function toggleConfirm(n){const s=stage(n),o={confirmed:!confirmed(n),mot:s.mot};STAGE_FIELDS.forEach(([k])=>o[k]=s[k]);await writeStage(n,o);
   if(o.confirmed){const nx=STAGES.find(x=>!confirmed(x.n));toast(nx?`Stage ${n} confirmed. Next to review: ${nx.short}.`:"All 11 stages confirmed.")}else toast(`Stage ${n} marked as proposed`)}
 function contactEditor(rk){const r=roleBy(rk),c=contact(rk);
   openEditor({title:r.name,ctx:"Who to call for this team",saveLabel:"Save contact",
@@ -805,6 +919,19 @@ function contactEditor(rk){const r=roleBy(rk),c=contact(rk);
 /* ---------- events ---------- */
 $("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(b)go(b.dataset.tab)});
 $("tabs").addEventListener("keydown",e=>{const keys={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1};if(!keys[e.key])return;e.preventDefault();const i=TABS.findIndex(t=>t[0]===ui.tab),j=(i+keys[e.key]+TABS.length)%TABS.length;go(TABS[j][0]);$("t-"+TABS[j][0]).focus()});
+$("brief").onclick=async()=>{const p=plan(),all=deps(),active=all.filter(d=>d.status!=="done"),live=all.filter(d=>d.stage>=8||d.status==="done");
+  const liveDev=live.reduce((s,d)=>s+Number(d.devices||0),0),attn=active.filter(needsAttn),cyc=cycleTimes(),bn=bottleneck(),n=all.map(npsOf).filter(x=>x!=null);
+  const L=[`Blinksmart weekly brief, ${new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}`,"",
+   `Live: ${liveDev.toLocaleString()} devices${p.deviceTarget?` (${Math.round(liveDev/p.deviceTarget*100)}% of the ${p.label} target of ${Number(p.deviceTarget).toLocaleString()})`:""}, ${money(live.reduce((s,d)=>s+val(d),0))} of contract value.`,
+   `In rollout: ${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()} devices across ${plural(active.filter(d=>d.stage<8).length,"customer")}.`,
+   `Order to live: ${cyc.length?Math.round(avg(cyc))+" business days on average":"not enough history yet"}.${bn?` Bottleneck: ${stage(bn.n).name}, averaging ${Math.round(bn.avg)} days against a ${stage(bn.n).days}-day limit.`:""}`,
+   `Customer voice: ${n.length?`NPS ${Math.round((n.filter(x=>x>=9).length-n.filter(x=>x<=6).length)/n.length*100)} from ${plural(n.length,"customer")}, ${plural(n.filter(x=>x<=6).length,"detractor")}.`:"no scores yet."}`,"",
+   attn.length?`Needs attention (${attn.length}, ${money(attn.reduce((s,d)=>s+val(d),0))} at risk):`:"Needs attention: nothing blocked, at risk or late.",
+   ...attn.map(d=>`- ${d.customer}: ${(STATUS[d.status]||STATUS.on)[0].toLowerCase()} in ${stage(d.stage).name}, ${bdays(d.since)} of ${stage(d.stage).days} days${d.note?`. ${d.note}`:""}`),
+   "",...(()=>{const up=active.filter(d=>d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=14).sort((a,b)=>a.golive<b.golive?-1:1);return up.length?["Go-lives in the next 2 weeks:",...up.map(d=>`- ${fmtDate(d.golive)}: ${d.customer}, ${plural(Number(d.devices||0),"device")}`)]:["No go-lives in the next 2 weeks."]})(),
+   "",...(()=>{const od=Object.values(over.decisions).filter(x=>x.status!=="decided");return od.length?["Open decisions:",...od.map(x=>`- ${x.title}${x.due?` (decide by ${fmtDate(x.due)})`:""}`)]:["No open decisions."]})()];
+  const txt=L.join("\n");try{await navigator.clipboard.writeText(txt);toast("Weekly brief copied. Paste it into an email or chat.")}
+  catch(e){const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Weekly brief copied")}catch(_){toast("Copy was blocked. Try again.")}t.remove()}};
 $("addDep").onclick=()=>depEditor();$("addDep2").onclick=()=>depEditor();$("addDec").onclick=()=>decEditor();$("editPlan").onclick=planEditor;
 $("rail").addEventListener("click",e=>{const b=e.target.closest("[data-step]");if(b){ui.sel=+b.dataset.step;render()}});
 $("view").addEventListener("click",e=>{const c=e.target.closest(".cell"),sh=e.target.closest(".stagehead"),rh=e.target.closest(".rolehead");
@@ -825,14 +952,16 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&ed){closeEditor();r
   else if(e.key==="/"&&ui.tab==="pipeline"){e.preventDefault();$("pq").focus()}
   else if((e.key==="n"||e.key==="N")&&canWrite){e.preventDefault();depEditor()}});
 window.addEventListener("scroll",()=>{$("tip").hidden=true},{passive:true});
-function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
+function toast(t,undo){const e=$("toast");e.innerHTML="";const sp=document.createElement("span");sp.textContent=t;e.appendChild(sp);
+  if(undo){const b=document.createElement("button");b.className="tbtn";b.textContent="Undo";b.onclick=()=>{e.hidden=true;undo()};e.appendChild(b)}
+  e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,undo?7000:3200)}
 $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;let rows,what;
-  if(ui.tab==="pipeline"||ui.tab==="overview"){what="Customers";rows=[["Customer","Devices","Stage","Business days in stage","Stage limit (days)","Accountable","Status","Go-live","Note"].map(q).join(",")];
-    deps().forEach(d=>{const o=accountable(d.stage);rows.push([d.customer,d.devices,`${d.stage}. ${stage(d.stage).name}`,bdays(d.since),stage(d.stage).days,o?o.name:"",(STATUS[d.status]||STATUS.on)[0],d.golive,d.note].map(q).join(","))})}
+  if(ui.tab==="pipeline"||ui.tab==="overview"){what="Customers";rows=[["Customer","Devices","Contract value (₹ lakh)","NPS","Stage","Business days in stage","Stage limit (days)","Accountable","Status","Go-live","Note"].map(q).join(",")];
+    deps().forEach(d=>{const o=accountable(d.stage);rows.push([d.customer,d.devices,val(d)||"",npsOf(d)??"",`${d.stage}. ${stage(d.stage).name}`,bdays(d.since),stage(d.stage).days,o?o.name:"",(STATUS[d.status]||STATUS.on)[0],d.golive,d.note].map(q).join(","))})}
   else if(ui.tab==="decisions"){what="Decisions";rows=[["Decision","Owner","Due","Status","Outcome"].map(q).join(",")];Object.values(over.decisions).forEach(d=>rows.push([d.title,d.owner&&roleBy(d.owner)?roleBy(d.owner).name:"",d.due,d.status,d.outcome].map(q).join(",")))}
   else{what="Playbook and RACI";rows=[["Team","Contact",...STAGES.map(s=>`${s.n}. ${s.name}`)].map(q).join(",")];
     ROLES.forEach(r=>{const c=contact(r.k);rows.push([q(r.name),q([c.name,c.contact].filter(Boolean).join(", ")),...STAGES.map(s=>{const x=cell(r.k,s.n);return q(x.v?`${x.v}: ${x.t}`:"")})].join(","))});
-    rows.push("");rows.push([q("Status"),q(""),...STAGES.map(s=>q(confirmed(s.n)?"Confirmed":"Proposed"))].join(","));STAGE_FIELDS.forEach(([k,l])=>rows.push([q(l),q(""),...STAGES.map(s=>q(stage(s.n)[k]))].join(",")))}
+    rows.push("");rows.push([q("Status"),q(""),...STAGES.map(s=>q(confirmed(s.n)?"Confirmed":"Proposed"))].join(","));rows.push([q("Moment of truth"),q(""),...STAGES.map(s=>q(stage(s.n).mot?"Yes":""))].join(","));STAGE_FIELDS.forEach(([k,l])=>rows.push([q(l),q(""),...STAGES.map(s=>q(stage(s.n)[k]))].join(",")))}
   const txt=rows.join("\n");
   try{await navigator.clipboard.writeText(txt);toast(`${what} copied as CSV`)}
   catch(e){const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast(`${what} copied as CSV`)}catch(_){toast("Copy was blocked. Try again.")}t.remove()}};

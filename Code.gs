@@ -15,7 +15,7 @@
  * After changing this code, use Deploy ▸ Manage deployments ▸ Edit ▸ Version: New version, so the URL stays the same.
  */
 
-const SECRET = 'CHANGE-ME-to-a-long-private-phrase';
+const SECRET = 'Sapience Playbook';
 
 // Each collection the dashboard saves, the tab it lives in, and its columns.
 // Column types: s = text, n = number, d = date (yyyy-mm-dd), b = yes/no, j = data kept by the app (don't edit).

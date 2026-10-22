@@ -9,33 +9,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: navy side rail (sections + data status) | main column.
+/* Single white theme by request (no dark variant). Layout: white side rail (sections + data status) | main column.
    Overview: briefing sentence → journey band (11 stages, every customer placed on it) → "Needs you" + "Coming up" → target / team load / readiness.
    One bold element: the journey band in the brand's stage spectrum. Everything else stays quiet. */
 :root{
-  --bg:#f2f4f8; --surface:#ffffff; --surface-2:#eaeef5; --line:#d9dfea; --ink:#0f1f47; --muted:#586380;
+  --bg:#f7f8fb; --surface:#ffffff; --surface-2:#f1f4f9; --line:#e3e8f0; color-scheme:light; --ink:#0f1f47; --muted:#586380;
   --accent:#1652d9; --accent-ink:#ffffff; --accent-soft:#e3ebfd;
-  --rail:#0f1f47; --rail-ink:#ffffff; --rail-muted:#a9b6d6; --rail-active:#1d3170;
+  --rail:#ffffff; --rail-ink:#0f1f47; --rail-muted:#5b6782; --rail-active:#eaf0fe;
   --r-bg:#dbe6ff; --r-fg:#1440a8; --c-fg:#0f7a66; --c-line:#7cc7b6; --i-fg:#6b7690; --i-bg:#eceff5; --hit:#fff3b0;
   --ok-fg:#13804f; --ok-bg:#e1f5ea; --warn-fg:#a85a00; --warn-bg:#fff1dc; --crit-fg:#b42318; --crit-bg:#fde7e4;
   --shadow:0 1px 2px rgba(15,31,71,.06),0 8px 24px rgba(15,31,71,.06);
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body:"Public Sans", "Segoe UI", system-ui, sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0a1022; --surface:#111a31; --surface-2:#18233f; --line:#24304f; --ink:#e8edf8; --muted:#98a3bf;
-  --accent:#6c97ff; --accent-ink:#071230; --accent-soft:#1a2a55;
-  --rail:#070c1a; --rail-ink:#e8edf8; --rail-muted:#8390b0; --rail-active:#16224a;
-  --r-bg:#1f3263; --r-fg:#b9cdff; --c-fg:#62d6bd; --c-line:#2c7b6b; --i-fg:#8d98b3; --i-bg:#1b2440; --hit:#4a4012;
-  --ok-fg:#5fd69c; --ok-bg:#12352a; --warn-fg:#ffbe6b; --warn-bg:#3a2a10; --crit-fg:#ff8a7a; --crit-bg:#3d1714;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#0a1022; --surface:#111a31; --surface-2:#18233f; --line:#24304f; --ink:#e8edf8; --muted:#98a3bf;
-  --accent:#6c97ff; --accent-ink:#071230; --accent-soft:#1a2a55;
-  --rail:#070c1a; --rail-ink:#e8edf8; --rail-muted:#8390b0; --rail-active:#16224a;
-  --r-bg:#1f3263; --r-fg:#b9cdff; --c-fg:#62d6bd; --c-line:#2c7b6b; --i-fg:#8d98b3; --i-bg:#1b2440; --hit:#4a4012;
-  --ok-fg:#5fd69c; --ok-bg:#12352a; --warn-fg:#ffbe6b; --warn-bg:#3a2a10; --crit-fg:#ff8a7a; --crit-bg:#3d1714;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark }
 html,body{min-height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--rail)}
@@ -44,24 +30,25 @@ button{font:inherit;cursor:pointer;color:inherit}
 
 /* shell */
 .shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+.rail-col{background:var(--rail);border-right:1px solid var(--line);min-width:0}
 .rail{background:var(--rail);color:var(--rail-ink);position:sticky;top:env(safe-area-inset-top,0px);height:calc(100vh - env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:24px;padding:24px 14px 20px max(14px, env(safe-area-inset-left, 0px));box-sizing:border-box;overflow:auto}
 .brand{display:flex;flex-direction:column;gap:2px;padding:0 10px}
-.brand b{font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.01em}
+.brand b{font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
 .brand span{font-size:12.5px;color:var(--rail-muted)}
 .nav{display:flex;flex-direction:column;gap:2px}
 .nav button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border-radius:8px;font-weight:600;font-size:14px;color:var(--rail-muted)}
-.nav button:hover{color:var(--rail-ink);background:color-mix(in srgb, var(--rail-active) 60%, transparent)}
-.nav button[aria-selected="true"]{color:var(--rail-ink);background:var(--rail-active);box-shadow:inset 3px 0 0 var(--accent)}
+.nav button:hover{color:var(--rail-ink);background:var(--surface-2)}
+.nav button[aria-selected="true"]{color:var(--accent);background:var(--rail-active);box-shadow:inset 3px 0 0 var(--accent)}
 .nav button:focus-visible{outline:2px solid var(--accent);outline-offset:0}
-.nav .badge{font-size:11.5px;font-weight:700;border-radius:999px;padding:0 7px;background:rgba(255,255,255,.12);color:var(--rail-ink)}
-.nav .badge.warn{background:#ffbe6b;color:#3a2a10}
-.rail-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding:0 4px}
+.nav .badge{font-size:11.5px;font-weight:700;border-radius:999px;padding:0 7px;background:var(--i-bg);color:var(--muted)}
+.nav .badge.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.rail-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding:14px 4px 0;border-top:1px solid var(--line)}
 .rail-foot .rbtn{all:unset;box-sizing:border-box;cursor:pointer;font-size:13px;color:var(--rail-muted);padding:6px 6px;border-radius:6px}
-.rail-foot .rbtn:hover{color:var(--rail-ink)}
+.rail-foot .rbtn:hover{color:var(--accent);background:var(--surface-2)}
 .rail-foot .rbtn:focus-visible{outline:2px solid var(--accent)}
 .savestate{font-size:12px;color:var(--rail-muted);display:flex;gap:7px;align-items:center;padding:6px}
-.savestate::before{content:"";width:7px;height:7px;border-radius:50%;background:#5fd69c;flex:none}
-.savestate.warn::before{background:#ffbe6b}
+.savestate::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok-fg);flex:none}
+.savestate.warn::before{background:var(--warn-fg)}
 .main{min-width:0;padding-block:28px 64px;padding-left:clamp(16px,3vw,40px);padding-right:max(clamp(16px,3vw,40px), env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:24px;max-width:1440px;box-sizing:border-box;width:100%}
 @media (max-width:860px){
   .shell{grid-template-columns:1fr}
@@ -70,6 +57,8 @@ button{font:inherit;cursor:pointer;color:inherit}
   .brand b{font-size:17px}
   .nav{flex-direction:row}
   .nav button{white-space:nowrap;padding:7px 10px;font-size:13px}
+  .rail-col{border-right:0;position:sticky;top:env(safe-area-inset-top,0px);z-index:8;border-bottom:1px solid var(--line)}
+  .rail{border-bottom:0}
   .nav button[aria-selected="true"]{box-shadow:inset 0 -3px 0 var(--accent)}
   .main{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
 }
@@ -86,7 +75,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 h2{font-family:var(--display);font-size:18px;font-weight:700;margin:0;letter-spacing:-.005em}
 h3{font-family:var(--display);font-weight:700;margin:0}
 .ctx{font-size:13px;color:var(--muted)}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;min-width:0;box-shadow:0 1px 2px rgba(15,31,71,.04)}
 .pad{padding:18px 20px}
 .head-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between;margin-bottom:14px}
 .row-flex{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -398,7 +387,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
 
 
 <div class="shell">
-  <aside class="rail">
+  <div class="rail-col"><aside class="rail">
     <div class="brand"><b>Blinksmart</b><span>Experience playbook</span></div>
     <nav class="nav" role="tablist" aria-label="Sections" id="tabs"></nav>
     <div class="rail-foot">
@@ -408,7 +397,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
       <button class="rbtn" id="imp">Import backup</button>
       <input type="file" id="impFile" accept="application/json,.json" hidden>
     </div>
-  </aside>
+  </aside></div>
   <main class="main">
     <div id="banner"></div>
 
@@ -525,10 +514,10 @@ const STAGES=[
   entry:"Installation report approved.",exit:"Demo and training completed. Customer acceptance signed.",
   sla:"Within 3 business days of installation",to:"Customer Success / Onboarding (stage 8)",handoff:"Training record, customer contacts and signed acceptance",
   docs:"Handover & Training Record",esc:"Acceptance not signed in 5 days → Sales owner → Management"},
- {n:8,name:"Activation & Early Use",short:"Activation",sub:"Go live, monitor, feedback",hue:"#3a9d23",days:22,
-  moment:"The first weeks of live use across the fleet.",promise:"Value is visible within the first 30 days.",
+ {n:8,name:"Activation & Early Use",short:"Activation",sub:"Switch on, monitor, feedback",hue:"#3a9d23",days:22,
+  moment:"The first weeks of using the devices across the fleet.",promise:"Value is visible within the first 30 days.",
   entry:"Customer acceptance signed.\nSIM and data connectivity active.",exit:"All devices reporting. 30-day usage review done with no open critical alerts.",
-  sla:"Devices live within 1 business day of handover; 30-day check-in",to:"Customer Support",handoff:"Account moves to steady-state support with usage baseline",
+  sla:"Devices working within 1 business day of handover; 30-day check-in",to:"Customer Support",handoff:"Account moves to steady-state support with usage baseline",
   docs:"Analytics (performance & insights)",esc:"Device not reporting over 24 hours → Technical / QA\nConnectivity issue → Manufacturer"},
  {n:9,name:"Post-Use Support",short:"Support",sub:"Tickets, troubleshooting, resolution",hue:"#e88a0a",days:3,
   moment:"The customer raises an issue or an alert fires.",promise:"Fast answers, and they often hear from us first.",
@@ -564,7 +553,7 @@ const ROLES=[
  {k:"customer",name:"Customer / End User",sub:"Driver / Fleet Manager",external:true,cells:["","C|Provides details, confirms order","","I|Receives QA update","I|Receives delivery info","C|Provides vehicle access & approval","C|Accepts handover, attends training","C|Uses device, responds to alerts","C|Raises support tickets","C|Approves repairs / replacement","C|Provides feedback, renewal interest"]},
  {k:"sales",name:"Sales / Business Development",cells:["C|Captures lead, confirms requirements","A|Confirms commercials & payment terms","R|Creates order record","","I|Tracks dispatch & delivery","","C|Coordinates with customer","I|Tracks activation & usage","","","R|Refers expansion opportunities"]},
  {k:"distributor",name:"Distributor / Channel Partner",cells:["R|Supplies stock to SA","C|Confirms order with customer","C|Shares allocation & delivery plan","","C|Coordinates logistics (secondary)","","C|Supports installation (if applicable)","C|Supports onboarding (if applicable)","","",""]},
- {k:"manufacturer",name:"Manufacturer",sub:"Hardware, firmware & SIM / connectivity",cells:["R|Supplies devices with SIMs provisioned","","","R|Enables test connectivity for QA","","","","R|Activates SIM / data plan for live use","C|Resolves connectivity issues","R|Moves SIM to replacement unit, repairs hardware",""]},
+ {k:"manufacturer",name:"Manufacturer",sub:"Hardware, firmware & SIM / connectivity",cells:["R|Supplies devices with SIMs provisioned","","","R|Enables test connectivity for QA","","","","R|Activates SIM / data plan","C|Resolves connectivity issues","R|Moves SIM to replacement unit, repairs hardware",""]},
  {k:"warehouse",name:"Inventory / Warehouse",cells:["A|Checks stock, serial numbers, accessories","I|Updates inventory status","R|Allocates devices & accessories","R|Feeds QA stock","R|Releases allocated stock to dispatch","","","","","R|Receives returns, updates inventory on replacement",""]},
  {k:"finance",name:"Finance / Accounts",cells:["","R|Verifies payment, issues invoice","C|Confirms financial status","","","","","","","C|Approves warranty claims, handles refunds",""]},
  {k:"ops",name:"Operations Coordinator",cells:["I|Tracks stock readiness","R|Checks order details","A|Creates order ID, tracks milestones","I|Monitors QA progress","I|Updates dispatch status","R|Schedules installation","I|Tracks handover status","I|Monitors activation & support trends","I|Tracks open tickets & SLAs","I|Tracks replacements & RMAs","R|Prepares closure report"]},
@@ -683,7 +672,7 @@ function renderOverview(){
   if(!all.length)b=`No customers in the journey yet. Add your first rollout to see where every device stands.`;
   else{const parts=[];
     parts.push(attn.length?`<span class="${blocked.length?"c":"w"}">${plural(attn.length,"customer")} ${attn.length===1?"needs":"need"} you</span>${blocked.length?`, ${blocked.length} blocked`:""}.`:`Every customer is on track.`);
-    parts.push(` <b>${liveDev.toLocaleString()}</b> devices are live${p.deviceTarget?`, ${Math.round(liveDev/p.deviceTarget*100)}% of ${esc(p.label.toLowerCase()==="this quarter"?"this quarter's":p.label+"'s")} target`:""}, and <b>${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()}</b> are on their way.`);
+    parts.push(` <b>${liveDev.toLocaleString()}</b> devices are in use${p.deviceTarget?`, ${Math.round(liveDev/p.deviceTarget*100)}% of ${esc(p.label.toLowerCase()==="this quarter"?"this quarter's":p.label+"'s")} target`:""}, and <b>${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()}</b> are on their way.`);
     const atRisk=attn.reduce((s,d)=>s+val(d),0);if(atRisk)parts.push(` <span class="w">${money(atRisk)}</span> of contract value is at risk.`);
     b=parts.join("")}
   $("briefing").innerHTML=b;
@@ -721,24 +710,24 @@ function renderNeeds(active){const items=[];
   el.onclick=e=>{const b=e.target.closest("[data-i]");if(b){items[+b.dataset.i].go();return}if(e.target.closest("[data-more]"))go("pipeline",{pStatus:"attn"})}}
 function renderGolives(all){const up=all.filter(d=>d.status!=="done"&&d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=30).sort((a,b)=>a.golive<b.golive?-1:1);
   const dec=Object.entries(over.decisions).filter(([,x])=>x.status!=="decided"&&x.due&&daysTo(x.due)>7&&daysTo(x.due)<=30);
-  const rows=[...up.map(d=>({date:d.golive,html:`<div><b>${esc(d.customer)}</b> goes live<div class="ctx">${plural(Number(d.devices||0),"device")}, now in ${esc(stage(d.stage).short)}</div></div>${d.status!=="on"?`<span class="pill ${STATUS[d.status][1]}">${STATUS[d.status][0]}</span>`:d.stage<6&&daysTo(d.golive)<10?`<span class="pill warn" title="Still before installation">Tight</span>`:`<span class="pill ok">On track</span>`}`,go:()=>depEditor(d.id),id:d.id})),
+  const rows=[...up.map(d=>({date:d.golive,html:`<div><b>${esc(d.customer)}</b> starts using Blinksmart<div class="ctx">${plural(Number(d.devices||0),"device")}, now in ${esc(stage(d.stage).short)}</div></div>${d.status!=="on"?`<span class="pill ${STATUS[d.status][1]}">${STATUS[d.status][0]}</span>`:d.stage<6&&daysTo(d.golive)<10?`<span class="pill warn" title="Still before installation">Tight</span>`:`<span class="pill ok">On track</span>`}`,go:()=>depEditor(d.id),id:d.id})),
     ...dec.map(([id,x])=>({date:x.due,html:`<div><b>Decision due</b><div class="ctx">${esc(x.title)}</div></div><span class="pill">Open</span>`,go:()=>decEditor(id)}))].sort((a,b)=>a.date<b.date?-1:1).slice(0,6);
   const el=$("golives");
   el.innerHTML=rows.length?rows.map((r,i)=>{const d=parse(r.date);return `<li data-i="${i}" style="cursor:pointer"><span class="date"><b>${d.getDate()}</b><span>${d.toLocaleDateString(undefined,{month:"short"})}</span></span>${r.html}</li>`}).join("")
-    :`<li class="full"><span class="ctx">No go-lives or decisions due in the next 30 days.</span></li>`;
+    :`<li class="full"><span class="ctx">No start dates or decisions due in the next 30 days.</span></li>`;
   el.onclick=e=>{const li=e.target.closest("[data-i]");if(li&&!sample)rows[+li.dataset.i].go()}}
 function renderTarget(p,all,liveDev){const el=$("targetPanel"),pct=p.deviceTarget?Math.min(100,Math.round(liveDev/p.deviceTarget*100)):0;
   const liveAcc=all.filter(d=>d.stage>=8||d.status==="done").length;
   el.innerHTML=`<div class="head-row"><h2>${esc(p.label)}</h2>${canWrite?`<button class="btn ghost small" id="tEdit">Edit</button>`:""}</div>
-   <div class="val">${liveDev.toLocaleString()}${p.deviceTarget?` <small>of ${Number(p.deviceTarget).toLocaleString()} devices live</small>`:` <small>devices live</small>`}</div>
-   ${p.deviceTarget?`<div class="meter" role="img" aria-label="${pct}% of target"><i style="width:${pct}%"></i></div><span class="ctx">${pct}% of target. Live means stage 8 or later.</span>`:`<p class="ctx" style="margin:12px 0 0">Set a device target to track the quarter's progress.</p>`}
-   <div class="splits"><div><b>${liveAcc}${p.accountTarget?`<span class="ctx" style="font-family:var(--body);font-weight:600"> / ${p.accountTarget}</span>`:""}</b><span>Customers live</span></div><div><b>${money(all.filter(d=>d.stage>=8||d.status==="done").reduce((s,d)=>s+val(d),0))}</b><span>Contract value live</span></div><div>${(()=>{const n=all.map(npsOf).filter(x=>x!=null);if(!n.length)return `<b>—</b><span>NPS (no scores yet)</span>`;const pro=n.filter(x=>x>=9).length,det=n.filter(x=>x<=6).length,sc=Math.round((pro-det)/n.length*100);return `<b class="nps ${sc>=30?"pro":sc<0?"det":"pas"}">${sc>0?"+":""}${sc}</b><span>NPS from ${plural(n.length,"customer")}</span>`})()}</div></div>`;
+   <div class="val">${liveDev.toLocaleString()}${p.deviceTarget?` <small>of ${Number(p.deviceTarget).toLocaleString()} devices in use</small>`:` <small>devices in use</small>`}</div>
+   ${p.deviceTarget?`<div class="meter" role="img" aria-label="${pct}% of target"><i style="width:${pct}%"></i></div><span class="ctx">${pct}% of target. A device counts once the customer reaches stage 8, Activation.</span>`:`<p class="ctx" style="margin:12px 0 0">Set a device target to track the quarter's progress.</p>`}
+   <div class="splits"><div><b>${liveAcc}${p.accountTarget?`<span class="ctx" style="font-family:var(--body);font-weight:600"> / ${p.accountTarget}</span>`:""}</b><span>Customers using it</span></div><div><b>${money(all.filter(d=>d.stage>=8||d.status==="done").reduce((s,d)=>s+val(d),0))}</b><span>Contract value in use</span></div><div>${(()=>{const n=all.map(npsOf).filter(x=>x!=null);if(!n.length)return `<b>—</b><span>NPS (no scores yet)</span>`;const pro=n.filter(x=>x>=9).length,det=n.filter(x=>x<=6).length,sc=Math.round((pro-det)/n.length*100);return `<b class="nps ${sc>=30?"pro":sc<0?"det":"pas"}">${sc>0?"+":""}${sc}</b><span>NPS from ${plural(n.length,"customer")}</span>`})()}</div></div>`;
   const e=$("tEdit");if(e)e.onclick=planEditor}
 function renderLoad(){const per=stageTimes(),cyc=cycleTimes(),bn=bottleneck(),el=$("load");
   const rows=STAGES.map(s0=>{const s=stage(s0.n),a=per[s.n]||[];return {s,avg:avg(a),n:a.length,lim:Number(s.days)}});
   const max=Math.max(...rows.map(r=>Math.max(r.lim,r.avg||0)),1);
   const hasHist=rows.some(r=>r.n);
-  el.innerHTML=(hasHist?`<div class="flow-head"><div><b>${cyc.length?Math.round(avg(cyc)):"—"}</b><span>${cyc.length?"Order to live (avg business days)":"Order to live: no customer live yet"}</span></div><div><b>${bn?esc(stage(bn.n).short):"On pace"}</b><span>${bn?`Bottleneck: ${Math.round(bn.avg)} vs ${stage(bn.n).days} day limit`:"No stage is running over its limit"}</span></div></div>`:`<p class="flow-empty">Flow builds up as customers move through stages. Until then, the ticks show each stage's time limit.</p>`)+`
+  el.innerHTML=(hasHist?`<div class="flow-head"><div><b>${cyc.length?Math.round(avg(cyc)):"—"}</b><span>${cyc.length?"Order to first use (avg business days)":"Order to first use: no customer there yet"}</span></div><div><b>${bn?esc(stage(bn.n).short):"On pace"}</b><span>${bn?`Bottleneck: ${Math.round(bn.avg)} vs ${stage(bn.n).days} day limit`:"No stage is running over its limit"}</span></div></div>`:`<p class="flow-empty">Flow builds up as customers move through stages. Until then, the ticks show each stage's time limit.</p>`)+`
    <div class="frows">${rows.map(r=>`<div class="frow" title="${esc(r.s.name)}: ${r.n?`average ${r.avg.toFixed(1)} business days over ${plural(r.n,"pass","passes")}`:"no completed passes yet"}; limit ${r.lim}"><span>${r.s.n}. ${esc(r.s.short)}</span><span class="track">${r.n?`<i class="${r.avg>r.lim?"over":""}" style="width:${Math.round(r.avg/max*100)}%"></i>`:""}<b style="left:${Math.round(r.lim/max*100)}%"></b></span><span class="n">${r.n?(r.avg>=10?Math.round(r.avg):r.avg.toFixed(1)):"–"} / ${r.lim}</span></div>`).join("")}</div>
    <p class="ctx" style="margin:10px 0 0">Bar: average time spent. Tick: the stage's limit. Built from each customer's stage history.</p>`}
 function renderReady(){const ownOk=STAGES.filter(s=>owners(s.n).length===1).length,conf=STAGES.filter(s=>confirmed(s.n)).length,cr=contactRoles(),cont=cr.filter(r=>contact(r.k).name).length;
@@ -768,10 +757,10 @@ function renderPipeline(){
   const rank=d=>d.status==="done"?5:d.status==="blocked"?0:overdue(d)?1:d.status==="risk"?2:3;
   list.sort((a,b)=>rank(a)-rank(b)||a.stage-b.stage);
   const el=$("pipe");$("addDep2").hidden=!canWrite||!deps().length;
-  if(!deps().length){el.innerHTML=`<div class="empty-state"><b>No customers yet</b><p>Add one row per customer rollout with its devices, current stage and go-live date. The overview, risks and time limits build from these rows.</p><div class="row-flex" style="justify-content:center">${canWrite?`<button class="btn primary" data-act="add">Add customer</button>`:""}<button class="btn" data-act="sample">Preview with sample data</button></div></div>`;
+  if(!deps().length){el.innerHTML=`<div class="empty-state"><b>No customers yet</b><p>Add one row per customer rollout with its devices, current stage and target start date. The overview, risks and time limits build from these rows.</p><div class="row-flex" style="justify-content:center">${canWrite?`<button class="btn primary" data-act="add">Add customer</button>`:""}<button class="btn" data-act="sample">Preview with sample data</button></div></div>`;
     el.onclick=e=>{const b=e.target.closest("[data-act]");if(!b)return;if(b.dataset.act==="add")depEditor();else{sample=true;render()}};return}
   if(!list.length){el.innerHTML=`<div class="empty-state"><p>No customers match these filters.</p><button class="btn small" data-act="clear">Clear filters</button></div>`;el.onclick=e=>{if(e.target.closest("[data-act]"))go("pipeline",{pq:"",pStage:0,pStatus:""})};return}
-  el.innerHTML=`<div class="tscroll"><table class="dt"><thead><tr><th scope="col">Customer</th><th scope="col">Journey</th><th scope="col">Stage</th><th scope="col" style="text-align:right">Devices</th><th scope="col" style="text-align:right">Value</th><th scope="col">NPS</th><th scope="col">Time in stage</th><th scope="col">Accountable now</th><th scope="col">Status</th><th scope="col">Go-live</th><th scope="col"><span class="ctx">Action</span></th></tr></thead><tbody>${list.map(d=>{const s=stage(d.stage),bd=bdays(d.since),o=accountable(d.stage),c=o?contact(o.k):null,late=overdue(d),gl=daysTo(d.golive);
+  el.innerHTML=`<div class="tscroll"><table class="dt"><thead><tr><th scope="col">Customer</th><th scope="col">Journey</th><th scope="col">Stage</th><th scope="col" style="text-align:right">Devices</th><th scope="col" style="text-align:right">Value</th><th scope="col">NPS</th><th scope="col">Time in stage</th><th scope="col">Accountable now</th><th scope="col">Status</th><th scope="col">Start date</th><th scope="col"><span class="ctx">Action</span></th></tr></thead><tbody>${list.map(d=>{const s=stage(d.stage),bd=bdays(d.since),o=accountable(d.stage),c=o?contact(o.k):null,late=overdue(d),gl=daysTo(d.golive);
     return `<tr data-row="${d.id}"><td data-l="Customer"><span class="cust">${esc(d.customer)}</span>${d.sample?'<span class="sample">Sample</span>':""}${d.note?`<div class="ctx">${esc(d.note)}</div>`:""}</td>
      <td data-l="Journey" class="jt"><span class="strip" aria-label="Stage ${d.stage} of 11">${STAGES.map(x=>`<i style="--hue:${x.hue}" class="${x.n<d.stage||d.status==="done"?"past":x.n===d.stage?"now":""}"></i>`).join("")}</span></td>
      <td data-l="Stage" style="white-space:nowrap">${s.n}. ${esc(s.short)}</td>
@@ -781,7 +770,7 @@ function renderPipeline(){
      <td data-l="Time in stage" class="${late?"late":""}" style="white-space:nowrap">${d.status==="done"?"Closed":`${bd} of ${s.days} days`}</td>
      <td data-l="Accountable now">${o?esc(short(o.name)):'<span class="late">No owner</span>'}${c&&c.name?`<div class="ctx">${esc(c.name)}</div>`:""}</td>
      <td data-l="Status"><span class="pill ${(STATUS[d.status]||STATUS.on)[1]}">${(STATUS[d.status]||STATUS.on)[0]}</span></td>
-     <td data-l="Go-live" style="white-space:nowrap">${fmtDate(d.golive)}${gl!=null&&d.status!=="done"&&gl<0&&d.stage<8?'<div class="late" style="font-size:12px">Date passed</div>':""}</td>
+     <td data-l="Start date" style="white-space:nowrap">${fmtDate(d.golive)}${gl!=null&&d.status!=="done"&&gl<0&&d.stage<8?'<div class="late" style="font-size:12px">Missed</div>':""}</td>
      <td class="act">${!d.sample&&canWrite&&d.status!=="done"?`<button class="btn small" data-adv="${d.id}">${d.stage<11?`Move to ${stage(d.stage+1).short}`:"Close"}</button>`:""}</td></tr>`}).join("")}</tbody></table></div>
    <div class="pad ctx">${plural(list.length,"customer")}, ${plural(list.reduce((a,d)=>a+Number(d.devices||0),0),"device")} and ${money(list.reduce((a,d)=>a+val(d),0))} shown. Time in stage counts business days.</div>`;
   el.onclick=e=>{const a=e.target.closest("[data-adv]");if(a){advance(a.dataset.adv);return}const r=e.target.closest("[data-row]");if(r&&!sample)depEditor(r.dataset.row)}}
@@ -862,10 +851,11 @@ function depEditor(id){if(!canWrite)return;const d=id?over.deployments[id]:{cust
     <div class="f"><label for="df-nps">Latest NPS score (0 to 10)</label><input type="number" id="df-nps" min="0" max="10" step="1" value="${esc(d.nps??"")}"></div></div>
     <div class="f"><label for="df-s">Current stage</label><select id="df-s">${STAGES.map(s=>`<option value="${s.n}" ${s.n===d.stage?"selected":""}>${s.n}. ${esc(s.name)}</option>`).join("")}</select></div>
     <div class="f2"><div class="f"><label for="df-since">In this stage since</label><input type="date" id="df-since" value="${esc(d.since)}"></div>
-    <div class="f"><label for="df-g">Target go-live</label><input type="date" id="df-g" value="${esc(d.golive)}"></div></div>
+    <div class="f"><label for="df-g" id="df-g-lab">Target start date</label><input type="date" id="df-g" value="${esc(d.golive)}"><span class="ctx" id="df-g-hint"></span></div></div>
     <div class="f"><label for="df-note">Note or blocker</label><textarea id="df-note" placeholder="What's holding it up, or what happens next">${esc(d.note)}</textarea></div>`,
    extra:id?`<button class="btn small" id="df-del">Delete</button>`:"",
-   init(){armDelete("df-del",async()=>{const prev={...over.deployments[id]};delete prev.at;await del("deployments",id);toast("Customer deleted",()=>{put("deployments",id,prev);toast("Customer restored")})});$("df-s").onchange=()=>{$("df-since").value=iso(today())}},
+   init(){armDelete("df-del",async()=>{const prev={...over.deployments[id]};delete prev.at;await del("deployments",id);toast("Customer deleted",()=>{put("deployments",id,prev);toast("Customer restored")})});const hint=()=>{const st=+$("df-s").value;$("df-g-lab").textContent=st>=8?"Started using on":"Target start date";$("df-g-hint").textContent=st>=8?"The day their devices were switched on in their vehicles. For reference only.":"The day you promised their devices would be installed and working in their vehicles."};hint();
+     $("df-s").onchange=()=>{$("df-since").value=iso(today());hint()}},
    async save(){const c=$("df-c").value.trim();if(!c){toast("Add a customer name first");$("df-c").focus();return false}
      const npsRaw=$("df-nps").value.trim();const nps=npsRaw===""?"":Math.min(10,Math.max(0,parseInt(npsRaw,10)||0));
      const o={customer:c,devices:Math.max(0,parseInt($("df-n").value,10)||0),value:Math.max(0,parseFloat($("df-v").value)||0),nps,stage:+$("df-s").value,since:$("df-since").value||iso(today()),golive:$("df-g").value,status:$("df-st").value,note:$("df-note").value.trim()};
@@ -887,7 +877,7 @@ function decEditor(id){if(!canWrite)return;const d=id?over.decisions[id]:{title:
 function planEditor(){if(!canWrite)return;const p=plan();
   openEditor({title:"Targets",ctx:"Shown on the overview",saveLabel:"Save targets",
    body:`<div class="f"><label for="pf-l">Period</label><input type="text" id="pf-l" value="${esc(p.label)}" placeholder="For example, Q3 FY27"></div>
-    <div class="f2"><div class="f"><label for="pf-d">Devices live</label><input type="number" id="pf-d" min="0" value="${esc(p.deviceTarget||"")}"></div><div class="f"><label for="pf-a">Customers live</label><input type="number" id="pf-a" min="0" value="${esc(p.accountTarget||"")}"></div></div>`,
+    <div class="f2"><div class="f"><label for="pf-d">Devices in use</label><input type="number" id="pf-d" min="0" value="${esc(p.deviceTarget||"")}"></div><div class="f"><label for="pf-a">Customers using Blinksmart</label><input type="number" id="pf-a" min="0" value="${esc(p.accountTarget||"")}"></div></div>`,
    async save(){await put("plan","current",{label:$("pf-l").value.trim()||"This quarter",deviceTarget:Math.max(0,parseInt($("pf-d").value,10)||0),accountTarget:Math.max(0,parseInt($("pf-a").value,10)||0)});toast("Targets saved")}})}
 function cellEditor(rk,n){const r=roleBy(rk),s=stage(n),x=cell(rk,n);let pick=x.v;
   const note=()=>{const nt=$("ed-note");if(pick==="A"){const o=owners(n).filter(q=>q.k!==rk);if(o.length){nt.textContent=`${o.map(q=>q.name).join(", ")} will become Responsible, so this stage keeps one owner.`;nt.hidden=false;return}}
@@ -922,13 +912,13 @@ $("tabs").addEventListener("keydown",e=>{const keys={ArrowDown:1,ArrowRight:1,Ar
 $("brief").onclick=async()=>{const p=plan(),all=deps(),active=all.filter(d=>d.status!=="done"),live=all.filter(d=>d.stage>=8||d.status==="done");
   const liveDev=live.reduce((s,d)=>s+Number(d.devices||0),0),attn=active.filter(needsAttn),cyc=cycleTimes(),bn=bottleneck(),n=all.map(npsOf).filter(x=>x!=null);
   const L=[`Blinksmart weekly brief, ${new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}`,"",
-   `Live: ${liveDev.toLocaleString()} devices${p.deviceTarget?` (${Math.round(liveDev/p.deviceTarget*100)}% of the ${p.label} target of ${Number(p.deviceTarget).toLocaleString()})`:""}, ${money(live.reduce((s,d)=>s+val(d),0))} of contract value.`,
+   `In use: ${liveDev.toLocaleString()} devices${p.deviceTarget?` (${Math.round(liveDev/p.deviceTarget*100)}% of the ${p.label} target of ${Number(p.deviceTarget).toLocaleString()})`:""}, ${money(live.reduce((s,d)=>s+val(d),0))} of contract value.`,
    `In rollout: ${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()} devices across ${plural(active.filter(d=>d.stage<8).length,"customer")}.`,
-   `Order to live: ${cyc.length?Math.round(avg(cyc))+" business days on average":"not enough history yet"}.${bn?` Bottleneck: ${stage(bn.n).name}, averaging ${Math.round(bn.avg)} days against a ${stage(bn.n).days}-day limit.`:""}`,
+   `Order to first use: ${cyc.length?Math.round(avg(cyc))+" business days on average":"not enough history yet"}.${bn?` Bottleneck: ${stage(bn.n).name}, averaging ${Math.round(bn.avg)} days against a ${stage(bn.n).days}-day limit.`:""}`,
    `Customer voice: ${n.length?`NPS ${Math.round((n.filter(x=>x>=9).length-n.filter(x=>x<=6).length)/n.length*100)} from ${plural(n.length,"customer")}, ${plural(n.filter(x=>x<=6).length,"detractor")}.`:"no scores yet."}`,"",
    attn.length?`Needs attention (${attn.length}, ${money(attn.reduce((s,d)=>s+val(d),0))} at risk):`:"Needs attention: nothing blocked, at risk or late.",
    ...attn.map(d=>`- ${d.customer}: ${(STATUS[d.status]||STATUS.on)[0].toLowerCase()} in ${stage(d.stage).name}, ${bdays(d.since)} of ${stage(d.stage).days} days${d.note?`. ${d.note}`:""}`),
-   "",...(()=>{const up=active.filter(d=>d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=14).sort((a,b)=>a.golive<b.golive?-1:1);return up.length?["Go-lives in the next 2 weeks:",...up.map(d=>`- ${fmtDate(d.golive)}: ${d.customer}, ${plural(Number(d.devices||0),"device")}`)]:["No go-lives in the next 2 weeks."]})(),
+   "",...(()=>{const up=active.filter(d=>d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=14).sort((a,b)=>a.golive<b.golive?-1:1);return up.length?["Customers starting in the next 2 weeks:",...up.map(d=>`- ${fmtDate(d.golive)}: ${d.customer}, ${plural(Number(d.devices||0),"device")}`)]:["No customers starting in the next 2 weeks."]})(),
    "",...(()=>{const od=Object.values(over.decisions).filter(x=>x.status!=="decided");return od.length?["Open decisions:",...od.map(x=>`- ${x.title}${x.due?` (decide by ${fmtDate(x.due)})`:""}`)]:["No open decisions."]})()];
   const txt=L.join("\n");try{await navigator.clipboard.writeText(txt);toast("Weekly brief copied. Paste it into an email or chat.")}
   catch(e){const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Weekly brief copied")}catch(_){toast("Copy was blocked. Try again.")}t.remove()}};
@@ -956,7 +946,7 @@ function toast(t,undo){const e=$("toast");e.innerHTML="";const sp=document.creat
   if(undo){const b=document.createElement("button");b.className="tbtn";b.textContent="Undo";b.onclick=()=>{e.hidden=true;undo()};e.appendChild(b)}
   e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,undo?7000:3200)}
 $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;let rows,what;
-  if(ui.tab==="pipeline"||ui.tab==="overview"){what="Customers";rows=[["Customer","Devices","Contract value (₹ lakh)","NPS","Stage","Business days in stage","Stage limit (days)","Accountable","Status","Go-live","Note"].map(q).join(",")];
+  if(ui.tab==="pipeline"||ui.tab==="overview"){what="Customers";rows=[["Customer","Devices","Contract value (₹ lakh)","NPS","Stage","Business days in stage","Stage limit (days)","Accountable","Status","Target start date","Note"].map(q).join(",")];
     deps().forEach(d=>{const o=accountable(d.stage);rows.push([d.customer,d.devices,val(d)||"",npsOf(d)??"",`${d.stage}. ${stage(d.stage).name}`,bdays(d.since),stage(d.stage).days,o?o.name:"",(STATUS[d.status]||STATUS.on)[0],d.golive,d.note].map(q).join(","))})}
   else if(ui.tab==="decisions"){what="Decisions";rows=[["Decision","Owner","Due","Status","Outcome"].map(q).join(",")];Object.values(over.decisions).forEach(d=>rows.push([d.title,d.owner&&roleBy(d.owner)?roleBy(d.owner).name:"",d.due,d.status,d.outcome].map(q).join(",")))}
   else{what="Playbook and RACI";rows=[["Team","Contact",...STAGES.map(s=>`${s.n}. ${s.name}`)].map(q).join(",")];

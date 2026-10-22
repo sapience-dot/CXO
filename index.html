@@ -425,6 +425,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
     <nav class="nav" role="tablist" aria-label="Sections" id="tabs"></nav>
     <div class="rail-foot">
       <span class="savestate" id="status">Connecting</span>
+      <button class="rbtn" id="sheetBtn">Connect Google Sheet</button>
       <button class="rbtn" id="csv">Copy as CSV</button>
       <button class="rbtn" id="exp">Export backup</button>
       <button class="rbtn" id="imp">Import backup</button>
@@ -997,8 +998,81 @@ $("exp").onclick=()=>{const data={app:"blinksmart-dashboard",version:1,exported:
 $("imp").onclick=()=>$("impFile").click();
 $("impFile").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const p=JSON.parse(await f.text());const d=p&&p.data;if(!d||typeof d!=="object")throw 0;
-    COLLS.forEach(c=>over[c]=(d[c]&&typeof d[c]==="object")?d[c]:{});saveLocal();sample=false;render();toast("Backup imported")}
+    const prev={};COLLS.forEach(c=>prev[c]=over[c]);COLLS.forEach(c=>over[c]=(d[c]&&typeof d[c]==="object")?d[c]:{});saveLocal();sample=false;render();afterImport(prev);toast(sheet?"Backup imported. Updating your Google Sheet.":"Backup imported")}
   catch(_){toast("That file isn't a Blinksmart backup. Choose a .json file made with Export backup.")}};
+/* ---------- Google Sheets sync (standalone version) ----------
+   Every change is saved in this browser first, then queued and sent to the Google Sheet.
+   If the sheet can't be reached, changes wait in the queue and retry automatically. */
+const SHEET_K="blinksmart-sheet",QUEUE_K="blinksmart-sheet-queue";
+let sheet=null,sheetQueue=[],sheetBusy=false,sheetErr="",sheetSynced=null;
+try{sheet=JSON.parse(localStorage.getItem(SHEET_K)||"null")}catch(e){}
+try{sheetQueue=JSON.parse(localStorage.getItem(QUEUE_K)||"[]")||[]}catch(e){}
+const saveQueue=()=>{try{localStorage.setItem(QUEUE_K,JSON.stringify(sheetQueue))}catch(e){}};
+function sheetMsg(e){const m=(e&&e.message)||"";if(/Failed to fetch|NetworkError|Load failed/i.test(m))return "Can't reach Google. Check your internet connection.";if(/JSON/i.test(m))return "That URL didn't answer like the playbook's Apps Script. Check you copied the Web app URL.";return m||"Something went wrong talking to the sheet."}
+async function sheetLoad(cfg){const u=cfg.url+(cfg.url.includes("?")?"&":"?")+"action=load&key="+encodeURIComponent(cfg.key);
+  const r=await fetch(u,{redirect:"follow"});const j=await r.json();if(!j.ok)throw new Error(j.error||"The sheet refused the request.");return j.data||{}}
+async function sheetSend(ops){const r=await fetch(sheet.url,{method:"POST",redirect:"follow",body:JSON.stringify({key:sheet.key,ops})});
+  const j=await r.json();if(!j.ok)throw new Error(j.error||"The sheet refused the change.");return j}
+async function sheetFlush(){if(sheetBusy||!sheet||!sheetQueue.length)return;sheetBusy=true;setStatus();
+  try{while(sheetQueue.length&&sheet){const batch=sheetQueue.slice(0,40);await sheetSend(batch);sheetQueue.splice(0,batch.length);saveQueue()}sheetErr="";sheetSynced=new Date()}
+  catch(e){sheetErr=sheetMsg(e)}
+  sheetBusy=false;setStatus();if(sheetErr)setTimeout(sheetFlush,30000)}
+function sheetQueueOp(op){sheetQueue.push(op);saveQueue();sheetFlush()}
+/* People typing in the sheet may write "At risk" or "Closed"; map those to what the app expects. */
+function tidyFromSheet(){const st={"on track":"on","on":"on","at risk":"risk","risk":"risk","blocked":"blocked","closed":"done","done":"done"};
+  Object.values(over.deployments).forEach(d=>{const k=String(d.status||"").trim().toLowerCase();d.status=st[k]||"on";if(!(d.stage>=1&&d.stage<=11))d.stage=1;if(!d.since)d.since=iso(today())});
+  Object.values(over.decisions).forEach(d=>{d.status=String(d.status||"").trim().toLowerCase()==="decided"?"decided":"open"});
+  Object.values(over.cells).forEach(c=>{c.v=String(c.v||"").trim().toUpperCase().slice(0,1);if(!"ARCI".includes(c.v))c.v=""})}
+async function sheetRefresh(){if(!sheet)return;if(sheetQueue.length){sheetFlush();return}
+  try{const data=await sheetLoad(sheet);if(sheetQueue.length)return;COLLS.forEach(c=>over[c]=data[c]||{});tidyFromSheet();saveLocal();sheetErr="";sheetSynced=new Date();render()}
+  catch(e){sheetErr=sheetMsg(e)}
+  setStatus()}
+
+put=async function(c,id,obj){obj=stamp(obj);over[c][id]=obj;saveLocal();render();if(sheet)sheetQueueOp({op:"put",coll:c,id,obj})};
+del=async function(c,id){delete over[c][id];saveLocal();render();if(sheet)sheetQueueOp({op:"del",coll:c,id})};
+function afterImport(prev){if(!sheet)return;COLLS.forEach(c=>{Object.keys(prev[c]||{}).forEach(id=>{if(!over[c][id])sheetQueue.push({op:"del",coll:c,id})});Object.entries(over[c]).forEach(([id,obj])=>sheetQueue.push({op:"put",coll:c,id,obj}))});saveQueue();sheetFlush()}
+
+const _baseStatus=setStatus;
+setStatus=function(){_baseStatus();const s=$("status"),b=$("sheetBtn");if(!s||!b)return;
+  if(!sheet){b.textContent="Connect Google Sheet";return}
+  b.textContent="Google Sheet settings";
+  if(sheetErr){s.className="savestate warn";s.textContent=sheetQueue.length?`Not synced: ${sheetQueue.length} change${sheetQueue.length===1?"":"s"} waiting. Retrying.`:"Can't reach Google Sheet"; s.title=sheetErr}
+  else if(sheetBusy||sheetQueue.length){s.className="savestate warn";s.textContent="Saving to Google Sheet…";s.title=""}
+  else{s.className="savestate";s.textContent=`Saved to Google Sheet${sheetSynced?` · ${sheetSynced.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}`:""}`;s.title=""}};
+
+function sheetEditor(){const cfg=sheet||{url:"",key:""};
+  openEditor({title:sheet?"Google Sheet":"Connect Google Sheet",ctx:sheet?"Your playbook is saved to this sheet":"Save your playbook to a Google Sheet you own",saveLabel:sheet?"Save":"Connect",
+   body:`${sheet?"":`<ol class="ctx" style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13.5px">
+      <li>Create a blank Google Sheet. Open <b>Extensions ▸ Apps Script</b>.</li>
+      <li>Paste in <b>apps-script/Code.gs</b> from this project and change <b>SECRET</b> to your own phrase.</li>
+      <li>Run <b>setup</b> once, then <b>Deploy ▸ New deployment ▸ Web app</b>. Execute as <b>Me</b>, access <b>Anyone</b>.</li>
+      <li>Paste the Web app URL and your SECRET below.</li></ol>`}
+    <div class="f"><label for="gs-url">Web app URL</label><input type="text" id="gs-url" value="${esc(cfg.url)}" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off" spellcheck="false"></div>
+    <div class="f"><label for="gs-key">Secret key</label><input type="text" id="gs-key" value="${esc(cfg.key)}" placeholder="The SECRET you set in Code.gs" autocomplete="off" spellcheck="false"></div>
+    <p class="ctx" style="margin:0">${sheet?"Changes save here first and then to the sheet. Anything you edit directly in the sheet appears here when you come back to this tab.":"If the sheet is empty, everything in this browser is copied into it. If the sheet already has data, the sheet's data replaces what's in this browser."}</p>`,
+   extra:sheet?`<button class="btn small" id="gs-off">Disconnect</button>`:"",
+   init(){const b=$("gs-off");if(b){let armed=false;b.onclick=()=>{if(!armed){armed=true;b.textContent="Click again to disconnect";b.classList.add("danger-armed");return}
+       sheet=null;sheetQueue=[];sheetErr="";try{localStorage.removeItem(SHEET_K);localStorage.removeItem(QUEUE_K)}catch(e){}closeEditor();setStatus();toast("Disconnected. Your data stays in this browser and in the sheet.")}}},
+   async save(){const url=$("gs-url").value.trim(),key=$("gs-key").value.trim();
+     if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(url)&&!/^http:\/\/localhost[:/]/.test(url)){toast("Paste the Web app URL from Apps Script. It starts with https://script.google.com/");$("gs-url").focus();return false}
+     if(!key){toast("Add the secret key you set in Code.gs");$("gs-key").focus();return false}
+     const btn=$("ed-save"),label=btn.textContent;btn.textContent="Checking…";btn.disabled=true;
+     let data;try{data=await sheetLoad({url,key})}catch(e){btn.textContent=label;btn.disabled=false;toast(sheetMsg(e));return false}
+     btn.disabled=false;const changed=!sheet||sheet.url!==url;
+     sheet={url,key};try{localStorage.setItem(SHEET_K,JSON.stringify(sheet))}catch(e){}
+     if(changed){const sheetEmpty=COLLS.every(c=>!Object.keys(data[c]||{}).length),localHas=COLLS.some(c=>Object.keys(over[c]).length);
+       sheetQueue=[];
+       if(sheetEmpty&&localHas){COLLS.forEach(c=>Object.entries(over[c]).forEach(([id,obj])=>sheetQueue.push({op:"put",coll:c,id,obj})));saveQueue();sample=false;toast("Connected. Copying your playbook into the sheet.");sheetFlush()}
+       else{COLLS.forEach(c=>over[c]=data[c]||{});tidyFromSheet();saveLocal();saveQueue();sheetSynced=new Date();sheetErr="";sample=false;render();toast(sheetEmpty?"Connected to your Google Sheet":"Connected. Loaded your playbook from the sheet.")}}
+     else toast("Saved");
+     setStatus()}})}
+$("sheetBtn").onclick=sheetEditor;
+
+initStore=async function(){loadLocal();setStatus();render();if(sheet){await sheetRefresh();sheetFlush()}};
+window.addEventListener("focus",()=>{if(sheet&&!ed)sheetRefresh()});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&sheet&&!ed)sheetRefresh()});
+setInterval(()=>{if(sheet&&!document.hidden&&!ed)sheetRefresh()},60000);
+
 initStore();
 </script>
 

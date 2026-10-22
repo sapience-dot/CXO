@@ -1,4 +1,4 @@
-# Blinksmart Experience Playbook
+# Sapience Experience Playbook
 
 A single-page playbook for creating the Blinksmart customer experience at Sapience Automata. It follows every customer through the 11 stages of the journey, from inventory readiness to closure, and shows what the customer should feel and who is accountable at each step.
 
@@ -36,7 +36,7 @@ python3 -m http.server 8000
 
 ### Connect a Google Sheet (about 5 minutes, once)
 
-1. Create a blank Google Sheet, for example "Blinksmart Playbook". Keep it private.
+1. Create a blank Google Sheet, for example "Sapience Experience Playbook". Keep it private.
 2. In the sheet, open **Extensions ▸ Apps Script**. Delete what's there and paste in everything from `apps-script/Code.gs`.
 3. On the line `const SECRET = '...'`, replace the text with a long phrase only you know, for example `punchiry-blue-otter-2026`. Click **Save**.
 4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Six tabs appear: Customers, Decisions, Targets, Playbook, RACI and Contacts.
@@ -44,6 +44,23 @@ python3 -m http.server 8000
 6. Open the dashboard, click **Connect Google Sheet** at the bottom of the left menu, paste the URL and your secret phrase, then click **Connect**.
 
 If the sheet is empty, everything already in your browser is copied into it. If the sheet already has data, the dashboard loads from the sheet. On a second computer or phone, repeat step 6 only.
+
+**Check it works.** Before step 6, open your Web app URL with `?key=` and your phrase added, for example `https://script.google.com/macros/s/…/exec?key=punchiry-blue-otter-2026`, in a new browser tab. You should see `{"ok":true,"data":{…}}`.
+
+### If the dashboard says "Google didn't answer"
+
+Open the test link shown in the Connect panel, or the address above, and look at what Google shows:
+
+| What you see | What to do |
+|---|---|
+| `{"ok":true,…}` | The sheet works. Reload the dashboard and connect again. |
+| A Google sign-in page, or "You need access" | In **Deploy ▸ Manage deployments ▸ Edit**, set **Who has access** to **Anyone**. On a company Google Workspace account where only "Anyone within your company" is offered, choose that and stay signed in to that account in the same browser. |
+| "Script function not found: doGet" | Save the code, then **Deploy ▸ Manage deployments ▸ Edit ▸ Version: New version ▸ Deploy**. |
+| `{"ok":false,"error":"Set SECRET…"}` | Change `SECRET` in Code.gs, save, and deploy a new version. |
+| `{"ok":false,"error":"The secret key does not match…"}` | Type the same phrase in the dashboard as in Code.gs. |
+| "Authorization is required" or an error about permissions | Run `setup` again in Apps Script and click **Allow**. |
+
+Use the URL ending in `/exec`. The one ending in `/dev` only works inside Apps Script.
 
 **How syncing works.** Each change saves in the browser first and then goes to the sheet within a second or two. If you're offline, changes wait and send automatically when you're back; the status at the bottom of the left menu shows how many are waiting. Edits you make directly in the sheet appear in the dashboard when you return to its tab, or within a minute.
 

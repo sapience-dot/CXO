@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Blinksmart experience playbook: the customer journey, customers, stage promises, RACI and decisions.">
+<meta name="description" content="Sapience Experience Playbook: the Blinksmart customer journey, customers, stage promises, RACI and decisions.">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Blinksmart RACI Matrix</title>
+<title>Sapience Experience Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
@@ -421,7 +421,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
 
 <div class="shell">
   <div class="rail-col"><aside class="rail">
-    <div class="brand"><b>Blinksmart</b><span>Experience playbook</span></div>
+    <div class="brand"><b>Sapience</b><span>Experience Playbook</span></div>
     <nav class="nav" role="tablist" aria-label="Sections" id="tabs"></nav>
     <div class="rail-foot">
       <span class="savestate" id="status">Connecting</span>
@@ -945,7 +945,7 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if
 $("tabs").addEventListener("keydown",e=>{const keys={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1};if(!keys[e.key])return;e.preventDefault();const i=TABS.findIndex(t=>t[0]===ui.tab),j=(i+keys[e.key]+TABS.length)%TABS.length;go(TABS[j][0]);$("t-"+TABS[j][0]).focus()});
 $("brief").onclick=async()=>{const p=plan(),all=deps(),active=all.filter(d=>d.status!=="done"),live=all.filter(d=>d.stage>=8||d.status==="done");
   const liveDev=live.reduce((s,d)=>s+Number(d.devices||0),0),attn=active.filter(needsAttn),cyc=cycleTimes(),bn=bottleneck(),n=all.map(npsOf).filter(x=>x!=null);
-  const L=[`Blinksmart weekly brief, ${new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}`,"",
+  const L=[`Sapience Experience Playbook: weekly brief, ${new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}`,"",
    `In use: ${liveDev.toLocaleString()} devices${p.deviceTarget?` (${Math.round(liveDev/p.deviceTarget*100)}% of the ${p.label} target of ${Number(p.deviceTarget).toLocaleString()})`:""}, ${money(live.reduce((s,d)=>s+val(d),0))} of contract value.`,
    `In rollout: ${active.filter(d=>d.stage<8).reduce((s,d)=>s+Number(d.devices||0),0).toLocaleString()} devices across ${plural(active.filter(d=>d.stage<8).length,"customer")}.`,
    `Order to first use: ${cyc.length?Math.round(avg(cyc))+" business days on average":"not enough history yet"}.${bn?` Bottleneck: ${stage(bn.n).name}, averaging ${Math.round(bn.avg)} days against a ${stage(bn.n).days}-day limit.`:""}`,
@@ -992,14 +992,14 @@ $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;le
 let armed=false;$("reset").onclick=async e=>{const b=e.currentTarget;
   if(!armed){armed=true;b.textContent="Click again to reset";b.classList.add("danger-armed");setTimeout(()=>{armed=false;b.textContent="Reset to defaults";b.classList.remove("danger-armed")},3500);return}
   armed=false;b.textContent="Reset to defaults";b.classList.remove("danger-armed");for(const c of ["cells","stages"])for(const id of Object.keys(over[c]))await del(c,id);toast("Playbook and RACI reset. Customers, decisions and contacts were kept.")};
-$("exp").onclick=()=>{const data={app:"blinksmart-dashboard",version:1,exported:new Date().toISOString(),data:over};
+$("exp").onclick=()=>{const data={app:"sapience-experience-playbook",version:1,exported:new Date().toISOString(),data:over};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);a.download=`blinksmart-backup-${iso(today())}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast("Backup downloaded")};
+  a.href=URL.createObjectURL(blob);a.download=`sapience-playbook-backup-${iso(today())}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast("Backup downloaded")};
 $("imp").onclick=()=>$("impFile").click();
 $("impFile").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
   try{const p=JSON.parse(await f.text());const d=p&&p.data;if(!d||typeof d!=="object")throw 0;
     const prev={};COLLS.forEach(c=>prev[c]=over[c]);COLLS.forEach(c=>over[c]=(d[c]&&typeof d[c]==="object")?d[c]:{});saveLocal();sample=false;render();afterImport(prev);toast(sheet?"Backup imported. Updating your Google Sheet.":"Backup imported")}
-  catch(_){toast("That file isn't a Blinksmart backup. Choose a .json file made with Export backup.")}};
+  catch(_){toast("That file isn't a Sapience Experience Playbook backup. Choose a .json file made with Export backup.")}};
 /* ---------- Google Sheets sync (standalone version) ----------
    Every change is saved in this browser first, then queued and sent to the Google Sheet.
    If the sheet can't be reached, changes wait in the queue and retry automatically. */
@@ -1008,11 +1008,26 @@ let sheet=null,sheetQueue=[],sheetBusy=false,sheetErr="",sheetSynced=null;
 try{sheet=JSON.parse(localStorage.getItem(SHEET_K)||"null")}catch(e){}
 try{sheetQueue=JSON.parse(localStorage.getItem(QUEUE_K)||"[]")||[]}catch(e){}
 const saveQueue=()=>{try{localStorage.setItem(QUEUE_K,JSON.stringify(sheetQueue))}catch(e){}};
-function sheetMsg(e){const m=(e&&e.message)||"";if(/Failed to fetch|NetworkError|Load failed/i.test(m))return "Can't reach Google. Check your internet connection.";if(/JSON/i.test(m))return "That URL didn't answer like the playbook's Apps Script. Check you copied the Web app URL.";return m||"Something went wrong talking to the sheet."}
-async function sheetLoad(cfg){const u=cfg.url+(cfg.url.includes("?")?"&":"?")+"action=load&key="+encodeURIComponent(cfg.key);
-  const r=await fetch(u,{redirect:"follow"});const j=await r.json();if(!j.ok)throw new Error(j.error||"The sheet refused the request.");return j.data||{}}
-async function sheetSend(ops){const r=await fetch(sheet.url,{method:"POST",redirect:"follow",body:JSON.stringify({key:sheet.key,ops})});
-  const j=await r.json();if(!j.ok)throw new Error(j.error||"The sheet refused the change.");return j}
+const NET=/Failed to fetch|NetworkError|Load failed|blocked|didn't answer/i;
+function sheetMsg(e){const m=(e&&e.message)||"";if(NET.test(m))return "Google didn't answer.";if(/JSON|Unexpected token/i.test(m))return "That URL didn't answer like the playbook's Apps Script.";return m||"Something went wrong talking to the sheet."}
+/* Script-tag request: works even when the browser won't let fetch read Google's reply. */
+function sheetJsonp(url){return new Promise((res,rej)=>{const cb="__sx"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),el=document.createElement("script");
+  const done=()=>{clearTimeout(t);try{delete window[cb]}catch(x){window[cb]=undefined}el.remove()};
+  const t=setTimeout(()=>{done();rej(new Error("Google didn't answer"))},20000);
+  window[cb]=d=>{done();res(d)};el.onerror=()=>{done();rej(new Error("Google didn't answer"))};
+  el.src=url+(url.includes("?")?"&":"?")+"callback="+cb;document.head.appendChild(el)})}
+const qs=(cfg,extra)=>cfg.url+(cfg.url.includes("?")?"&":"?")+"key="+encodeURIComponent(cfg.key)+extra;
+async function sheetLoad(cfg){let j;
+  if(cfg.mode!=="jsonp"){try{const r=await fetch(qs(cfg,"&action=load"),{redirect:"follow"});j=await r.json()}catch(e){if(!NET.test(e.message||"")&&!(e instanceof TypeError))throw e}}
+  if(!j){j=await sheetJsonp(qs(cfg,"&action=load"));cfg.mode="jsonp";if(sheet&&sheet.url===cfg.url){sheet.mode="jsonp";try{localStorage.setItem(SHEET_K,JSON.stringify(sheet))}catch(e){}}}
+  if(!j.ok)throw new Error(j.error||"The sheet refused the request.");return j.data||{}}
+async function sheetSendJsonp(ops){/* keep each request URL short enough for Google */
+  let i=0;while(i<ops.length){let n=1;while(i+n<ops.length&&encodeURIComponent(JSON.stringify(ops.slice(i,i+n+1))).length<5500)n++;
+    const j=await sheetJsonp(qs(sheet,"&action=write&ops="+encodeURIComponent(JSON.stringify(ops.slice(i,i+n)))));if(!j.ok)throw new Error(j.error||"The sheet refused the change.");i+=n}}
+async function sheetSend(ops){
+  if(sheet.mode!=="jsonp"){try{const r=await fetch(sheet.url,{method:"POST",redirect:"follow",body:JSON.stringify({key:sheet.key,ops})});const j=await r.json();if(!j.ok)throw new Error(j.error||"The sheet refused the change.");return j}
+    catch(e){if(!(e instanceof TypeError)&&!NET.test(e.message||""))throw e;sheet.mode="jsonp";try{localStorage.setItem(SHEET_K,JSON.stringify(sheet))}catch(x){}}}
+  await sheetSendJsonp(ops);return {ok:true}}
 async function sheetFlush(){if(sheetBusy||!sheet||!sheetQueue.length)return;sheetBusy=true;setStatus();
   try{while(sheetQueue.length&&sheet){const batch=sheetQueue.slice(0,40);await sheetSend(batch);sheetQueue.splice(0,batch.length);saveQueue()}sheetErr="";sheetSynced=new Date()}
   catch(e){sheetErr=sheetMsg(e)}
@@ -1054,12 +1069,22 @@ function sheetEditor(){const cfg=sheet||{url:"",key:""};
    init(){const b=$("gs-off");if(b){let armed=false;b.onclick=()=>{if(!armed){armed=true;b.textContent="Click again to disconnect";b.classList.add("danger-armed");return}
        sheet=null;sheetQueue=[];sheetErr="";try{localStorage.removeItem(SHEET_K);localStorage.removeItem(QUEUE_K)}catch(e){}closeEditor();setStatus();toast("Disconnected. Your data stays in this browser and in the sheet.")}}},
    async save(){const url=$("gs-url").value.trim(),key=$("gs-key").value.trim();
-     if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(url)&&!/^http:\/\/localhost[:/]/.test(url)){toast("Paste the Web app URL from Apps Script. It starts with https://script.google.com/");$("gs-url").focus();return false}
+     const nt=$("ed-note");nt.hidden=true;
+     if(/\/dev(\?|$)/.test(url)){nt.innerHTML="That's the test URL ending in <b>/dev</b>, which only works inside Apps Script. Use <b>Deploy ▸ Manage deployments</b> and copy the Web app URL ending in <b>/exec</b>.";nt.hidden=false;return false}
+     if(!/^https:\/\/script\.google\.com\/(a\/[^/]+\/)?macros\/s\/[\w-]+\/exec/.test(url)&&!/^http:\/\/localhost[:/]/.test(url)){nt.innerHTML="That isn't the Web app URL. In Apps Script, open <b>Deploy ▸ Manage deployments</b> and copy the URL under <b>Web app</b>. It looks like <b>https://script.google.com/macros/s/…/exec</b>.";nt.hidden=false;$("gs-url").focus();return false}
      if(!key){toast("Add the secret key you set in Code.gs");$("gs-key").focus();return false}
      const btn=$("ed-save"),label=btn.textContent;btn.textContent="Checking…";btn.disabled=true;
-     let data;try{data=await sheetLoad({url,key})}catch(e){btn.textContent=label;btn.disabled=false;toast(sheetMsg(e));return false}
+     const cfgTry={url,key};let data;try{data=await sheetLoad(cfgTry)}catch(e){btn.textContent=label;btn.disabled=false;const m=sheetMsg(e);
+       const test=esc(qs({url,key},""));
+       nt.innerHTML=NET.test(m)?`<b>Google didn't answer.</b> This is almost always a deployment setting:<ul style="margin:6px 0;padding-left:18px">
+         <li>In <b>Deploy ▸ Manage deployments</b>, <b>Who has access</b> must be <b>Anyone</b>. If you only see “Anyone within your company”, choose it and also stay signed in to that Google account in this browser.</li>
+         <li>You ran <b>setup</b> once and clicked <b>Allow</b>.</li>
+         <li>After any change to the code, you deployed a <b>New version</b>.</li></ul>
+         <a href="${test}" target="_blank" rel="noopener">Open the test link</a> in a new tab. If you see <code>{"ok":true…</code> the sheet works; if you see a Google sign-in or error page, that page tells you what to fix.`
+         :`<b>${esc(m)}</b>`;
+       nt.hidden=false;return false}
      btn.disabled=false;const changed=!sheet||sheet.url!==url;
-     sheet={url,key};try{localStorage.setItem(SHEET_K,JSON.stringify(sheet))}catch(e){}
+     sheet={url,key,mode:cfgTry.mode||""};try{localStorage.setItem(SHEET_K,JSON.stringify(sheet))}catch(e){}
      if(changed){const sheetEmpty=COLLS.every(c=>!Object.keys(data[c]||{}).length),localHas=COLLS.some(c=>Object.keys(over[c]).length);
        sheetQueue=[];
        if(sheetEmpty&&localHas){COLLS.forEach(c=>Object.entries(over[c]).forEach(([id,obj])=>sheetQueue.push({op:"put",coll:c,id,obj})));saveQueue();sample=false;toast("Connected. Copying your playbook into the sheet.");sheetFlush()}

@@ -1068,10 +1068,13 @@ function sheetEditor(){const cfg=sheet||{url:"",key:""};
    extra:sheet?`<button class="btn small" id="gs-off">Disconnect</button>`:"",
    init(){const b=$("gs-off");if(b){let armed=false;b.onclick=()=>{if(!armed){armed=true;b.textContent="Click again to disconnect";b.classList.add("danger-armed");return}
        sheet=null;sheetQueue=[];sheetErr="";try{localStorage.removeItem(SHEET_K);localStorage.removeItem(QUEUE_K)}catch(e){}closeEditor();setStatus();toast("Disconnected. Your data stays in this browser and in the sheet.")}}},
-   async save(){const url=$("gs-url").value.trim(),key=$("gs-key").value.trim();
+   async save(){let url=$("gs-url").value.trim().replace(/^["'<\s]+|["'>\s]+$/g,"").replace(/[?#].*$/,""),key=$("gs-key").value.trim();
+     if(/^AKfy[\w-]{20,}$/.test(url))url=`https://script.google.com/macros/s/${url}/exec`; /* a bare deployment ID works too */
+     if(/^script\.google\.com\//.test(url))url="https://"+url;
+     $("gs-url").value=url;
      const nt=$("ed-note");nt.hidden=true;
      if(/\/dev(\?|$)/.test(url)){nt.innerHTML="That's the test URL ending in <b>/dev</b>, which only works inside Apps Script. Use <b>Deploy ▸ Manage deployments</b> and copy the Web app URL ending in <b>/exec</b>.";nt.hidden=false;return false}
-     if(!/^https:\/\/script\.google\.com\/(a\/[^/]+\/)?macros\/s\/[\w-]+\/exec/.test(url)&&!/^http:\/\/localhost[:/]/.test(url)){nt.innerHTML="That isn't the Web app URL. In Apps Script, open <b>Deploy ▸ Manage deployments</b> and copy the URL under <b>Web app</b>. It looks like <b>https://script.google.com/macros/s/…/exec</b>.";nt.hidden=false;$("gs-url").focus();return false}
+     if(!/^https:\/\/script\.google\.com\/(a\/macros\/[^/]+|a\/[^/]+\/macros|macros)\/s\/[\w-]+\/exec/.test(url)&&!/^http:\/\/localhost[:/]/.test(url)){nt.innerHTML="That isn't the Web app URL. In Apps Script, open <b>Deploy ▸ Manage deployments</b> and copy the URL under <b>Web app</b>. It looks like <b>https://script.google.com/macros/s/…/exec</b>.";nt.hidden=false;$("gs-url").focus();return false}
      if(!key){toast("Add the secret key you set in Code.gs");$("gs-key").focus();return false}
      const btn=$("ed-save"),label=btn.textContent;btn.textContent="Checking…";btn.disabled=true;
      const cfgTry={url,key};let data;try{data=await sheetLoad(cfgTry)}catch(e){btn.textContent=label;btn.disabled=false;const m=sheetMsg(e);

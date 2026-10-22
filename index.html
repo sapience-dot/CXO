@@ -335,7 +335,9 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
 .seg.ghost:hover{background:none}
 .mx thead th.corner{padding:12px 14px;vertical-align:bottom;background:var(--surface-2);font-size:12.5px;color:var(--muted);font-weight:500}
 .toolbar #reset{margin-left:auto}
-.dt th:first-child,.dt td:first-child{min-width:210px}
+.dt th:first-child,.dt td:first-child{min-width:180px}
+.dt th,.dt td{padding-left:10px;padding-right:10px}
+.strip{width:116px}
 .dt td.jt{width:140px}
 .flow-empty{font-size:13.5px;color:var(--muted);margin:0 0 12px}
 @media (max-width:1280px) and (min-width:861px){.shell{grid-template-columns:200px minmax(0,1fr)}}
@@ -381,6 +383,37 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
   .page-head .row-flex{width:100%}
   .page-head .row-flex .btn.primary{order:-1}
 }
+/* ---- Lines only inside tables: everything else is separated by space, fill and soft shadow ---- */
+.rail-col{border-right:0;box-shadow:1px 0 14px rgba(15,31,71,.05);position:relative;z-index:2}
+.rail-foot{border-top:0;padding-top:0}
+.panel{border:0;box-shadow:0 1px 2px rgba(15,31,71,.05),0 6px 20px rgba(15,31,71,.05)}
+.journey{gap:4px}
+.seg{border-right:0;border-radius:10px}
+.seg:nth-child(n+7){border-top:0}
+.needs{gap:6px}
+.needs li{border-top:0;padding:10px 0}
+.upcoming{gap:6px}
+.upcoming li{border-top:0}
+.date{border:0;background:var(--surface-2)}
+.pb-grid{border-top:0;gap:4px 32px}
+.field{border-bottom:0;padding:12px 0}
+.dec{gap:8px}
+.decrow{border-top:0;padding:14px 16px;background:var(--surface-2);border-radius:10px}
+.sp{border:0;border-top:4px solid var(--hue);box-shadow:0 1px 2px rgba(15,31,71,.06),0 4px 12px rgba(15,31,71,.05)}
+.sp[aria-pressed="true"]{box-shadow:0 0 0 2px var(--hue)}
+.scard{border:0;border-top:4px solid var(--hue);background:var(--surface-2)}
+.who-row span{border:0;background:var(--surface-2)}
+.summary{border-bottom:0;background:var(--surface-2);border-radius:12px;margin:0 16px 8px}
+.drawer{border-left:0;box-shadow:-16px 0 48px rgba(8,14,30,.16)}
+.drawer header{border-bottom:0;padding-bottom:4px}
+.drawer footer{border-top:0;box-shadow:0 -8px 20px rgba(15,31,71,.05)}
+.toolbar .seg2,.toolbar .search{flex-shrink:0}
+@media (max-width:860px){.rail-col{border-bottom:0;box-shadow:0 4px 14px rgba(15,31,71,.06)}}
+@media (max-width:700px){
+  .journey{gap:6px}
+  .seg{border-bottom:0;background:var(--surface-2);border-radius:0 10px 10px 0}
+}
+@media (max-width:600px){.drawer{border-top:0}}
 </style>
 </head>
 <body>
@@ -425,7 +458,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
     <section id="p-pipeline" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
       <div class="page-head"><div><h1>Customers</h1><p>Every customer rollout, where it sits in the journey, and how long it has been there.</p></div><button class="btn primary" id="addDep2">Add customer</button></div>
       <div class="panel">
-        <div class="pad" style="border-bottom:1px solid var(--line)"><div class="filters">
+        <div class="pad"><div class="filters">
           <input type="search" id="pq" placeholder="Search customers" aria-label="Search customers">
           <select id="pStage" aria-label="Filter by stage"></select>
           <select id="pStatus" aria-label="Filter by status"><option value="">All statuses</option><option value="attn">Needs attention</option><option value="on">On track</option><option value="risk">At risk</option><option value="blocked">Blocked</option><option value="done">Closed</option></select>
@@ -443,7 +476,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
     <section id="p-raci" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
       <div class="page-head"><div><h1>Who does what</h1><p>One Accountable owner per stage. Click any cell to change it.</p></div></div>
       <div class="panel">
-        <div class="pad toolbar" style="border-bottom:1px solid var(--line)">
+        <div class="pad toolbar">
           <div class="search"><input type="search" id="q" placeholder="Find a task, like refunds" aria-label="Find a task or role"><kbd aria-hidden="true">/</kbd></div>
           <select id="fRole" aria-label="Show one role"></select>
           <div class="seg2" role="group" aria-label="Detail"><button id="dAR" aria-pressed="false">Owners and doers</button><button id="dAll" aria-pressed="true">Everyone</button></div>
@@ -452,7 +485,7 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
           <button class="btn small" id="reset" hidden>Reset to defaults</button>
         </div>
         <div class="summary" id="summary" hidden></div>
-        <div class="row-flex pad" style="padding-block:10px;border-bottom:1px solid var(--line)">
+        <div class="row-flex pad" style="padding-block:4px 12px">
           <div class="legend"><span><i class="chip A">A</i>Accountable</span><span><i class="chip R">R</i>Responsible</span><span><i class="chip C">C</i>Consulted</span><span><i class="chip I">I</i>Informed</span></div>
           <span class="ctx" id="hits" style="margin-left:auto"></span>
         </div>

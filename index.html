@@ -414,6 +414,72 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
   .seg{border-bottom:0;background:var(--surface-2);border-radius:0 10px 10px 0}
 }
 @media (max-width:600px){.drawer{border-top:0}}
+/* scorecard, personas, collateral */
+.ns{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:flex-end;justify-content:space-between}
+.ns q{display:block;font-family:var(--display);font-size:clamp(19px,2vw,24px);font-weight:700;quotes:none;max-width:56ch;line-height:1.25;margin-top:4px;text-wrap:balance}
+.ns .facts{display:flex;gap:28px;flex-wrap:wrap}
+.ns .facts b{display:block;font-family:var(--display);font-size:24px;font-weight:800;line-height:1.1}
+.ns .facts span{font-size:12.5px;color:var(--muted)}
+.scsum{display:flex;flex-direction:column;gap:12px}
+.tallies{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{all:unset;box-sizing:border-box;cursor:pointer;padding:6px 12px;border-radius:999px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.chips button:hover{color:var(--ink)}
+.chips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:none}
+.chips button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chips .n{opacity:.75;margin-left:2px}
+.sub-h{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between;margin-top:6px}
+.goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px}
+#phases{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.goal{background:var(--surface);border-radius:14px;box-shadow:0 1px 2px rgba(15,31,71,.05),0 6px 20px rgba(15,31,71,.05);padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.goal[style*="--hue"]{border-top:4px solid var(--hue)}
+.goal .gh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.goal h3{font-size:16px}
+.goal .gt{font-weight:600;font-size:14px}
+.goal details p{margin:6px 0 0}
+.goal summary{cursor:pointer}
+.krs{display:flex;flex-direction:column;gap:4px}
+.kr{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:8px 10px;border-radius:8px;background:var(--surface-2);font-size:13.5px}
+.kr:hover{background:var(--accent-soft)}
+.kr:focus-visible{outline:2px solid var(--accent)}
+.kr .kn{grid-row:span 2;align-self:center;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kr .kn .pill{align-self:flex-start;margin-top:2px}
+.kr .kv{font-weight:700;white-space:nowrap;text-align:right}
+.kr>.pill{justify-self:end}
+.kr .kv small{font-weight:500;color:var(--muted);font-size:12px}
+body.ro .kr{cursor:default}
+.rule{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;background:var(--accent-soft);color:var(--ink);border-radius:12px;padding:14px 18px}
+.rule b{font-family:var(--display);font-size:18px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
+.pcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border-radius:14px;box-shadow:0 1px 2px rgba(15,31,71,.05),0 6px 20px rgba(15,31,71,.05);padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pcard:hover{box-shadow:0 0 0 2px var(--accent-soft),0 6px 20px rgba(15,31,71,.08)}
+.pcard:focus-visible{outline:2px solid var(--accent)}
+.pcard .who{display:flex;gap:12px;align-items:center}
+.pcard .who b{display:block;font-family:var(--display);font-size:16px}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-family:var(--display);background:var(--accent-soft);color:var(--accent);flex:none;font-size:14px}
+.pcard q{font-size:14.5px;font-weight:600;line-height:1.4}
+.pcard q::before{content:"“"}.pcard q::after{content:"”"}
+.seglab{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+.pcard dl{margin:0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:6px 10px;font-size:13px}
+.pcard dt{color:var(--muted);font-weight:600}
+.pcard dd{margin:0}
+.chk-group+.chk-group{margin-top:24px}
+.chk-group h3{font-size:16px}
+.chks{display:flex;flex-direction:column;gap:6px}
+.chk{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 12px;border-radius:10px;background:var(--surface-2)}
+.chk .t{font-weight:600}
+.chk.done .t{color:var(--muted);text-decoration:line-through}
+.chk .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin-top:4px}
+.tick{all:unset;box-sizing:border-box;cursor:pointer;width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 2px #9aa3b8;display:grid;place-items:center;font-weight:800;font-size:13px;margin-top:1px;background:var(--surface)}
+.tick[aria-pressed="true"]{background:var(--ok-fg);box-shadow:none;color:#fff}
+.tick:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tick:disabled{cursor:default}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px;counter-reset:st}
+.steps li{counter-increment:st;background:var(--surface-2);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;font-size:13.5px;font-weight:600}
+.steps li::before{content:counter(st);font-family:var(--display);font-weight:800;color:var(--hue);font-size:16px}
+.steps li span{font-size:12.5px;color:var(--muted);font-weight:500}
+.objective{margin:0;font-size:15px;max-width:80ch}
+@media (max-width:600px){.pcard dl{grid-template-columns:1fr;gap:2px}.pcard dd{margin-bottom:6px}}
 </style>
 </head>
 <body>
@@ -492,6 +558,36 @@ textarea{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radiu
         </div>
         <div id="view"></div>
       </div>
+    </section>
+
+    <section id="p-scorecard" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
+      <div class="page-head"><div><h1>Scorecard</h1><p>Every stakeholder’s goal ladders up to one north star. Green, amber or red against target. When a result goes red, name the hand-off where it broke, not the person.</p></div></div>
+      <div class="panel pad ns" id="ns"></div>
+      <div class="scsum" id="scSum"></div>
+      <div class="sub-h"><h2>Phase outcomes</h2><span class="ctx">Each phase has one outcome its roles share, so nobody can hit a goal by pushing a problem onto the next stage.</span></div>
+      <div class="goals" id="phases"></div>
+      <div class="sub-h"><h2>Stakeholder goals</h2><span class="ctx">Click any key result to set its target, latest number and status.</span></div>
+      <div class="goals" id="goalsGrid"></div>
+      <details class="panel pad log"><summary><h2>Review rhythm</h2></summary>
+        <div class="tscroll"><table class="dt" style="min-width:0;margin-top:12px"><thead><tr><th>Cadence</th><th>Who</th><th>Reviews</th><th>Output</th></tr></thead><tbody>
+        <tr><td data-l="Cadence"><b>Weekly, 30 min</b></td><td data-l="Who">Ops Coordinator and all stage owners</td><td data-l="Reviews">Leading signals: orders past a milestone, open tickets vs SLA, silent devices, RMA ageing</td><td data-l="Output">One owner and one date per blocker</td></tr>
+        <tr><td data-l="Cadence"><b>Monthly, 60 min</b></td><td data-l="Who">Stage owners and Management</td><td data-l="Reviews">Key results for each stakeholder and each phase outcome</td><td data-l="Output">Course corrections and any target changes</td></tr>
+        <tr><td data-l="Cadence"><b>Quarterly, half day</b></td><td data-l="Who">Management, Sales and CS, with key customers</td><td data-l="Reviews">North star, renewals, driver points redeemed, top drivers recognised</td><td data-l="Output">Next quarter’s targets, renewal and referral list</td></tr>
+        </tbody></table></div></details>
+    </section>
+
+    <section id="p-personas" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
+      <div class="page-head"><div><h1>Personas</h1><p>Buyers sign the order, partners open the door, and drivers and fleet managers decide whether Blinksmart works. <span id="perCount"></span>.</p></div><button class="btn primary" id="addPer">Add persona</button></div>
+      <div class="rule"><b>The buyer signs. The driver decides.</b><span>If Ramesh resents the device or Kavya ignores the app, no sale renews.</span></div>
+      <div class="chips" id="perChips" role="group" aria-label="Filter personas"></div>
+      <div class="pgrid" id="perGrid"></div>
+      <p class="ctx">Personas are composites built from the deck’s segments and named clients, not real people. Mark each one validated once interviews confirm it.</p>
+    </section>
+
+    <section id="p-collateral" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
+      <div class="page-head"><div><h1>Collateral and sign-offs</h1><p>Every piece of kit the customer sees, who owns it, and what has to be confirmed before it goes to print.</p></div><div class="row-flex"><button class="btn" id="addChk">Add sign-off</button><button class="btn primary" id="addColl">Add item</button></div></div>
+      <div class="panel"><div class="pad"><div class="head-row" style="margin:0"><h2>Collateral kit</h2><div class="tallies" id="colSum"></div></div></div><div id="colTable"></div></div>
+      <div class="panel pad" id="chkGroups"></div>
     </section>
 
     <section id="p-decisions" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
@@ -581,29 +677,31 @@ const EXTRA=[
  [true,"RMA turnaround; repeat-failure rate","Replacement date confirmed; swap scheduled around their shifts"],
  [false,"NPS; renewal and expansion rate","Thank-you, feedback survey and quarterly review invitation"]];
 STAGES.forEach((s,i)=>{s.mot=EXTRA[i][0];s.kpi=EXTRA[i][1];s.comms=EXTRA[i][2]});
-const STAGE_FIELDS=[["promise","Experience promise (what the customer should feel)"],["moment","Customer moment (what they experience)"],["kpi","Proof it worked (the metric that shows the promise was kept)"],["comms","What we tell the customer, and when"],["entry","Start when"],["exit","Done when"],["sla","SLA target"],["days","Overdue after (business days)"],["to","Hands off to"],["handoff","What is handed over"],["docs","Documents and systems"],["esc","If it stalls, escalate to"]];
+const DOCSTAGE=[{"objective": "Have the right stock, serialised devices, accessories and firmware ready before a deal is closed.", "entry": "A lead is captured with vehicle count, models and sites.", "exit": "Stock confirmed and reserved, serial numbers logged, firmware version confirmed.", "steps": "Capture requirement & quantity (Sales / BD)\nCount stock, match serials (Inventory)\nConfirm firmware version (Technical / QA)\nOrder shortfall from channel (Distributor)\nReport availability (Inventory)", "kit": "Lead / requirement call\nDiscovery meeting\nProduct brochure\nSerial / IMEI labels\nCRM lead record", "risks": "Shelf and system serials not matching\nPromising units not in stock\nShipping stock with old firmware", "kpi": "Stock accuracy; Time to confirm availability; Shortfall lead time", "docs": "Requirement sheet\nStock report & serial list\nFirmware release notes\nDistributor forecast\nSystems: Inventory, CRM", "handoff": "Availability confirmed", "to": "Sales / Business Development"}, {"objective": "Lock commercials, payment terms and full order data, so nothing has to be guessed later.", "entry": "Stock is available for the requested quantity.", "exit": "Quotation signed, PO received, payment or credit approved, invoice raised.", "steps": "Send quotation (Sales / BD)\nApprove discounts if above limit (Management)\nIssue PO (Customer)\nVerify payment, raise invoice (Finance)\nReserve stock (Inventory)", "kit": "Commercial call\nQuotation email\nWhatsApp confirmation\nProforma, PO, invoice", "risks": "Verbal orders without a PO\nMissing site or contact details\nDiscounts outside policy", "kpi": "Quotation turnaround; Lead-to-order conversion; Orders with complete data", "docs": "Quotation & proforma\nPurchase order\nTax invoice & receipt\nSite & contact list\nSystems: CRM, accounting software", "handoff": "Complete order with PO", "to": "Operations Coordinator"}, {"objective": "Turn the order into one tracked job, with devices allocated by serial and every milestone dated.", "entry": "PO received and payment or credit cleared.", "exit": "Order ID live, devices allocated by serial, test plan and shipment plan ready.", "steps": "Create order ID & milestones (Ops Coordinator)\nRelease order on credit check (Finance)\nAllocate devices by serial (Inventory)\nPrepare test plan (Technical / QA)\nPrepare shipment plan (Logistics)", "kit": "Order record in CRM\nTeam chat hand-off\nAllocation sheet\nPlan to channel partner", "risks": "Allocating without an order ID\nWrong accessory kit\nNo delivery plan agreed with partner", "kpi": "Allocation within 24h of order; Order data accuracy; Milestone dates set for every order", "docs": "Order tracker\nAllocation sheet\nTest plan\nShipment plan\nSystems: CRM, Inventory", "handoff": "Allocated devices & test plan", "to": "Technical / QA"}, {"objective": "Every unit configured, tested, recorded and stickered QA-passed before it leaves the bench.", "entry": "Devices allocated by serial and the test plan is ready.", "exit": "All units pass QA, test report logged, QA-passed sticker on, units packed and labelled.", "steps": "Issue units & serial labels (Inventory)\nFlash firmware & configure (Technical / QA)\nRun the test plan (Technical / QA)\nApply QA sticker, log report (Technical / QA)\nPack & label units (Logistics)", "kit": "QA-passed sticker\nSerial / IMEI label\nQA test report\nInventory update", "risks": "Skipping tests under deadline pressure\nLabel not matching device serial\nUnits packed before QA sign-off", "kpi": "First-pass yield; Dead-on-arrival rate; QA turnaround time", "docs": "QA test report\nIssue slip\nConfig sheet\nSystems: Inventory, device config tool", "handoff": "QA-passed, packed units", "to": "Logistics / Dispatch"}, {"objective": "Ship safely and on time, with live tracking to the customer and proof of delivery back to Ops.", "entry": "Units are QA-passed, packed and labelled.", "exit": "Units delivered, challan signed, POD logged and all teams updated.", "steps": "Generate e-way bill (Finance)\nBook courier, apply labels (Logistics)\nSend tracking SMS & WhatsApp (Logistics)\nAccept delivery, sign challan (Customer)\nLog POD, update teams (Ops Coordinator)", "kit": "Shipping label\nFragile / handle-with-care sticker\nTracking SMS + WhatsApp\nDelivery challan / POD", "risks": "Shipping without an e-way bill\nNo contact person at site\nDamage not reported within 24h", "kpi": "On-time delivery; Damage in transit; POD logged within 24h", "docs": "E-way bill\nDelivery challan\nProof of delivery\nPacking list\nSystems: Courier portal, Inventory, CRM", "handoff": "Delivery confirmed", "to": "Operations Coordinator"}, {"objective": "Fit it right the first time and leave every vehicle with a working device and stickers on.", "entry": "Delivery confirmed and vehicle access agreed with the customer.", "exit": "Device live, checklist signed, photos uploaded, device ID and helpline stickers on.", "steps": "Book slot & engineer (Ops Coordinator)\nKeep vehicle & keys ready (Customer)\nInstall & test live signal (Installation Engineer)\nStick device ID & helpline stickers (Installation Engineer)\nChecklist signed, photos uploaded (Installer + Customer)", "kit": "Slot-booking call\nOn-site installation\nDevice ID + helpline sticker\nInstall checklist & photos", "risks": "Vehicle not available on the day\nLoose wiring or poor mounting\nHelpline sticker missing from cab", "kpi": "First-time-right installs; Installs per day; Photos for every vehicle", "docs": "Installation checklist\nVehicle & device photos\nInstallation report\nSystems: Installation DB, WhatsApp group", "handoff": "Installation report & photos", "to": "Customer Success / Onboarding"}, {"objective": "Drivers and fleet managers know how to use the system and are enrolled in the driver points programme.", "entry": "Installation report and photos shared.", "exit": "Demo done, drivers trained and enrolled on the points card, handover signed.", "steps": "Share installation report (Installation Engineer)\nRun live demo (Customer Success)\nTrain drivers (Customer Success)\nHand out flyer & points card (Customer Success)\nSign handover (Customer)", "kit": "Live demo\nDriver training\nQuick-start flyer\nDriver points card (rewards)\nHow-to video", "risks": "Training only the manager, not drivers\nNo flyer or card left behind\nHandover not signed", "kpi": "Drivers trained; Handover within 48h of install; Drivers enrolled on points card", "docs": "Training record\nHandover record\nPoints card enrolment list\nSystems: Fleet app (admin), CRM", "handoff": "Signed handover", "to": "Customer Success / Onboarding (stage 8)"}, {"objective": "Build the daily habit in the first weeks: devices active, alerts acted on, first points earned.", "entry": "Handover signed and drivers enrolled.", "exit": "All devices active for 7 days, warranty registered, first feedback captured.", "steps": "Go live in fleet app (Customer)\nRegister warranty, issue card (Warranty Coord.)\nMonitor alerts & performance (Technical / QA)\nDay-7 check-in call (Customer Success)\nAward first driver points (Customer Success)", "kit": "Fleet app / portal\nAlert SMS\nDay-7 check-in call\nWhatsApp tips\nPoints earned for safe driving\nWarranty card", "risks": "Silent devices going unnoticed\nAlerts ignored by drivers\nNo Day-7 follow-up", "kpi": "Activation within 7 days; Alert response time; Driver safety score trend", "docs": "Activation report\nWarranty registration\nUsage & points report\nSystems: Fleet app, Analytics, Warranty / RMA", "handoff": "Fleet live and stable", "to": "Customer Support"}, {"objective": "Resolve issues fast and log every one, so repeat problems get fixed at the root.", "entry": "A customer raises a ticket, or an alert flags a fault.", "exit": "Ticket resolved and confirmed with the customer, or routed to warranty.", "steps": "Raise ticket via helpline (Customer)\nLog & troubleshoot (L1) (Customer Support)\nDiagnose remotely (L2) (Technical / QA)\nField visit if needed (Installation Engineer)\nResolve or route to RMA (Support → Warranty)", "kit": "Helpline call\nWhatsApp support\nHelpline sticker in cab\nSupport ticket", "risks": "Issues fixed but not logged\nRepeat issues not analysed\nCustomer not updated on progress", "kpi": "First response time; First-contact resolution; SLA met", "docs": "Support ticket\nDiagnosis note\nResolution note\nVisit report\nSystems: Service desk, WhatsApp Business, CRM", "handoff": "Hardware fault confirmed", "to": "Warranty / Service Coordinator, or Operations Coordinator for closure"}, {"objective": "Repair or replace faulty units quickly and keep device and inventory records accurate.", "entry": "Fault confirmed as hardware by Technical / QA.", "exit": "Unit repaired or replaced, RMA closed, inventory and device records updated.", "steps": "Check warranty eligibility (Warranty Coord.)\nRaise & approve RMA (Warranty Coord.)\nReverse pickup or on-site swap (Logistics / Installer)\nRepair & retest (Technical / QA)\nUpdate inventory & records (Inventory)", "kit": "RMA form\nReturn courier label\nRMA status emails\nOn-site swap", "risks": "Swapping units without an RMA\nSerial not updated after swap\nFaulty unit lost in transit", "kpi": "RMA turnaround; Replacement within 72h; Device record accuracy", "docs": "RMA / warranty approval form\nRepair report\nReplacement entry\nSystems: Warranty / RMA, Inventory, Service desk", "handoff": "RMA closed", "to": "Operations Coordinator"}, {"objective": "Confirm everything is resolved, reward drivers, and turn results into renewals and referrals.", "entry": "All tickets and RMAs for the period are closed.", "exit": "Closure report shared, feedback captured, driver points redeemed, renewal owner set.", "steps": "Confirm resolution (Customer Support)\nFeedback survey & NPS call (Customer Success)\nRedeem points, recognise top drivers (Customer Success)\nPrepare closure report (Ops Coordinator)\nQBR & renewal (Sales + Management)", "kit": "Feedback survey link\nNPS call\nReview meeting (QBR)\nPoints redemption & top drivers\nReferral flyer", "risks": "Feedback collected but not acted on\nPoints not redeemed, so drivers lose trust\nNo owner for the renewal", "kpi": "NPS / customer satisfaction; Renewal rate; Closure report within 7 days", "docs": "Closure report\nFeedback summary\nPoints redemption list\nQBR deck\nSystems: CRM, Analytics, accounting software", "handoff": "Renewal or expansion", "to": "Sales / Business Development"}];
+STAGES.forEach((s,i)=>Object.assign(s,DOCSTAGE[i]));
+const STAGE_FIELDS=[["objective","Objective"],["promise","Experience promise (what the customer should feel)"],["moment","Customer moment (what they experience)"],["kpi","Proof it worked (the metric that shows the promise was kept)"],["comms","What we tell the customer, and when"],["entry","Start when"],["exit","Done when"],["steps","How the stage runs (one step per line, owner in brackets)"],["kit","Medium and collateral kit (one per line)"],["risks","Risks to avoid (one per line)"],["sla","SLA target"],["days","Overdue after (business days)"],["to","Hands off to"],["handoff","What is handed over"],["docs","Documents and systems"],["esc","If it stalls, escalate to"]];
 
 const ROLES=[
- {k:"customer",name:"Customer / End User",sub:"Driver / Fleet Manager",external:true,cells:["","C|Provides details, confirms order","","I|Receives QA update","I|Receives delivery info","C|Provides vehicle access & approval","C|Accepts handover, attends training","C|Uses device, responds to alerts","C|Raises support tickets","C|Approves repairs / replacement","C|Provides feedback, renewal interest"]},
- {k:"sales",name:"Sales / Business Development",cells:["C|Captures lead, confirms requirements","A|Confirms commercials & payment terms","R|Creates order record","","I|Tracks dispatch & delivery","","C|Coordinates with customer","I|Tracks activation & usage","","","R|Refers expansion opportunities"]},
- {k:"distributor",name:"Distributor / Channel Partner",cells:["R|Supplies stock to SA","C|Confirms order with customer","C|Shares allocation & delivery plan","","C|Coordinates logistics (secondary)","","C|Supports installation (if applicable)","C|Supports onboarding (if applicable)","","",""]},
+ {k:"customer",name:"Customer / End User",sub:"Driver / Fleet Manager",external:true,cells:["", "R|Share requirements, confirm order & PO", "", "I|QA & readiness update", "R|Accept delivery, sign challan", "R|Give vehicle access, approve installation", "R|Attend demo & training, accept handover", "R|Drive safely, respond to alerts, earn points", "R|Raise tickets via helpline / WhatsApp", "R|Approve repair / replacement", "R|Share feedback, redeem driver points"]},
+ {k:"sales",name:"Sales / Business Development",cells:["R|Capture lead, confirm requirements & quantity", "A|Confirm commercials, quotation & payment terms", "R|Create order record, hand off to Ops", "I|QA complete, dispatch date set", "C|Keep customer updated on dispatch", "", "R|Introduce customer to Customer Success", "I|Activation & usage status", "", "", "R|Pursue expansion & upsell"]},
+ {k:"distributor",name:"Distributor / Channel Partner",cells:["R|Supply stock to SA, share forecast", "R|Confirm order with end customer", "C|Share allocation & delivery plan", "", "R|Coordinate secondary logistics", "C|Support installation (if applicable)", "C|Support onboarding (if applicable)", "", "C|First-level support (if applicable)", "", "I|Closure report shared"]},
  {k:"manufacturer",name:"Manufacturer",sub:"Hardware, firmware & SIM / connectivity",cells:["R|Supplies devices with SIMs provisioned","","","R|Enables test connectivity for QA","","","","R|Activates SIM / data plan","C|Resolves connectivity issues","R|Moves SIM to replacement unit, repairs hardware",""]},
- {k:"warehouse",name:"Inventory / Warehouse",cells:["A|Checks stock, serial numbers, accessories","I|Updates inventory status","R|Allocates devices & accessories","R|Feeds QA stock","R|Releases allocated stock to dispatch","","","","","R|Receives returns, updates inventory on replacement",""]},
- {k:"finance",name:"Finance / Accounts",cells:["","R|Verifies payment, issues invoice","C|Confirms financial status","","","","","","","C|Approves warranty claims, handles refunds",""]},
- {k:"ops",name:"Operations Coordinator",cells:["I|Tracks stock readiness","R|Checks order details","A|Creates order ID, tracks milestones","I|Monitors QA progress","I|Updates dispatch status","R|Schedules installation","I|Tracks handover status","I|Monitors activation & support trends","I|Tracks open tickets & SLAs","I|Tracks replacements & RMAs","R|Prepares closure report"]},
- {k:"qa",name:"Technical / QA",cells:["","","R|Prepares test plan","A|Tests device, records results","","","","C|Monitors alerts & performance","R|Diagnoses issues","R|Repairs / validates replacements",""]},
- {k:"logistics",name:"Logistics / Dispatch",cells:["","","I|Notified of shipment plan","","A|Packs, labels, ships, updates tracking","","","","","R|Arranges reverse pickup, receives returned units",""]},
- {k:"installer",name:"Installation Engineer",cells:["","","","","I|Receives delivery confirmation","A|Installs device, verifies function, submits report & photos","R|Joins handover walkthrough","","","",""]},
- {k:"success",name:"Customer Success / Onboarding",cells:["","","","","","C|Coordinates with installer","A|Conducts demo & training","A|Follows up on usage & activation","C|Collects support feedback","","A|Identifies renewal / expansion"]},
- {k:"support",name:"Customer Support",cells:["","","","","","","I|Receives onboarded account","R|Responds to queries & alerts","A|Resolves tickets","R|Supports replacement cases","C|Confirms resolution & closure"]},
- {k:"engineering",name:"Engineering / Product",cells:["R|Releases firmware & device config","","","C|Supplies firmware & test criteria","","","","","C|Analyses recurring issues","R|Provides fixes & updates",""]},
- {k:"warranty",name:"Warranty / Service Coordinator",cells:["","","","","","","","","I|Flags potential warranty cases","A|Validates eligibility, approves RMA, updates records",""]},
- {k:"management",name:"Management",cells:["","","","","","","","C|Reviews exceptions & escalations","I|Tracks service performance & CSAT","","C|Reviews growth & renewals"]}];
+ {k:"warehouse",name:"Inventory / Warehouse",cells:["A|Check stock, serial numbers & accessories", "R|Update inventory status (reserve)", "R|Allocate devices & accessories", "R|Issue QA stock & serial labels", "R|Prepare dispatch packages & packing list", "", "", "", "R|Receive returns / RMA units", "R|Update inventory on replacement", "I|Closure report"]},
+ {k:"finance",name:"Finance / Accounts",cells:["", "R|Verify payment, issue invoice", "R|Confirm financial / credit status", "", "R|Issue e-way bill & delivery invoice", "", "", "", "R|Handle refunds & claims", "R|Approve warranty claim costs", "R|Close billing, raise renewal invoice"]},
+ {k:"ops",name:"Operations Coordinator",cells:["C|Review stock against pipeline", "R|Check order details & PO", "A|Create order ID, track milestones", "R|Monitor QA progress", "R|Update dispatch status to all teams", "R|Schedule installation & engineer", "R|Update handover status", "R|Monitor activation & support trends", "R|Track open tickets & SLAs", "R|Track replacements & RMAs", "A|Prepare closure report"]},
+ {k:"qa",name:"Technical / QA",cells:["C|Confirm firmware & software versions", "", "R|Prepare test plan", "A|Test, configure, apply QA-passed sticker", "", "C|Remote support during installation", "", "R|Monitor alerts & performance", "R|Diagnose issues (L2)", "R|Repair / validate replacements", ""]},
+ {k:"logistics",name:"Logistics / Dispatch",cells:["", "", "R|Prepare shipment plan", "R|Pack and label units", "A|Ship, share tracking & proof of delivery", "I|Installation done", "", "", "", "R|Arrange reverse pickup for RMA", ""]},
+ {k:"installer",name:"Installation Engineer",cells:["", "", "", "", "I|Dispatch & ETA", "A|Install, test, stick device ID & helpline", "R|Share installation report & photos", "", "R|Field visit for on-vehicle issues", "R|Swap faulty units on-site", ""]},
+ {k:"success",name:"Customer Success / Onboarding",cells:["", "I|Order won", "", "", "", "C|Coordinate with installer & customer", "A|Run demo & training, enrol drivers on points card", "A|Day-7 follow-up on usage & activation", "C|Collect support feedback", "", "R|Run points redemption, identify renewal"]},
+ {k:"support",name:"Customer Support",cells:["", "", "", "", "", "", "I|New customer live", "R|Respond to queries & alerts", "A|Resolve tickets via helpline & WhatsApp", "R|Support replacement cases", "R|Confirm resolution & closure"]},
+ {k:"engineering",name:"Engineering / Product",cells:["R|Release firmware & software builds", "", "", "I|QA failures", "", "", "C|Supply how-to video content", "", "C|Analyse recurring issues", "R|Ship fixes & OTA updates", "C|Feed learnings into roadmap"]},
+ {k:"warranty",name:"Warranty / Service Coordinator",cells:["", "", "", "", "", "I|Device serial installed", "", "R|Register warranty, issue warranty card", "R|Review warranty eligibility", "A|Approve RMA / repair / replacement", "R|Update device status & inventory"]},
+ {k:"management",name:"Management",cells:["", "C|Approve large deals & discounts", "", "", "", "", "", "C|Review exceptions & escalations", "I|Service performance & CSAT", "C|Approve high-value replacements", "R|Review growth, renewals & QBR"]}];
 const STATUS={on:["On track","ok"],risk:["At risk","warn"],blocked:["Blocked","crit"],done:["Closed",""]};
-const TABS=[["overview","Overview"],["pipeline","Customers"],["playbook","Stage playbook"],["raci","Who does what"],["decisions","Decisions"]];
+const TABS=[["overview","Overview"],["pipeline","Customers"],["playbook","Stage playbook"],["raci","Who does what"],["scorecard","Scorecard"],["personas","Personas"],["collateral","Collateral"],["decisions","Decisions"]];
 
 const BASE={};ROLES.forEach(r=>r.cells.forEach((s,i)=>{const [v,...t]=s.split("|");BASE[`${r.k}--s${i+1}`]={v:s?v:"",t:s?t.join("|"):""}}));
-const COLLS=["cells","stages","contacts","deployments","decisions","plan"];
+const COLLS=["cells","stages","contacts","deployments","decisions","plan","kpis","personas","collateral","checks"];
 const over={};COLLS.forEach(c=>over[c]={});
 let db=null,canWrite=true,mode="local",sample=false;
 const LKEY="blinksmart-raci-v3";
@@ -611,7 +709,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const cid=(rk,n)=>`${rk}--s${n}`;
 const cell=(rk,n)=>over.cells[cid(rk,n)]||BASE[cid(rk,n)];
-const stage=n=>({...STAGES[n-1],...(over.stages["s"+n]||{})});
+const stage=n=>{const b=STAGES[n-1],o=over.stages["s"+n]||{},r={...b,...o};["objective","steps","kit","risks"].forEach(k=>{if(!o[k])r[k]=b[k]});return r};
 const contact=rk=>over.contacts[rk]||{name:"",contact:""};
 const owners=n=>ROLES.filter(r=>cell(r.k,n).v==="A");
 const roleBy=k=>ROLES.find(r=>r.k===k);
@@ -619,10 +717,103 @@ const contactRoles=()=>ROLES.filter(r=>!r.external);
 const confirmed=n=>!!(over.stages["s"+n]&&over.stages["s"+n].confirmed);
 const plan=()=>({label:"This quarter",deviceTarget:0,accountTarget:0,...(over.plan.current||{})});
 const short=name=>name.split(" / ")[0];
-let ui={tab:"overview",role:"",sel:1,q:"",ar:false,cards:matchMedia("(max-width:760px)").matches,hl:false,pq:"",pStage:0,pStatus:""};
+let ui={tab:"overview",role:"",sel:1,q:"",ar:false,cards:matchMedia("(max-width:760px)").matches,hl:false,pq:"",pStage:0,pStatus:"",kf:"all",ps:""};
 try{const s=JSON.parse(localStorage.getItem("blinksmart-ui")||"{}");if(typeof s.ar==="boolean")ui.ar=s.ar;if(typeof s.cards==="boolean")ui.cards=s.cards}catch(e){}
 const saveUi=()=>{try{localStorage.setItem("blinksmart-ui",JSON.stringify({ar:ui.ar,cards:ui.cards}))}catch(e){}};
 const h0=(location.hash||"").slice(1);if(TABS.some(t=>t[0]===h0))ui.tab=h0;
+
+/* ---------- goals, personas, collateral, sign-offs (from the Goals Playbook, Personas and Collateral Copy) ---------- */
+const NORTH={text:"Every Blinksmart vehicle protected, used daily and renewed, with zero fatal accidents.",facts:[["750+","units installed"],["29 Mn+","km travelled"],["Zero","fatal accidents"],["50%","repeat-order rate"]]};
+const GOALS=[
+ {k:"phA",phase:true,name:"A · Sell & commit",stages:"Stages 1–3",hue:"#1a73e8",goal:"Every order is complete, paid and deliverable",base:"Deck baseline: 50% repeat orders",krs:["Orders with complete data at hand-off","Order-to-allocation time","*Repeat-order rate"]},
+ {k:"phB",phase:true,name:"B · Prepare, ship & install",stages:"Stages 4–6",hue:"#4a56c9",goal:"Right device, right vehicle, first time",base:"Deck baseline: 750+ units delivered",krs:["*Order-to-install days","First-time-right installs","Dead-on-arrival rate"]},
+ {k:"phC",phase:true,name:"C · Adopt",stages:"Stages 7–8",hue:"#138a5e",goal:"Trained drivers who act on every alert",base:"Deck baseline: 30% driver performance growth in 3 months",krs:["*Devices active within 7 days","Drivers trained","*Driver performance growth"]},
+ {k:"phD",phase:true,name:"D · Support, retain & grow",stages:"Stages 9–11",hue:"#e8661a",goal:"Issues fixed fast, customers renew and refer",base:"Deck baseline: zero fatal accidents over 29 Mn+ km",krs:["*Tickets within SLA","*RMA turnaround","Renewals and referrals"]},
+ {k:"customer",role:"customer",goal:"Safer drivers and fewer incidents across the fleet",krs:["Driver score improving month on month","Alerts acted on quickly","Zero fatal accidents"],signals:"Daily alerts per vehicle · Points earned per driver · Silent devices",why:"Fewer accidents, lower liability, DDAWS readiness, and gifts for drivers who earn points"},
+ {k:"distributor",role:"distributor",goal:"Grow Blinksmart sales in their territory with no service gaps",krs:["Units sold per quarter","On-time secondary delivery","Issues escalated within SLA"],signals:"Pipeline in their area · Stock on hand · Open customer issues",why:"Margin on a compliant, Made in India product their customers now need under the mandate"},
+ {k:"sales",role:"sales",goal:"Win orders that ship, activate and renew",krs:["Booked units and revenue","Orders with complete data at hand-off","Repeat and expansion orders"],signals:"Demos booked · Quotes sent within 24 h · Pipeline by stage in CRM",why:"Credit on activated units, not just booked ones, so wins hold up"},
+ {k:"finance",role:"finance",goal:"Clean cash and compliance on every order",krs:["Invoices raised within 24 h of payment","Zero dispatch without an e-way bill","Days sales outstanding"],signals:"Overdue receivables · Orders on credit hold · Open claims",why:"Predictable cash flow and no compliance surprises at audit"},
+ {k:"ops",role:"ops",goal:"Every order moves through all 11 stages on time",krs:["Order-to-install days","Milestones on time","Closure report within 7 days"],signals:"Orders past a milestone date · SLA breaches · RMA ageing",why:"One tracker the whole company trusts, so fewer chase-up calls"},
+ {k:"warehouse",role:"warehouse",goal:"System stock always matches the shelf",krs:["Stock accuracy","Allocation within 24 h","Zero wrong-serial dispatches"],signals:"Shortfalls vs pipeline · Unlabelled units · Returns not booked in",why:"No last-minute stock scrambles"},
+ {k:"qa",role:"qa",goal:"Nothing leaves the bench untested",krs:["First-pass yield","Dead-on-arrival rate","L2 diagnosis turnaround"],signals:"Units waiting for QA · Repeat faults by type",why:"Fewer field failures landing back on their bench"},
+ {k:"logistics",role:"logistics",goal:"Safe, on-time delivery with proof",krs:["On-time delivery","Zero damage in transit","POD logged within 24 h"],signals:"Shipments without tracking · Late courier pickups",why:"Clear shipment plans instead of rush dispatches"},
+ {k:"installer",role:"installer",goal:"Fit it right the first time",krs:["First-time-right installs","Installs per day","Photos and checklist for every vehicle"],signals:"Vehicles not ready on arrival · Repeat visits",why:"Fewer wasted trips and repeat visits"},
+ {k:"success",role:"success",goal:"Turn every install into a daily safe-driving habit",krs:["Devices active within 7 days","Drivers trained and enrolled on points","Driver performance growth","Renewal rate"],signals:"Day-7 calls done · Points awarded per week · Drivers with falling scores",why:"Owns the customer relationship and the renewal story"},
+ {k:"support",role:"support",goal:"Answer fast, fix on first contact, log everything",krs:["*First response time","First-contact resolution","Customer satisfaction"],signals:"Open tickets vs SLA · Repeat tickets per vehicle",why:"Clear routes to escalate, so no ticket is a dead end"},
+ {k:"warranty",role:"warranty",goal:"Fair, fast repairs and replacements with accurate records",krs:["RMA turnaround","Replacements within 72 h","Device record accuracy"],signals:"RMAs waiting on approval · Units in transit",why:"A clean RMA process that stays within cost"},
+ {k:"engineering",role:"engineering",goal:"Stable builds, and field problems fixed at the root",krs:["Repeat-issue rate","OTA update success rate","Fix lead time"],signals:"Top 5 recurring tickets · False-alert reports",why:"Real road data driving the roadmap"},
+ {k:"management",role:"management",goal:"Hit the north star while the business scales",krs:["Units active and renewed","Customer satisfaction / NPS","Zero fatal accidents across fleets"],signals:"Exceptions and escalations each week · Phase scorecards",why:"A business that grows through renewals, not just new orders"}];
+const KR={};GOALS.forEach(g=>g.krs.forEach((n,i)=>{const id=`${g.k}-${i}`;KR[id]={id,g,first:n.startsWith("*"),name:n.replace(/^\*/,"")}}));
+const KST={on:["On track","ok"],risk:["At risk","warn"],off:["Off track","crit"],"":["Not reviewed",""]};
+const kst=v=>{const s=String(v||"").trim().toLowerCase();return s==="on"||s==="on track"||s==="green"?"on":s==="risk"||s==="at risk"||s==="amber"?"risk":s==="off"||s==="off track"||s==="red"?"off":""};
+const krv=id=>over.kpis[id]||{};
+const goalName=g=>g.phase?`Phase ${g.name}`:(roleBy(g.role)||{name:g.k}).name;
+
+const SEGS=["Direct fleets","Channel partners","Government & defence","OEM & Tier-1","Private owners (later)","Everyday users"];
+const PERSONAS=[
+ ["raghav","Raghav","RG","Intercity bus fleet owner","Direct fleets","One accident on a night route can finish my brand.","Zero accidents, good app ratings, drivers awake on night runs","Keeps your drivers awake on night routes: 60,000+ drowsiness events prevented.","Sales / BD → Customer Success","Peer call, live demo, WhatsApp"],
+ ["imran","Imran","IM","Logistics transport owner","Direct fleets","My trucks run 20 hours a day. I can’t see my drivers.","Fewer claims, on-time delivery, safety proof for clients","GPS tells you where the truck is. Blinksmart tells you if the driver is awake.","Sales / BD or telematics partner","ROI call, site visit, email"],
+ ["priya","Priya","PR","Cab & staff transport operator","Direct fleets","Clients ask what we do about driver safety.","Pass client safety audits, stop phone use at the wheel","A driver safety score for every cab, ready for every client audit.","Sales / BD via aggregator","Dashboard demo, monthly report"],
+ ["thomas","Fr. Thomas","FT","School transport head","Direct fleets","Parents trust us with their children twice a day.","Child safety, calm parents, rule compliance","AIS-184 compliant, Made in India, alerts before a child is at risk.","Sales / BD","Board presentation, parent note"],
+ ["arjun","Arjun","AR","Telematics / ITMS partner","Channel partners","The mandate means ADAS. I can’t build it.","A compliant add-on to upsell, new recurring revenue","Add AIS-184 ADAS to your platform, under your brand, through our APIs.","Sales / BD (partnerships)","Partner meeting, co-branded pilot"],
+ ["suresh","Suresh","SU","Dealer & body builder","Channel partners","Fit it at the factory and nobody has to think about it.","A value-add that wins orders without slowing production","One fitment per vehicle, with our helpline and warranty behind it.","Sales / BD + Distributor","Dealer visit, fitment training"],
+ ["neha","Neha","NE","Platform safety lead","Channel partners","Our brand takes the hit when an operator crashes.","Safer operators, a safety story for travellers","Live driver safety data from every Blinksmart bus on your platform.","Sales / BD + Management","Partnership pitch, co-marketing"],
+ ["vikram","Vikram","VK","Auto insurer","Channel partners","I’d rather price risk on the driver.","Lower claim ratios, behaviour data for pricing","Safety data from every insured vehicle, and drivers rewarded for driving well.","Management + Sales / BD","Data pilot proposal"],
+ ["nair","Mr. Nair","NA","State transport procurement","Government & defence","Not on GeM, not AIS-certified, not in my tender.","A compliant, auditable purchase and fewer accidents","GeM-registered, AIS-184 compliant, data in India, already at KSRTC.","Sales / BD + Management","Formal presentation, pilot depot"],
+ ["sharma","Col. Sharma","CS","Defence transport officer","Government & defence","Fatigue on night convoys is a mission risk.","Fewer convoy incidents, secure Indian equipment","Indian-designed, data stays in India, proven on 29 Mn+ km.","H2X (partner) + Management","Through H2X only"],
+ ["anita","Anita","AN","OEM programme manager","OEM & Tier-1","New models need DDAWS by October 2027.","On-time AIS-184 approval and supply at volume","India-tuned DDAWS as hardware or firmware. A registered Volvo Eicher vendor.","Management + Engineering","Technical workshop, sample units"],
+ ["rohan","Rohan","RO","Family car owner","Private owners (later)","We drive to my parents’ town every month, at night.","Family safety on long highway drives","The co-driver that never gets tired, for every family trip.","Distributor or insurer (later)","Dealer counter, social video"],
+ ["ramesh","Ramesh","RA","Long-haul driver","Everyday users","I don’t need a machine telling me how to drive.","Get home safe, respect, rewards, no unfair blame","Your co-driver never sleeps. Drive safe, earn points, redeem for gifts.","Customer Success → Support","In-cab training, WhatsApp"],
+ ["kavya","Kavya","KA","Fleet manager / control room","Everyday users","Show me who needs a call right now.","Only the alerts that matter, driver rankings, reports","Ratings, critical alerts and live location for every vehicle in one view.","Customer Success","Dashboard training, Day-7 call"]
+].map(([id,name,ini,title,seg,quote,wants,say,owner,reach])=>({id,name,ini,title,seg,quote,wants,say,owner,reach,validated:false,note:""}));
+
+const CSTAT={todo:["Not started",""],copy:["Copy final","warn"],design:["In design","warn"],live:["Printed or live","ok"]};
+const cst=v=>{const s=String(v||"").trim().toLowerCase();return s==="live"||s.startsWith("printed")?"live":s==="design"||s==="in design"?"design":s==="copy"||s==="copy final"?"copy":s==="todo"||s==="not started"?"todo":"copy"};
+const COLLATERAL=[
+ ["brochure","Product brochure","1–2","sales","Print, PDF on WhatsApp and email","Claims need sign-off before printing"],
+ ["serial","Serial / IMEI label","1, 4","warehouse","Label",""],
+ ["qasticker","QA-passed sticker","4, 10","qa","Sticker",""],
+ ["boxlabel","Box label + fragile sticker","5","logistics","Label, sticker",""],
+ ["deviceid","Device ID sticker","6","installer","Sticker",""],
+ ["helpline","Helpline sticker","6, 9","support","Sticker","Waiting on the driver helpline number"],
+ ["quickstart","Quick-start flyer","7","success","Flyer","Local-language versions still to do"],
+ ["points","Driver points card","7–11","success","Card","Waiting on points rules and rewards"],
+ ["warrantycard","Warranty card","8","warranty","Card","Waiting on warranty period and terms wording"],
+ ["rma","Return (RMA) label","10","warranty","Label",""],
+ ["referral","Referral flyer","11","sales","Flyer","Decide what the referrer gets"],
+ ["templates","WhatsApp, SMS and email templates","1–11","","Digital",""],
+ ["scripts","Call scripts","1, 6, 8, 9, 11","","Voice",""]
+].map(([id,name,stages,owner,medium,note])=>({id,name,stages,owner,medium,status:"copy",due:"",note}));
+
+const KINDS=[["claim","Claims to confirm before printing","Every fact comes from the investor deck (July 2026) and needs a sign-off before it goes on customer-facing print."],["open","Copy still open","Placeholders in the collateral copy that need a decision."],["assume","Assumptions to validate","Working assumptions behind the personas. Test each in 3–5 customer interviews per persona."]];
+const CHECKS=[
+ ["c1","claim","750+ units, 29 Mn+ km, zero fatal accidents, 50+ B2B clients","Brochure, discovery call · deck slide 9 · Refresh before each print run","sales"],
+ ["c2","claim","60,000+ drowsiness and 80,000+ distractions prevented, 30% driver performance growth in 3 months","Brochure back · slide 9 · Confirm how “prevented” is measured","engineering"],
+ ["c3","claim","Alert accuracy","Not used yet · slide 6 says ~100%, slide 15 says >95% · Pick one figure before it goes on any collateral","engineering"],
+ ["c4","claim","Smoking, seatbelt, SOS, facial recognition, GPS, OBD","Brochure, quick-start flyer · slide 7 · Confirm these ship on Blinksmart, not only CoPilot AI","engineering"],
+ ["c5","claim","DDAWS mandate dates (1 Oct 2027 new models, 1 Jan 2028 all models)","Brochure, referral flyer · slide 3 · Legal check of wording","management"],
+ ["c6","claim","90% human error, 35% fatigue and drowsy driving","Brochure, discovery call · slides 4–5 · Name the MoRTH and industry source on print","sales"],
+ ["c7","claim","Volvo Eicher vendor; redBus, KSRTC, CabsWale as clients","Brochure trust line · slides 1, 25 · Get permission to name clients","sales"],
+ ["c8","claim","AIS-184 compliant, GeM-registered OEM, data resident in India, Made in India","Brochure, QA sticker, serial label · slides 6, 15 · Certificate numbers on file","management"],
+ ["o1","open","Driver helpline number","Only the company line (+91 8100675937) is known. [HELPLINE NUMBER] stays until a support number is set.","support"],
+ ["o2","open","Warranty period and terms wording","Needed for the warranty card","warranty"],
+ ["o3","open","Driver points rules","Points per action, what each reward is, and the gift catalogue","success"],
+ ["o4","open","Referral thank-you","What the referrer actually gets","sales"],
+ ["o5","open","Local-language quick-start flyer and points card","Which languages go first","success"],
+ ["a1","assume","Fleet sizes and who signs the PO for each direct-fleet persona","","sales"],
+ ["a2","assume","Drivers’ top objection: surveillance, false alerts or penalties","","success"],
+ ["a3","assume","Whether the school bus camera rule (Rule 125C) can be met with Blinksmart alone","","engineering"],
+ ["a4","assume","Who funds the device in aggregator deals: platform, operator or a split","","sales"],
+ ["a5","assume","Insurer appetite for driver-behaviour data and the consent model","","management"],
+ ["a6","assume","Rewards drivers value most for redeeming points","","success"],
+ ["a7","assume","Whether B2C is worth a persona this year","","management"]
+].map(([id,kind,title,detail,owner])=>({id,kind,title,detail,owner,due:"",done:false,note:""}));
+function listOf(c,base){const m=new Map(base.map(x=>[x.id,{...x,base:true}]));Object.entries(over[c]).forEach(([id,o])=>m.set(id,{...(m.get(id)||{}),...o,id,base:m.has(id)}));return [...m.values()].filter(x=>!x.hidden)}
+const personas=()=>listOf("personas",PERSONAS),collat=()=>listOf("collateral",COLLATERAL).map(x=>({...x,status:cst(x.status)})),checks=()=>listOf("checks",CHECKS);
+const ownerName=k=>{const r=roleBy(k);return r?r.name:(k||"Each stage owner")};
+const isLate=d=>d&&daysTo(d)<0;
+const newId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const strip=o=>{const {base,id,...r}=o;return r};
 
 /* ---------- dates ---------- */
 const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
@@ -674,7 +865,7 @@ function setStatus(){const s=$("status");
   if(mode==="shared"&&canWrite){s.className="savestate";s.textContent="Saved to your account"}
   else if(mode==="shared"){s.className="savestate warn";s.textContent="Read only"}
   else{s.className="savestate";s.textContent="Saved in this browser"}
-  $("reset").hidden=!canWrite;["addDep","addDep2","addDec","editPlan"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
+  $("reset").hidden=!canWrite;["addDep","addDep2","addDec","editPlan","addPer","addColl","addChk"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
 async function initStore(){
   loadLocal();setStatus();render();
   const cl=window.claude;if(!cl||!cl.use)return;
@@ -689,7 +880,8 @@ async function initStore(){
 
 /* ---------- nav ---------- */
 function renderTabs(){const n=deps().filter(d=>d.status!=="done"&&needsAttn(d)).length,od=Object.values(over.decisions).filter(d=>d.status!=="decided").length;
-  const badge={pipeline:n?`<span class="badge warn">${n}</span>`:"",decisions:od?`<span class="badge">${od}</span>`:""};
+  const off=Object.values(KR).filter(k=>kst(krv(k.id).status)==="off").length,late=collat().filter(x=>x.status!=="live"&&isLate(x.due)).length+checks().filter(c=>!c.done&&isLate(c.due)).length;
+  const badge={pipeline:n?`<span class="badge warn">${n}</span>`:"",decisions:od?`<span class="badge">${od}</span>`:"",scorecard:off?`<span class="badge warn">${off}</span>`:"",collateral:late?`<span class="badge warn">${late}</span>`:""};
   $("tabs").innerHTML=TABS.map(([k,l])=>`<button role="tab" id="t-${k}" aria-controls="p-${k}" aria-selected="${ui.tab===k}" tabindex="${ui.tab===k?0:-1}" data-tab="${k}"><span>${l}</span>${badge[k]||""}</button>`).join("");
   TABS.forEach(([k])=>{$("p-"+k).hidden=ui.tab!==k})}
 function go(tab,patch){Object.assign(ui,patch||{});ui.tab=tab;try{history.replaceState(null,"","#"+tab)}catch(e){}render();window.scrollTo({top:0})}
@@ -736,7 +928,12 @@ function renderNeeds(active){const items=[];
   active.filter(d=>d.status==="risk"&&!overdue(d)).forEach(d=>items.push({k:"warn",t:`<b>${esc(d.customer)}</b> is at risk in ${esc(stage(d.stage).short)}`,s:d.note?esc(d.note):"No note added",act:"Open",go:()=>depEditor(d.id)}));
   deps().filter(d=>{const n=npsOf(d);return n!=null&&n<=6}).forEach(d=>items.push({k:"warn",t:`<b>${esc(d.customer)}</b> scored ${npsOf(d)} out of 10`,s:"Detractor. Call within 48 hours to recover the relationship.",act:"Open",go:()=>depEditor(d.id)}));
   Object.entries(over.decisions).filter(([,x])=>x.status!=="decided"&&x.due&&daysTo(x.due)<=7).forEach(([id,x])=>items.push({k:daysTo(x.due)<0?"crit":"info",t:`Decide: ${esc(x.title)}`,s:daysTo(x.due)<0?"Overdue":`Due ${fmtDate(x.due)}`,act:"Decide",go:()=>decEditor(id)}));
+  Object.values(KR).forEach(k=>{const v=krv(k.id),st=kst(v.status);if(st==="off"||st==="risk")items.push({k:st==="off"?"crit":"warn",t:`<b>${esc(k.name)}</b> is ${st==="off"?"off track":"at risk"}`,s:`${esc(goalName(k.g))}${v.current||v.target?`: ${esc(v.current||"–")} against ${esc(v.target||"no target")}`:""}${v.note?`. ${esc(v.note)}`:""}`,act:"Review",go:()=>krEditor(k.id)})});
+  checks().filter(c=>!c.done&&isLate(c.due)).forEach(c=>items.push({k:"warn",t:`Sign-off overdue: ${esc(c.title)}`,s:`${esc(roleBy(c.owner)?short(roleBy(c.owner).name):"Unassigned")}, due ${fmtDate(c.due)}`,act:"Open",go:()=>checkEditor(c.id)}));
+  collat().filter(x=>x.status!=="live"&&isLate(x.due)).forEach(x=>items.push({k:"warn",t:`<b>${esc(x.name)}</b> is past its due date`,s:`${CSTAT[x.status][0]}${x.note?`. ${esc(x.note)}`:""}`,act:"Open",go:()=>collEditor(x.id)}));
+  {const fl=scoreStats().firstLeft;if(fl.length)items.push({k:"info",t:`${plural(fl.length,"target")} to set before rollout`,s:fl.slice(0,3).map(k=>esc(k.name)).join(", ")+(fl.length>3?"…":""),act:"Set",go:()=>go("scorecard",{kf:"first"})})}
   STAGES.forEach(s=>{if(owners(s.n).length!==1)items.push({k:"warn",t:`Stage ${s.n} has ${owners(s.n).length?"more than one":"no"} Accountable owner`,s:"Every stage needs exactly one owner",act:"Fix",go:()=>go("raci")})});
+  const sev={crit:0,warn:1,info:2};items.sort((a,b)=>sev[a.k]-sev[b.k]);
   $("needsCount").textContent=items.length?plural(items.length,"item"):"";
   const el=$("attn");
   el.innerHTML=items.length?items.slice(0,6).map((x,i)=>`<li><span class="sev ${x.k}"></span><div><div class="t">${x.t}</div><div class="s">${x.s}</div></div><button class="btn small" data-i="${i}">${x.act}</button></li>`).join("")+(items.length>6?`<li><span class="sev info"></span><div class="t">${items.length-6} more</div><button class="btn small" data-more>See all</button></li>`:"")
@@ -766,7 +963,10 @@ function renderLoad(){const per=stageTimes(),cyc=cycleTimes(),bn=bottleneck(),el
    <p class="ctx" style="margin:10px 0 0">Bar: average time spent. Tick: the stage's limit. Built from each customer's stage history.</p>`}
 function renderReady(){const ownOk=STAGES.filter(s=>owners(s.n).length===1).length,conf=STAGES.filter(s=>confirmed(s.n)).length,cr=contactRoles(),cont=cr.filter(r=>contact(r.k).name).length;
   const row=(id,l,v,t)=>`<button id="${id}"><span class="r"><span>${l}</span><span>${v} of ${t}</span></span><span class="meter"><i class="${v<t?"part":""}" style="width:${Math.round(v/t*100)}%"></i></span></button>`;
-  $("ready").innerHTML=row("rd2","Stages confirmed",conf,11)+row("rd1","Stages with one owner",ownOk,11)+row("rd3","Teams with a named contact",cont,cr.length);
+  const st=scoreStats(),cl=checks().filter(c=>c.kind==="claim"),ps=personas(),co=collat();
+  $("ready").innerHTML=row("rd2","Stages confirmed",conf,11)+row("rd1","Stages with one owner",ownOk,11)+row("rd3","Teams with a named contact",cont,cr.length)
+    +row("rd4","Key results with a target",st.set,st.all.length)+row("rd5","Claims signed off",cl.filter(c=>c.done).length,cl.length||1)+row("rd6","Personas validated",ps.filter(p=>p.validated).length,ps.length||1)+row("rd7","Collateral printed or live",co.filter(x=>x.status==="live").length,co.length||1);
+  $("rd4").onclick=()=>go("scorecard",{kf:"notset"});$("rd5").onclick=()=>go("collateral");$("rd6").onclick=()=>go("personas",{ps:"~todo"});$("rd7").onclick=()=>go("collateral");
   $("rd1").onclick=()=>go("raci");$("rd2").onclick=()=>{const b=STAGES.find(s=>!confirmed(s.n));go("playbook",{sel:b?b.n:1})};
   $("rd3").onclick=()=>{const b=cr.find(r=>!contact(r.k).name);if(b&&canWrite)contactEditor(b.k);else go("raci")}}
 function renderFeed(){const items=[];
@@ -776,6 +976,10 @@ function renderFeed(){const items=[];
   Object.values(over.deployments).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.customer}: stage ${x.stage}, ${(STATUS[x.status]||STATUS.on)[0].toLowerCase()}`})});
   Object.values(over.decisions).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.status==="decided"?"Decided":"Logged"}: ${x.title}`})});
   Object.values(over.plan).forEach(x=>{if(x.at)items.push({at:x.at,t:`Targets set for ${x.label}`})});
+  Object.values(over.kpis).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.name}: ${KST[kst(x.status)][0].toLowerCase()}`})});
+  Object.values(over.personas).forEach(x=>{if(x.at)items.push({at:x.at,t:`Persona ${x.hidden?"hidden":"updated"}: ${x.name}`})});
+  Object.values(over.collateral).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.name}: ${CSTAT[cst(x.status)][0].toLowerCase()}`})});
+  Object.values(over.checks).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.done?"Signed off":"Sign-off updated"}: ${x.title}`})});
   items.sort((a,b)=>a.at<b.at?1:-1);const top=items.slice(0,10),feed=$("feed");
   if(!top.length){feed.innerHTML=`<li class="ctx">No changes yet.</li>`;return}
   feed.innerHTML="";top.forEach(x=>{const li=document.createElement("li"),sp=document.createElement("span");sp.textContent=x.t;li.appendChild(sp);const tm=document.createElement("time");tm.dateTime=x.at;tm.textContent=ago(x.at);li.appendChild(tm);feed.appendChild(li)})}
@@ -825,8 +1029,10 @@ function renderPlaybook(){
    <div class="pb-top"><div class="pb-title"><h3>${s.n}. ${esc(s.name)}</h3><span class="ctx">${esc(s.sub)}</span></div>
      <div class="row-flex"><span class="pill dot ${ok?"ok":"warn"}">${ok?`Confirmed${ov&&ov.at?" "+ago(ov.at):""}`:"Proposed"}</span>${canWrite?`<button class="btn small" id="editStage">Edit</button><button class="btn small ${ok?"":"primary"}" id="confStage">${ok?"Mark as proposed":"Confirm this stage"}</button>`:""}</div></div>
    <div class="promise"><span class="lab">${s.mot?'<span class="pill warn" style="margin-right:8px">Moment of truth</span>':""}The customer should feel</span><q>${esc(s.promise)}</q><span class="moment">${esc(s.moment)}</span></div>
+   ${s.objective?`<p class="objective"><b>Objective.</b> ${esc(s.objective)}</p>`:""}
+   ${s.steps?`<div><h4 class="ctx" style="margin:0 0 8px;font-weight:600">How the stage runs</h4><ol class="steps">${String(s.steps).split("\n").filter(x=>x.trim()).map(x=>{const m=x.match(/^(.*)\s\(([^()]+)\)\s*$/);return `<li>${esc(m?m[1]:x)}${m?`<span>${esc(m[2])}</span>`:""}</li>`}).join("")}</ol></div>`:""}
    <div class="handoff"><span class="box">${o.length===1?`<i class="chip A">A</i>${esc(o[0].name)}`:'<span class="late">No owner</span>'}</span>${c&&c.name?`<span class="ctx">${esc(c.name)}${c.contact?", "+esc(c.contact):""}</span>`:""}<span class="arrow" aria-hidden="true">→</span><span>${esc(s.handoff)}</span><span class="arrow" aria-hidden="true">→</span><span class="box">${esc(s.to)}</span></div>
-   <div class="pb-grid">${f("kpi","Proof it worked")}${f("comms","What we tell the customer")}${f("entry","Start when")}${f("exit","Done when")}<div class="field"><h4>SLA target</h4><p>${esc(s.sla)}</p><span class="ctx">Flagged as late after ${plural(Number(s.days),"business day")}</span></div>${f("esc","If it stalls, escalate to")}${f("docs","Documents and systems")}
+   <div class="pb-grid">${f("kpi","Proof it worked")}${f("comms","What we tell the customer")}${f("entry","Start when")}${f("exit","Done when")}<div class="field"><h4>SLA target</h4><p>${esc(s.sla)}</p><span class="ctx">Flagged as late after ${plural(Number(s.days),"business day")}</span></div>${f("esc","If it stalls, escalate to")}${f("risks","Risks to avoid")}${f("kit","Medium and collateral kit")}${f("docs","Documents and systems")}
     <div class="field"><h4>Team</h4><div class="who-row">${group("A")}${group("R")}</div><div class="who-row">${group("C")}${group("I")}</div></div></div>
    <div class="row-flex" style="justify-content:space-between">${s.n>1?`<button class="btn small" data-jump="${s.n-1}">Previous: ${esc(STAGES[s.n-2].short)}</button>`:"<span></span>"}${nx?`<button class="btn small" data-jump="${nx.n}">Next: ${esc(nx.short)}</button>`:""}</div></div>`;
   const e=$("editStage");if(e)e.onclick=()=>stageEditor(s.n);const cb=$("confStage");if(cb)cb.onclick=()=>toggleConfirm(s.n);
@@ -866,8 +1072,99 @@ function renderDecisions(){const list=Object.entries(over.decisions).map(([id,x]
    :`<div class="empty-state"><b>No decisions logged</b><p>Record the calls that shape the customer experience, like who owns renewals, so they don't get lost.</p>${canWrite?'<button class="btn primary" data-new>Add decision</button>':""}</div>`;
   $("decs").onclick=e=>{const b=e.target.closest("[data-dec]");if(b)decEditor(b.dataset.dec);if(e.target.closest("[data-new]"))decEditor()}}
 
+/* ---------- scorecard ---------- */
+function scoreStats(){const all=Object.values(KR),by={on:0,risk:0,off:0,"":0};all.forEach(k=>by[kst(krv(k.id).status)]++);
+  return {all,by,set:all.filter(k=>krv(k.id).target).length,firstLeft:all.filter(k=>k.first&&!krv(k.id).target)}}
+function krRow(k){const v=krv(k.id),s=kst(v.status);
+  return `<button class="kr" data-kr="${k.id}" aria-label="${esc(k.name)}: ${KST[s][0]}"><span class="kn">${esc(k.name)}${k.first&&!v.target?' <span class="pill warn">Set first</span>':""}${v.note?`<span class="ctx">${esc(v.note)}</span>`:""}</span><span class="kv">${v.current?esc(v.current):"–"}<small>${v.target?` / ${esc(v.target)}`:" / no target"}</small></span><span class="pill dot ${KST[s][1]}">${KST[s][0]}</span></button>`}
+function renderScore(){const st=scoreStats(),f=ui.kf;
+  $("ns").innerHTML=`<div><span class="ctx">North star</span><q>${esc(NORTH.text)}</q></div><div class="facts">${NORTH.facts.map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("")}</div>`;
+  const chip=(k,l,n)=>`<button data-kf="${k}" aria-pressed="${f===k}">${l}${n!=null?` <span class="n">${n}</span>`:""}</button>`;
+  $("scSum").innerHTML=`<div class="tallies"><span class="pill dot ok">${st.by.on} on track</span><span class="pill dot warn">${st.by.risk} at risk</span><span class="pill dot crit">${st.by.off} off track</span><span class="pill">${st.by[""]} not reviewed</span><span class="ctx">${st.set} of ${st.all.length} key results have a target</span></div>
+   <div class="chips" role="group" aria-label="Show">${chip("all","All")}${chip("attn","At risk or off track",st.by.risk+st.by.off)}${chip("first","Targets to set first",st.firstLeft.length)}${chip("notset","No target yet",st.all.length-st.set)}</div>`;
+  const vis=k=>{const v=krv(k.id),s=kst(v.status);return f==="attn"?(s==="risk"||s==="off"):f==="first"?(k.first&&!v.target):f==="notset"?!v.target:true};
+  const card=g=>{const krs=g.krs.map((_,i)=>KR[`${g.k}-${i}`]).filter(vis);if(f!=="all"&&!krs.length)return"";
+    if(g.phase)return `<div class="goal" style="--hue:${g.hue}"><div class="gh"><h3>${esc(g.name)}</h3><span class="ctx">${g.stages}</span></div><div class="gt">${esc(g.goal)}</div><div class="krs">${krs.map(krRow).join("")}</div><span class="ctx">${esc(g.base)}</span></div>`;
+    const r=roleBy(g.role),own=STAGES.filter(s=>{const a=accountable(s.n);return a&&a.k===g.role}).map(s=>s.n),c=contact(g.role);
+    return `<div class="goal"><div class="gh"><h3>${esc(r.name)}</h3><span class="ctx">${own.length?`Owns stage ${own.join(", ")}`:r.external?"Customer side":"Supports stage owners"}</span></div>${c.name?`<span class="ctx">${esc(c.name)}</span>`:""}<div class="gt">${esc(g.goal)}</div><div class="krs">${krs.map(krRow).join("")}</div>
+      <details><summary class="ctx">Weekly signals and why it matters to them</summary><p class="ctx"><b>Watch weekly:</b> ${esc(g.signals)}</p><p class="ctx"><b>What’s in it for them:</b> ${esc(g.why)}</p></details></div>`};
+  const ph=GOALS.filter(g=>g.phase).map(card).join(""),sh=GOALS.filter(g=>!g.phase).map(card).join("");
+  $("phases").innerHTML=ph||`<p class="ctx">No phase results match this filter.</p>`;
+  $("goalsGrid").innerHTML=sh||`<p class="ctx">No stakeholder results match this filter.</p>`}
+function krEditor(id){if(!canWrite)return;const k=KR[id],v=krv(id),g=k.g;
+  openEditor({title:k.name,ctx:goalName(g)+(g.signals?` · Watch: ${g.signals}`:""),saveLabel:"Save result",
+   body:`<div class="f2"><div class="f"><label for="kf-t">Target</label><input type="text" id="kf-t" value="${esc(v.target)}" placeholder="For example, 95% or 10 days"></div><div class="f"><label for="kf-c">Current</label><input type="text" id="kf-c" value="${esc(v.current)}" placeholder="Latest number"></div></div>
+    <div class="f"><label for="kf-s">Status</label><select id="kf-s">${Object.entries(KST).map(([s,[l]])=>`<option value="${s}" ${s===kst(v.status)?"selected":""}>${l}</option>`).join("")}</select></div>
+    <div class="f"><label for="kf-n">Note</label><textarea id="kf-n" placeholder="If it’s red, name the hand-off where it broke, not the person">${esc(v.note)}</textarea></div>
+    ${v.at?`<span class="ctx">Last reviewed ${ago(v.at)}</span>`:""}`,
+   async save(){const o={goal:goalName(g),name:k.name,target:$("kf-t").value.trim(),current:$("kf-c").value.trim(),status:$("kf-s").value,note:$("kf-n").value.trim()};
+     if(!o.target&&!o.current&&!o.status&&!o.note)await del("kpis",id);else await put("kpis",id,o);toast("Result saved")}})}
+
+/* ---------- personas ---------- */
+function renderPersonas(){const all=personas(),val=all.filter(p=>p.validated).length;
+  $("perCount").textContent=`${val} of ${all.length} validated in customer interviews`;
+  const segs=[...new Set([...SEGS,...all.map(p=>p.seg).filter(Boolean)])];
+  $("perChips").innerHTML=[["","All",all.length],...segs.map(s=>[s,s,all.filter(p=>p.seg===s).length]),["~todo","Not validated",all.length-val]].filter(x=>x[2]||x[0]==="").map(([k,l,n])=>`<button data-ps="${esc(k)}" aria-pressed="${ui.ps===k}">${esc(l)} <span class="n">${n}</span></button>`).join("");
+  const list=all.filter(p=>ui.ps==="~todo"?!p.validated:ui.ps?p.seg===ui.ps:true);
+  $("perGrid").innerHTML=list.map(p=>`<button class="pcard" data-per="${esc(p.id)}"><span class="who"><span class="av">${esc(p.ini||p.name.split(/\s+/).map(w=>w[0]).join("").slice(0,2))}</span><span><b>${esc(p.name)}</b><span class="ctx">${esc(p.title)}</span></span><span class="pill dot ${p.validated?"ok":""}" style="margin-left:auto">${p.validated?"Validated":"Assumed"}</span></span>
+    ${p.quote?`<q>${esc(p.quote)}</q>`:""}<span class="seglab">${esc(p.seg)}</span>
+    <dl><dt>Wants</dt><dd>${esc(p.wants)||"–"}</dd><dt>What we say</dt><dd>${esc(p.say)||"–"}</dd><dt>Owner</dt><dd>${esc(p.owner)||"–"}</dd><dt>Reach via</dt><dd>${esc(p.reach)||"–"}</dd>${p.note?`<dt>Interview notes</dt><dd>${esc(p.note)}</dd>`:""}</dl></button>`).join("")||`<div class="empty-state"><p>No personas match this filter.</p></div>`}
+function personaEditor(id){if(!canWrite)return;const p=id?personas().find(x=>x.id===id):{name:"",ini:"",title:"",seg:SEGS[0],quote:"",wants:"",say:"",owner:"",reach:"",validated:false,note:""};if(!p)return;
+  const t=(k,l,ph)=>`<div class="f"><label for="pe-${k}">${l}</label><input type="text" id="pe-${k}" value="${esc(p[k])}" placeholder="${ph||""}"></div>`,a=(k,l,ph)=>`<div class="f"><label for="pe-${k}">${l}</label><textarea id="pe-${k}" placeholder="${ph||""}">${esc(p[k])}</textarea></div>`;
+  openEditor({title:id?p.name:"Add persona",ctx:id?p.title:"Someone who buys, opens the door or uses Blinksmart",saveLabel:id?"Save persona":"Add persona",
+   body:`<div class="f2">${t("name","Name")}${t("title","Who they are","For example, school transport head")}</div>
+    <div class="f"><label for="pe-seg">Segment</label><select id="pe-seg">${[...new Set([...SEGS,p.seg].filter(Boolean))].map(s=>`<option ${s===p.seg?"selected":""}>${esc(s)}</option>`).join("")}</select></div>
+    ${a("quote","In their words")}${a("wants","What they want")}${a("say","What we say")}<div class="f2">${t("owner","Owner")}${t("reach","Reach via")}</div>
+    <label class="f-check"><input type="checkbox" id="pe-val" ${p.validated?"checked":""}><span><b>Validated</b><br><span class="ctx">Confirmed in customer interviews, not just assumed</span></span></label>
+    ${a("note","Interview notes","What 3–5 interviews told you")}`,
+   extra:id?`<button class="btn small" id="pe-del">${p.base?"Hide":"Delete"}</button>`:"",
+   init(){armDelete("pe-del",async()=>{const prev=over.personas[id]?{...over.personas[id]}:null;if(prev)delete prev.at;if(p.base)await put("personas",id,{...strip(p),hidden:true});else await del("personas",id);
+     toast(`${p.name} ${p.base?"hidden":"deleted"}`,async()=>{if(prev)await put("personas",id,prev);else await del("personas",id);toast("Persona restored")})})},
+   async save(){const name=$("pe-name").value.trim();if(!name){toast("Add a name first");$("pe-name").focus();return false}
+     const o={name,ini:name.replace(/^(Fr|Mr|Mrs|Ms|Dr|Col)\.\s*/,"").split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase(),title:$("pe-title").value.trim(),seg:$("pe-seg").value,quote:$("pe-quote").value.trim(),wants:$("pe-wants").value.trim(),say:$("pe-say").value.trim(),owner:$("pe-owner").value.trim(),reach:$("pe-reach").value.trim(),validated:$("pe-val").checked,note:$("pe-note").value.trim(),hidden:false};
+     if(id&&p.ini&&p.name===name)o.ini=p.ini;await put("personas",id||newId("p"),o);toast(id?"Persona saved":"Persona added")}})}
+
+/* ---------- collateral and sign-offs ---------- */
+function renderCollateral(){const items=collat(),by={};items.forEach(x=>by[x.status]=(by[x.status]||0)+1);
+  $("colSum").innerHTML=Object.entries(CSTAT).map(([k,[l,c]])=>`<span class="pill dot ${c}">${by[k]||0} ${l.toLowerCase()}</span>`).join("");
+  $("colTable").innerHTML=`<div class="tscroll"><table class="dt"><thead><tr><th scope="col">Item</th><th scope="col">Stage</th><th scope="col">Owner</th><th scope="col">Medium</th><th scope="col">Status</th><th scope="col">Due</th><th scope="col">Blocker or note</th></tr></thead><tbody>${items.map(x=>{const late=isLate(x.due)&&x.status!=="live";return `<tr data-col="${esc(x.id)}"><td data-l="Item"><span class="cust">${esc(x.name)}</span></td><td data-l="Stage">${esc(x.stages)}</td><td data-l="Owner">${esc(short(ownerName(x.owner)))}</td><td data-l="Medium">${esc(x.medium)}</td><td data-l="Status"><span class="pill ${CSTAT[x.status][1]}">${CSTAT[x.status][0]}</span></td><td data-l="Due" class="${late?"late":""}" style="white-space:nowrap">${x.due?fmtDate(x.due)+(late?", late":""):'<span class="ctx">–</span>'}</td><td data-l="Note">${x.note?esc(x.note):'<span class="ctx">–</span>'}</td></tr>`}).join("")}</tbody></table></div>`;
+  const cs=checks();
+  $("chkGroups").innerHTML=KINDS.map(([k,l,d])=>{const g=cs.filter(c=>c.kind===k);if(!g.length)return"";const done=g.filter(c=>c.done).length;
+    return `<div class="chk-group"><div class="head-row"><h3>${l}</h3><span class="ctx">${done} of ${g.length} done</span></div><p class="ctx" style="margin:-8px 0 12px">${d}</p><div class="chks">${g.map(c=>{const late=!c.done&&isLate(c.due);return `<div class="chk ${c.done?"done":""}"><button class="tick" data-tick="${esc(c.id)}" aria-pressed="${!!c.done}" aria-label="${c.done?"Mark not done":"Mark done"}: ${esc(c.title)}" ${canWrite?"":"disabled"}>${c.done?"✓":""}</button>
+      <div><div class="t">${esc(c.title)}</div>${c.detail?`<div class="ctx">${esc(c.detail)}</div>`:""}<div class="meta"><span>${esc(roleBy(c.owner)?roleBy(c.owner).name:"Unassigned")}</span>${c.due?`<span class="${late?"late":""}">${c.done?"Due":"Due"} ${fmtDate(c.due)}${late?", overdue":""}</span>`:""}${c.note?`<span>${esc(c.note)}</span>`:""}</div></div>
+      ${canWrite?`<button class="btn small" data-chk="${esc(c.id)}">Edit</button>`:""}</div>`}).join("")}</div></div>`}).join("")}
+function collEditor(id){if(!canWrite)return;const x=id?collat().find(c=>c.id===id):{name:"",stages:"",owner:"",medium:"",status:"todo",due:"",note:""};if(!x)return;
+  openEditor({title:id?x.name:"Add collateral",ctx:id?`Stage ${x.stages}`:"A piece of kit the customer sees or touches",saveLabel:id?"Save item":"Add item",
+   body:`<div class="f"><label for="ce-n">Item</label><input type="text" id="ce-n" value="${esc(x.name)}"></div>
+    <div class="f2"><div class="f"><label for="ce-s">Stage</label><input type="text" id="ce-s" value="${esc(x.stages)}" placeholder="For example, 6, 9"></div><div class="f"><label for="ce-m">Medium</label><input type="text" id="ce-m" value="${esc(x.medium)}"></div></div>
+    <div class="f2"><div class="f"><label for="ce-o">Owner</label><select id="ce-o">${roleOpts(x.owner).replace(">Unassigned<",">Each stage owner<")}</select></div><div class="f"><label for="ce-st">Status</label><select id="ce-st">${Object.entries(CSTAT).map(([k,[l]])=>`<option value="${k}" ${k===x.status?"selected":""}>${l}</option>`).join("")}</select></div></div>
+    <div class="f"><label for="ce-d">Due</label><input type="date" id="ce-d" value="${esc(x.due)}"></div>
+    <div class="f"><label for="ce-note">Blocker or note</label><textarea id="ce-note">${esc(x.note)}</textarea></div>`,
+   extra:id?`<button class="btn small" id="ce-del">${x.base?"Hide":"Delete"}</button>`:"",
+   init(){armDelete("ce-del",async()=>{const prev=over.collateral[id]?{...over.collateral[id]}:null;if(prev)delete prev.at;if(x.base)await put("collateral",id,{...strip(x),hidden:true});else await del("collateral",id);
+     toast(`${x.name} ${x.base?"hidden":"deleted"}`,async()=>{if(prev)await put("collateral",id,prev);else await del("collateral",id);toast("Item restored")})})},
+   async save(){const n=$("ce-n").value.trim();if(!n){toast("Name the item first");$("ce-n").focus();return false}
+     await put("collateral",id||newId("k"),{name:n,stages:$("ce-s").value.trim(),medium:$("ce-m").value.trim(),owner:$("ce-o").value,status:$("ce-st").value,due:$("ce-d").value,note:$("ce-note").value.trim(),hidden:false});toast(id?"Item saved":"Item added")}})}
+function checkEditor(id){if(!canWrite)return;const c=id?checks().find(x=>x.id===id):{kind:"claim",title:"",detail:"",owner:"",due:"",done:false,note:""};if(!c)return;
+  openEditor({title:id?"Sign-off":"Add sign-off",ctx:id?KINDS.find(k=>k[0]===c.kind)[1]:"A claim, open item or assumption to close",saveLabel:id?"Save":"Add sign-off",
+   body:`<div class="f"><label for="ke-t">What needs signing off</label><textarea id="ke-t">${esc(c.title)}</textarea></div>
+    <div class="f"><label for="ke-k">Type</label><select id="ke-k">${KINDS.map(([k,l])=>`<option value="${k}" ${k===c.kind?"selected":""}>${l}</option>`).join("")}</select></div>
+    <div class="f"><label for="ke-d">Where it’s used and how to check</label><textarea id="ke-d">${esc(c.detail)}</textarea></div>
+    <div class="f2"><div class="f"><label for="ke-o">Owner</label><select id="ke-o">${roleOpts(c.owner)}</select></div><div class="f"><label for="ke-due">Due</label><input type="date" id="ke-due" value="${esc(c.due)}"></div></div>
+    <label class="f-check"><input type="checkbox" id="ke-done" ${c.done?"checked":""}><span><b>Signed off</b></span></label>
+    <div class="f"><label for="ke-n">Outcome or note</label><textarea id="ke-n" placeholder="What was confirmed, and by whom">${esc(c.note)}</textarea></div>`,
+   extra:id?`<button class="btn small" id="ke-del">${c.base?"Hide":"Delete"}</button>`:"",
+   init(){armDelete("ke-del",async()=>{const prev=over.checks[id]?{...over.checks[id]}:null;if(prev)delete prev.at;if(c.base)await put("checks",id,{...strip(c),hidden:true});else await del("checks",id);
+     toast(`Sign-off ${c.base?"hidden":"deleted"}`,async()=>{if(prev)await put("checks",id,prev);else await del("checks",id);toast("Sign-off restored")})})},
+   async save(){const t=$("ke-t").value.trim();if(!t){toast("Describe what needs signing off");$("ke-t").focus();return false}
+     await put("checks",id||newId("c"),{kind:$("ke-k").value,title:t,detail:$("ke-d").value.trim(),owner:$("ke-o").value,due:$("ke-due").value,done:$("ke-done").checked,note:$("ke-n").value.trim(),hidden:false});toast(id?"Saved":"Sign-off added")}})}
+async function toggleCheck(id){const c=checks().find(x=>x.id===id);if(!c||!canWrite)return;const prev=over.checks[id]?{...over.checks[id]}:null;if(prev)delete prev.at;
+  await put("checks",id,{...strip(c),done:!c.done});
+  toast(c.done?"Marked not done":"Signed off",async()=>{if(prev)await put("checks",id,prev);else await del("checks",id);toast("Change undone")})}
+
 function render(){renderTabs();renderBanner();$("tip").hidden=true;
-  if(ui.tab==="overview")renderOverview();else if(ui.tab==="pipeline")renderPipeline();else if(ui.tab==="playbook")renderPlaybook();else if(ui.tab==="raci")renderRaci();else renderDecisions()}
+  if(ui.tab==="overview")renderOverview();else if(ui.tab==="pipeline")renderPipeline();else if(ui.tab==="playbook")renderPlaybook();else if(ui.tab==="raci")renderRaci();
+  else if(ui.tab==="scorecard")renderScore();else if(ui.tab==="personas")renderPersonas();else if(ui.tab==="collateral")renderCollateral();else renderDecisions()}
 
 /* ---------- drawer editors ---------- */
 let ed=null,lastFocus=null;
@@ -953,9 +1250,17 @@ $("brief").onclick=async()=>{const p=plan(),all=deps(),active=all.filter(d=>d.st
    attn.length?`Needs attention (${attn.length}, ${money(attn.reduce((s,d)=>s+val(d),0))} at risk):`:"Needs attention: nothing blocked, at risk or late.",
    ...attn.map(d=>`- ${d.customer}: ${(STATUS[d.status]||STATUS.on)[0].toLowerCase()} in ${stage(d.stage).name}, ${bdays(d.since)} of ${stage(d.stage).days} days${d.note?`. ${d.note}`:""}`),
    "",...(()=>{const up=active.filter(d=>d.golive&&daysTo(d.golive)>=0&&daysTo(d.golive)<=14).sort((a,b)=>a.golive<b.golive?-1:1);return up.length?["Customers starting in the next 2 weeks:",...up.map(d=>`- ${fmtDate(d.golive)}: ${d.customer}, ${plural(Number(d.devices||0),"device")}`)]:["No customers starting in the next 2 weeks."]})(),
+   "",...(()=>{const st=scoreStats(),bad=st.all.filter(k=>["off","risk"].includes(kst(krv(k.id).status)));return [`Scorecard: ${st.by.on} on track, ${st.by.risk} at risk, ${st.by.off} off track, ${st.by[""]} not reviewed. ${st.set} of ${st.all.length} key results have a target.`,...bad.map(k=>{const v=krv(k.id);return `- ${KST[kst(v.status)][0]}: ${k.name} (${goalName(k.g)})${v.current||v.target?`, ${v.current||"–"} against ${v.target||"no target"}`:""}`})]})(),
+   ...(()=>{const cs=checks().filter(c=>!c.done),cl=checks().filter(c=>c.kind==="claim");return [`Sign-offs: ${cl.filter(c=>c.done).length} of ${cl.length} claims confirmed, ${plural(cs.length,"item")} still open${cs.filter(c=>isLate(c.due)).length?`, ${cs.filter(c=>isLate(c.due)).length} overdue`:""}.`]})(),
    "",...(()=>{const od=Object.values(over.decisions).filter(x=>x.status!=="decided");return od.length?["Open decisions:",...od.map(x=>`- ${x.title}${x.due?` (decide by ${fmtDate(x.due)})`:""}`)]:["No open decisions."]})()];
   const txt=L.join("\n");try{await navigator.clipboard.writeText(txt);toast("Weekly brief copied. Paste it into an email or chat.")}
   catch(e){const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Weekly brief copied")}catch(_){toast("Copy was blocked. Try again.")}t.remove()}};
+$("p-scorecard").addEventListener("click",e=>{const f=e.target.closest("[data-kf]");if(f){ui.kf=f.dataset.kf;renderScore();return}const k=e.target.closest("[data-kr]");if(k)krEditor(k.dataset.kr)});
+$("perChips").addEventListener("click",e=>{const b=e.target.closest("[data-ps]");if(b){ui.ps=b.dataset.ps;renderPersonas()}});
+$("perGrid").addEventListener("click",e=>{const b=e.target.closest("[data-per]");if(b)personaEditor(b.dataset.per)});
+$("colTable").addEventListener("click",e=>{const r=e.target.closest("[data-col]");if(r)collEditor(r.dataset.col)});
+$("chkGroups").addEventListener("click",e=>{const t=e.target.closest("[data-tick]");if(t){toggleCheck(t.dataset.tick);return}const b=e.target.closest("[data-chk]");if(b)checkEditor(b.dataset.chk)});
+$("addPer").onclick=()=>personaEditor();$("addColl").onclick=()=>collEditor();$("addChk").onclick=()=>checkEditor();
 $("addDep").onclick=()=>depEditor();$("addDep2").onclick=()=>depEditor();$("addDec").onclick=()=>decEditor();$("editPlan").onclick=planEditor;
 $("rail").addEventListener("click",e=>{const b=e.target.closest("[data-step]");if(b){ui.sel=+b.dataset.step;render()}});
 $("view").addEventListener("click",e=>{const c=e.target.closest(".cell"),sh=e.target.closest(".stagehead"),rh=e.target.closest(".rolehead");
@@ -982,6 +1287,10 @@ function toast(t,undo){const e=$("toast");e.innerHTML="";const sp=document.creat
 $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;let rows,what;
   if(ui.tab==="pipeline"||ui.tab==="overview"){what="Customers";rows=[["Customer","Devices","Contract value (₹ lakh)","NPS","Stage","Business days in stage","Stage limit (days)","Accountable","Status","Target start date","Note"].map(q).join(",")];
     deps().forEach(d=>{const o=accountable(d.stage);rows.push([d.customer,d.devices,val(d)||"",npsOf(d)??"",`${d.stage}. ${stage(d.stage).name}`,bdays(d.since),stage(d.stage).days,o?o.name:"",(STATUS[d.status]||STATUS.on)[0],d.golive,d.note].map(q).join(","))})}
+  else if(ui.tab==="scorecard"){what="Scorecard";rows=[["Goal","Key result","Target","Current","Status","Note"].map(q).join(",")];Object.values(KR).forEach(k=>{const v=krv(k.id);rows.push([goalName(k.g),k.name,v.target,v.current,KST[kst(v.status)][0],v.note].map(q).join(","))})}
+  else if(ui.tab==="personas"){what="Personas";rows=[["Name","Who","Segment","In their words","Wants","What we say","Owner","Reach via","Validated","Notes"].map(q).join(",")];personas().forEach(p=>rows.push([p.name,p.title,p.seg,p.quote,p.wants,p.say,p.owner,p.reach,p.validated?"Yes":"No",p.note].map(q).join(",")))}
+  else if(ui.tab==="collateral"){what="Collateral and sign-offs";rows=[["Item","Stage","Owner","Medium","Status","Due","Note"].map(q).join(",")];collat().forEach(x=>rows.push([x.name,x.stages,ownerName(x.owner),x.medium,CSTAT[x.status][0],x.due,x.note].map(q).join(",")));
+    rows.push("");rows.push(["Sign-off","Type","Detail","Owner","Due","Done","Note"].map(q).join(","));checks().forEach(c=>rows.push([c.title,(KINDS.find(k=>k[0]===c.kind)||["",""])[1],c.detail,roleBy(c.owner)?roleBy(c.owner).name:"",c.due,c.done?"Yes":"No",c.note].map(q).join(",")))}
   else if(ui.tab==="decisions"){what="Decisions";rows=[["Decision","Owner","Due","Status","Outcome"].map(q).join(",")];Object.values(over.decisions).forEach(d=>rows.push([d.title,d.owner&&roleBy(d.owner)?roleBy(d.owner).name:"",d.due,d.status,d.outcome].map(q).join(",")))}
   else{what="Playbook and RACI";rows=[["Team","Contact",...STAGES.map(s=>`${s.n}. ${s.name}`)].map(q).join(",")];
     ROLES.forEach(r=>{const c=contact(r.k);rows.push([q(r.name),q([c.name,c.contact].filter(Boolean).join(", ")),...STAGES.map(s=>{const x=cell(r.k,s.n);return q(x.v?`${x.v}: ${x.t}`:"")})].join(","))});

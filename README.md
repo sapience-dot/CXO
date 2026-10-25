@@ -8,8 +8,11 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 |---|---|
 | **Overview** | A one-line briefing of what needs you today and the contract value at risk; the customer journey with every customer on their current stage and the moments of truth marked; blocked, late and unhappy customers with their escalation path; start dates and decisions in the next 30 days; progress against the quarter's target with NPS; and flow, which shows average order-to-live time and the bottleneck stage. **Copy weekly brief** puts a plain-text leadership summary on your clipboard. |
 | **Customers** | One row per customer rollout: where they are in the journey, devices, contract value (₹ lakh), latest NPS, business days in the current stage against its limit, the accountable team, status and target start date. "Move to" advances a customer and restarts the stage clock. |
-| **Stage playbook** | For each stage: whether it is a moment of truth, the experience promise (what the customer should feel), the customer moment, the metric that proves the promise was kept, what we tell the customer, entry and exit criteria, SLA, handoff, documents and systems, escalation path and the full RACI team. Confirm each stage once it is agreed. |
-| **Who does what** | The RACI matrix for 15 roles across 11 stages, with exactly one Accountable owner per stage. Search, filter by role, matrix or card layout. |
+| **Stage playbook** | For each stage: the objective, the five steps of how the stage runs (with who does each), whether it is a moment of truth, the experience promise (what the customer should feel), the customer moment, the metric that proves the promise was kept, what we tell the customer, entry and exit criteria, SLA, handoff, risks to avoid, the medium and collateral kit, documents and systems, escalation path and the full RACI team. Stage content follows the Stage sheets. Confirm each stage once it is agreed. |
+| **Who does what** | The RACI matrix for 15 roles across 11 stages, with exactly one Accountable owner per stage, following the Role sheets (Ops Coordinator owns stages 3 and 11). Search, filter by role, matrix or card layout. The Manufacturer row (SIM and connectivity) is ours, not in the Role sheets. |
+| **Scorecard** | The north star, the four phase outcomes (A–D) and the goal for each of the 14 stakeholders, each with its key results. Click a key result to set its target, latest number, status (on track, at risk, off track) and a note. Filters show what's red or amber, the targets to set before rollout, and results with no target yet. Includes the weekly, monthly and quarterly review rhythm. |
+| **Personas** | The 14 personas with their words, wants, what we say, owner and how to reach them. Mark each one validated once interviews confirm it, add notes, add your own or hide one. |
+| **Collateral** | The 13 collateral items with stage, owner, medium, status (not started, copy final, in design, printed or live), due date and blocker; then the sign-offs: 8 claims to confirm before printing, 5 open copy items and 7 persona assumptions to validate. Tick a sign-off when it's done. |
 | **Decisions** | Open decisions with an owner, a decide-by date and the outcome. |
 
 ## Run it
@@ -39,8 +42,8 @@ python3 -m http.server 8000
 1. Create a blank Google Sheet, for example "Sapience Experience Playbook". Keep it private.
 2. In the sheet, open **Extensions ▸ Apps Script**. Delete what's there and paste in everything from `apps-script/Code.gs`.
 3. On the line `const SECRET = '...'`, replace the text with a long phrase only you know, for example `punchiry-blue-otter-2026`. Click **Save**.
-4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Six tabs appear: Customers, Decisions, Targets, Playbook, RACI and Contacts.
-5. Click **Deploy ▸ New deployment**. Choose type **Web app**. Set **Execute as: Me** and **Who has access: Anyone**. Click **Deploy** and copy the **Web app URL** (it ends in `/exec`).
+4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Ten tabs appear: Customers, Decisions, Targets, Playbook, RACI, Contacts, Scorecard, Personas, Collateral and Sign-offs.
+5. Click **Deploy ▸ New deployment**. Choose type **Web app**. Set **Execute as: Me** and **Who has access: Anyone**. Click **Deploy** and copy the **Web app URL**. It ends in `/exec`. On a company Google Workspace account it looks like `https://script.google.com/a/macros/yourcompany.com/s/…/exec`; that's fine.
 6. Open the dashboard, click **Connect Google Sheet** at the bottom of the left menu, paste the URL and your secret phrase, then click **Connect**.
 
 If the sheet is empty, everything already in your browser is copied into it. If the sheet already has data, the dashboard loads from the sheet. On a second computer or phone, repeat step 6 only.
@@ -66,6 +69,8 @@ Use the URL ending in `/exec`. The one ending in `/dev` only works inside Apps S
 
 **Editing in the sheet.** You can edit any cell. Keep the header row as it is, keep the `ID` column filled, and use the values shown in the header for Status and Role. Dates work typed as `2026-10-22` or picked from a date. You can add your own columns; the dashboard leaves them alone.
 
+**Updating from an earlier version.** Paste the new `Code.gs` over the old one (keep your `SECRET`), run `setup` once, then deploy a new version as below. Your data stays; the new tabs and columns are added.
+
 **Updating the script.** If you change `Code.gs` later, use **Deploy ▸ Manage deployments ▸ Edit ▸ Version: New version** so the URL stays the same.
 
 **Security.** The sheet stays private in your Google Drive. The dashboard reaches it only through the Web app URL together with your secret phrase, so keep both to yourself. Anyone who has both can read and change the playbook. To shut off access, change `SECRET` and deploy a new version, or archive the deployment.
@@ -74,7 +79,7 @@ If the repository is public, the dashboard code is public, but your data is not:
 
 ## Customizing
 
-All stage definitions, experience promises, SLA defaults (in business days) and the baseline RACI are at the top of the `<script>` block in `index.html`, in the `STAGES` and `ROLES` arrays. Changes you make in the dashboard are saved as overrides on top of these defaults. "Reset to defaults" returns the matrix and stage details to the defaults without touching customers, decisions or contacts.
+All stage definitions, experience promises, SLA defaults (in business days) and the baseline RACI are at the top of the `<script>` block in `index.html`, in the `STAGES`, `DOCSTAGE` and `ROLES` arrays. The scorecard, personas, collateral and sign-off defaults are in `GOALS`, `PERSONAS`, `COLLATERAL` and `CHECKS`. Changes you make in the dashboard are saved as overrides on top of these defaults. "Reset to defaults" returns the matrix and stage details to the defaults without touching customers, decisions or contacts.
 
 ## Files
 
@@ -89,6 +94,8 @@ All stage definitions, experience promises, SLA defaults (in business days) and 
 - **Order to first use** is the average business days from a customer's first recorded stage to reaching stage 8. It is built from stage history, which is recorded every time a customer moves stage.
 - **Bottleneck** is the stage whose average time most exceeds its limit.
 - **NPS** is the share of promoters (9–10) minus the share of detractors (0–6) across customers with a score. Any score of 6 or below appears under Needs you.
+- **Scorecard** counts every key result as on track, at risk, off track or not reviewed. Off-track results appear under Needs you in red, at-risk ones in amber, along with overdue sign-offs and collateral past its due date.
+- **Playbook readiness** also tracks key results with a target, claims signed off, personas validated and collateral printed or live.
 - **Value at risk** is the contract value of customers who are blocked, at risk or over their stage limit.
 
 ## Keyboard shortcuts

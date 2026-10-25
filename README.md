@@ -13,7 +13,10 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 | **Scorecard** | The north star, the four phase outcomes (A–D) and the goal for each of the 14 stakeholders, each with its key results. Click a key result to set its target, latest number, status (on track, at risk, off track) and a note. Filters show what's red or amber, the targets to set before rollout, and results with no target yet. Includes the weekly, monthly and quarterly review rhythm. |
 | **Personas** | The 14 personas with their words, wants, what we say, owner and how to reach them. Mark each one validated once interviews confirm it, add notes, add your own or hide one. |
 | **Collateral** | The 13 collateral items with stage, owner, medium, status (not started, copy final, in design, printed or live), due date and blocker; then the sign-offs: 8 claims to confirm before printing, 5 open copy items and 7 persona assumptions to validate. Tick a sign-off when it's done. |
+| **Resources** | Your knowledge base: a library of the playbook documents, decks and templates (add your own links, filter by type), the ground rules, brand facts you can copy with one click, who to call at every stage, and a glossary. One search box covers all of it. |
 | **Decisions** | Open decisions with an owner, a decide-by date and the outcome. |
+
+**Sample data.** Click **Show sample data** at the bottom of the left menu to fill every section with realistic sample customers, targets, scorecard results, sign-offs, decisions and contacts. Nothing is saved while it is on, and your own data comes back when you hide it.
 
 ## Run it
 
@@ -42,7 +45,7 @@ python3 -m http.server 8000
 1. Create a blank Google Sheet, for example "Sapience Experience Playbook". Keep it private.
 2. In the sheet, open **Extensions ▸ Apps Script**. Delete what's there and paste in everything from `apps-script/Code.gs`.
 3. On the line `const SECRET = '...'`, replace the text with a long phrase only you know, for example `punchiry-blue-otter-2026`. Click **Save**.
-4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Ten tabs appear: Customers, Decisions, Targets, Playbook, RACI, Contacts, Scorecard, Personas, Collateral and Sign-offs.
+4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Eleven tabs appear: Customers, Decisions, Targets, Playbook, RACI, Contacts, Scorecard, Personas, Collateral, Sign-offs and Resources.
 5. Click **Deploy ▸ New deployment**. Choose type **Web app**. Set **Execute as: Me** and **Who has access: Anyone**. Click **Deploy** and copy the **Web app URL**. It ends in `/exec`. On a company Google Workspace account it looks like `https://script.google.com/a/macros/yourcompany.com/s/…/exec`; that's fine.
 6. Open the dashboard, click **Connect Google Sheet** at the bottom of the left menu, paste the URL and your secret phrase, then click **Connect**.
 

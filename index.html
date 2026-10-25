@@ -572,6 +572,33 @@ details.log summary::after{color:var(--ink);text-decoration:underline}
   .nav svg{display:none}
   .nav button[aria-selected="true"]{box-shadow:inset 0 -3px 0 var(--amber)}
 }
+/* resources */
+.kbsearch{max-width:520px;width:100%}.kbsearch input{width:100%}
+.kb{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1100px){.kb{grid-template-columns:1fr}}
+.kb-side{display:flex;flex-direction:column;gap:20px}
+.reslist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:10px;margin-top:14px}
+.res{background:var(--surface-2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.res-top{display:flex;justify-content:space-between;align-items:center;min-height:26px}
+.res-t{font-weight:700;font-size:14.5px;color:var(--ink);text-decoration:none;line-height:1.3}
+a.res-t:hover{text-decoration:underline}
+a.res-t:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.res p{margin:0;font-size:13px;color:var(--muted)}
+.res-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted);margin-top:auto;padding-top:2px}
+.tag{background:var(--surface);border-radius:999px;padding:1px 8px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.rules li{display:flex;flex-direction:column;gap:2px;padding-left:12px;box-shadow:inset 3px 0 0 var(--amber)}
+.rules span{font-size:13px;color:var(--muted)}
+.kfacts{display:flex;flex-direction:column;gap:6px}
+.fact{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:9px 12px;border-radius:10px;background:var(--surface-2);font-size:13.5px}
+.fact:hover{background:var(--accent-soft)}
+.fact:focus-visible{outline:2px solid var(--amber)}
+.fact .cp{grid-column:2;grid-row:1/span 2;align-self:center;font-size:12px;font-weight:700;color:var(--ink);opacity:0}
+.fact:hover .cp,.fact:focus-visible .cp{opacity:1}
+@media (hover:none){.fact .cp{opacity:1}}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px 28px;margin:0}
+.gloss dt{font-weight:700}
+.gloss dd{margin:2px 0 0;font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -583,6 +610,7 @@ details.log summary::after{color:var(--ink);text-decoration:underline}
     <nav class="nav" role="tablist" aria-label="Sections" id="tabs"></nav>
     <div class="rail-foot">
       <span class="savestate" id="status">Connecting</span>
+      <button class="rbtn" id="sampleBtn">Show sample data</button>
       <button class="rbtn" id="sheetBtn">Connect Google Sheet</button>
       <button class="rbtn" id="csv">Copy as CSV</button>
       <button class="rbtn" id="exp">Export backup</button>
@@ -686,6 +714,19 @@ details.log summary::after{color:var(--ink);text-decoration:underline}
     <section id="p-decisions" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
       <div class="page-head"><div><h1>Decisions</h1><p>Calls that shape the experience, with an owner and a date.</p></div><button class="btn primary" id="addDec">Add decision</button></div>
       <div class="panel pad"><div class="dec" id="decs"></div></div>
+    </section>
+    <section id="p-resources" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
+      <div class="page-head"><div><h1>Resources</h1><p>Your knowledge base: the playbook documents, ground rules, brand facts, who to call at every stage and the words we use.</p></div><button class="btn primary" id="addRes">Add resource</button></div>
+      <div class="kbsearch"><input type="search" id="rq" placeholder="Search documents, rules, facts and terms" aria-label="Search the knowledge base"></div>
+      <div class="kb">
+        <div class="panel pad"><div class="head-row"><h2>Library</h2><span class="ctx">Links open in a new tab</span></div><div class="chips small" id="rChips" role="group" aria-label="Filter by type"></div><div class="reslist" id="rLib"></div></div>
+        <div class="kb-side">
+          <div class="panel pad"><div class="head-row"><h2>Ground rules</h2></div><ul class="rules" id="rRules"></ul></div>
+          <div class="panel pad"><div class="head-row"><h2>Brand facts</h2><span class="ctx">Click one to copy it</span></div><div class="kfacts" id="rFacts"></div></div>
+        </div>
+      </div>
+      <div class="panel"><div class="pad"><div class="head-row" style="margin:0"><h2>Who to call</h2><span class="ctx">Stage owners, contacts and escalation paths. Click a row to open the stage.</span></div></div><div id="rCall"></div></div>
+      <div class="panel pad"><div class="head-row"><h2>Glossary</h2></div><dl class="gloss" id="rGloss"></dl></div>
     </section>
   </main>
 </div>
@@ -791,11 +832,13 @@ const ROLES=[
  {k:"warranty",name:"Warranty / Service Coordinator",cells:["", "", "", "", "", "I|Device serial installed", "", "R|Register warranty, issue warranty card", "R|Review warranty eligibility", "A|Approve RMA / repair / replacement", "R|Update device status & inventory"]},
  {k:"management",name:"Management",cells:["", "C|Approve large deals & discounts", "", "", "", "", "", "C|Review exceptions & escalations", "I|Service performance & CSAT", "C|Approve high-value replacements", "R|Review growth, renewals & QBR"]}];
 const STATUS={on:["On track","ok"],risk:["At risk","warn"],blocked:["Blocked","crit"],done:["Closed",""]};
-const TABS=[["overview","Overview"],["pipeline","Customers"],["playbook","Stage playbook"],["raci","Who does what"],["scorecard","Scorecard"],["personas","Personas"],["collateral","Collateral"],["decisions","Decisions"]];
+const TABS=[["overview","Overview"],["pipeline","Customers"],["playbook","Stage playbook"],["raci","Who does what"],["scorecard","Scorecard"],["personas","Personas"],["collateral","Collateral"],["decisions","Decisions"],["resources","Resources"]];
 
 const BASE={};ROLES.forEach(r=>r.cells.forEach((s,i)=>{const [v,...t]=s.split("|");BASE[`${r.k}--s${i+1}`]={v:s?v:"",t:s?t.join("|"):""}}));
-const COLLS=["cells","stages","contacts","deployments","decisions","plan","kpis","personas","collateral","checks"];
-const over={};COLLS.forEach(c=>over[c]={});
+const COLLS=["cells","stages","contacts","deployments","decisions","plan","kpis","personas","collateral","checks","resources"];
+const store={};COLLS.forEach(c=>store[c]={});let sampleData=null;
+const cur=()=>sample?(sampleData||(sampleData=sampleOver())):store;
+const over=new Proxy({},{get:(t,k)=>cur()[k],set:(t,k,v)=>{store[k]=v;return true},has:(t,k)=>k in cur(),ownKeys:()=>Reflect.ownKeys(cur()),getOwnPropertyDescriptor:(t,k)=>k in cur()?{value:cur()[k],enumerable:true,configurable:true,writable:true}:undefined});
 let db=null,canWrite=true,mode="local",sample=false;
 const LKEY="blinksmart-raci-v3";
 const $=id=>document.getElementById(id);
@@ -810,7 +853,7 @@ const contactRoles=()=>ROLES.filter(r=>!r.external);
 const confirmed=n=>!!(over.stages["s"+n]&&over.stages["s"+n].confirmed);
 const plan=()=>({label:"This quarter",deviceTarget:0,accountTarget:0,...(over.plan.current||{})});
 const short=name=>name.split(" / ")[0];
-let ui={tab:"overview",role:"",sel:1,q:"",ar:false,cards:matchMedia("(max-width:760px)").matches,hl:false,pq:"",pStage:0,pStatus:"",kf:"all",ps:"",lens:"customers",peek:0,nf:"",nall:false};
+let ui={tab:"overview",role:"",sel:1,q:"",ar:false,cards:matchMedia("(max-width:760px)").matches,hl:false,pq:"",pStage:0,pStatus:"",kf:"all",ps:"",lens:"customers",peek:0,nf:"",nall:false,rq:"",rk:""};
 try{const s=JSON.parse(localStorage.getItem("blinksmart-ui")||"{}");if(typeof s.ar==="boolean")ui.ar=s.ar;if(typeof s.cards==="boolean")ui.cards=s.cards;if(["customers","health","time","owners"].includes(s.lens))ui.lens=s.lens}catch(e){}
 const saveUi=()=>{try{localStorage.setItem("blinksmart-ui",JSON.stringify({ar:ui.ar,cards:ui.cards,lens:ui.lens}))}catch(e){}};
 const h0=(location.hash||"").slice(1);if(TABS.some(t=>t[0]===h0))ui.tab=h0;
@@ -908,6 +951,76 @@ const isLate=d=>d&&daysTo(d)<0;
 const newId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const strip=o=>{const {base,id,...r}=o;return r};
 
+/* ---------- sample data for every section (preview only, never saved) ---------- */
+function sampleOver(){const o={};COLLS.forEach(c=>o[c]={});
+  o.plan.current={label:"Q3 FY27",deviceTarget:300,accountTarget:8};
+  [["sales","Rahul Menon","rahul.menon@example.com"],["distributor","Kiran Distributors","+91 90000 00102"],["manufacturer","Vega Devices","+91 90000 00103"],["warehouse","Suma Rao","+91 90000 00104"],["finance","Deepak Jain","deepak.jain@example.com"],["ops","Meera Iyer","+91 90000 00106"],["qa","Arvind K.","+91 90000 00107"],["logistics","Joseph D'Souza","+91 90000 00108"],["installer","Manjunath G.","+91 90000 00109"],["success","Nisha Pillai","nisha.pillai@example.com"],["support","Helpdesk team","+91 90000 00111"],["engineering","Karthik S.","karthik.s@example.com"],["warranty","Farah Khan","+91 90000 00113"],["management","Leadership team","leadership@example.com"]].forEach(([k,name,contact])=>o.contacts[k]={role:k,name,contact});
+  [1,2,3,4,5,6].forEach(n=>o.stages["s"+n]={stage:n,confirmed:true});
+  [["phA-0","95%","88%","risk","Site lists missing on 3 channel orders"],["phA-1","1 day","0.8 days","on",""],["phA-2","55%","50%","risk",""],["phB-0","12 days","14 days","off","Install slots booked late after delivery (stage 5 → 6)"],["phB-1","95%","96%","on",""],["phB-2","Under 1%","0.6%","on",""],
+   ["phC-0","90%","84%","risk","Two depots waiting on SIM activation"],["phC-1","100%","92%","risk",""],["phC-2","30% in 3 months","27%","on",""],["phD-0","95%","97%","on",""],["phD-1","5 days","7 days","off","Replacement stock short at the warehouse"],["phD-2","60% renew","","",""],
+   ["sales-0","₹5 Cr a quarter","₹3.8 Cr","on",""],["ops-0","12 days","14 days","off","Same hand-off as phase B"],["ops-2","7 days","5 days","on",""],["warehouse-0","99%","99.4%","on",""],["qa-0","98%","97%","on",""],["logistics-0","95%","93%","risk",""],["installer-0","95%","96%","on",""],
+   ["success-0","90%","84%","risk",""],["support-0","4 h","2.5 h","on",""],["warranty-1","72 h","96 h","off","Waiting on reverse pickups"],["finance-1","0","0","on",""],["management-1","NPS +40","+32","risk",""],["customer-2","0","0","on",""]]
+   .forEach(([id,target,current,status,note])=>o.kpis[id]={goal:goalName(KR[id].g),name:KR[id].name,target,current,status,note});
+  [["raghav","Confirmed in 4 interviews. Night-route fatigue is the trigger."],["imran","Claims cost is the real buying reason."],["priya","Client audits drive every purchase."],["nair","Tender needs GeM and AIS-184 papers up front."],["ramesh","5 of 6 drivers worried about false alerts, not spying."],["kavya","Wants a daily list of who to call, not more alerts."]].forEach(([id,note])=>o.personas[id]={validated:true,note});
+  [["brochure","design",addD(5),"Claims need sign-off before printing"],["serial","live","",""],["qasticker","live","",""],["boxlabel","live","",""],["deviceid","live","",""],["helpline","copy",addD(-3),"Waiting on the driver helpline number"],["quickstart","design",addD(10),"Kannada and Hindi versions next"],["points","todo",addD(14),"Waiting on points rules and rewards"],["warrantycard","copy",addD(7),"Waiting on warranty terms wording"],["rma","live","",""],["referral","todo",addD(21),"Decide what the referrer gets"],["templates","live","",""],["scripts","copy","",""]]
+   .forEach(([id,status,due,note])=>o.collateral[id]={status,due,note});
+  [["c1",{done:true,note:"Refreshed from the October deck"}],["c4",{done:true,note:"Confirmed all six ship on Blinksmart"}],["c8",{done:true,note:"Certificate numbers filed with QA"}],["c5",{due:addD(-2)}],["c7",{due:addD(6)}],["o1",{due:addD(-1)}],["o3",{due:addD(7)}],["a2",{done:true,note:"False alerts are the worry, not surveillance"}],["a1",{due:addD(10)}]]
+   .forEach(([id,x])=>o.checks[id]=x);
+  o.decisions.xs1={title:"Who owns renewals: Sales or Customer Success?",context:"Goals Playbook gives renewal rate to CS; the RACI has Sales pursuing expansion at stage 11.",owner:"management",due:addD(3),status:"open",outcome:""};
+  o.decisions.xs2={title:"Pick one alert-accuracy figure for collateral",context:"The deck says ~100% on slide 6 and >95% on slide 15.",owner:"engineering",due:addD(-1),status:"open",outcome:""};
+  o.decisions.xs3={title:"Driver points: points per action and the gift catalogue",context:"Blocks the driver points card and the quick-start flyer.",owner:"success",due:addD(12),status:"open",outcome:""};
+  o.decisions.xs4={title:"Who activates SIMs and data plans?",context:"",owner:"ops",due:addD(-20),status:"decided",outcome:"The manufacturer provisions and activates SIMs; Ops tracks it."};
+  return o}
+const sampleBlocked=()=>{if(!sample)return false;toast("This is sample data. Hide sample data to make real changes.");return true};
+
+/* ---------- resources (CXO knowledge base) ---------- */
+const RKINDS=["Playbook doc","Deck","Matrix","Persona","Template","Reference"];
+const RESOURCES=[
+ ["ux","Blinksmart UX Playbook","Playbook doc","https://claude.ai/artifact/E2zWHsaCgi3NcGAq795NSG","","The detailed UX playbook: journey, moments of truth and every stakeholder","ux, stages, journey"],
+ ["guide","Stakeholder Guide","Playbook doc","https://claude.ai/artifact/FZGdu3jnwyeCq8iqC3AnmP","","How each team uses this playbook day to day","onboarding, teams"],
+ ["goals","Stakeholder Goals Playbook","Playbook doc","https://claude.ai/artifact/83DPFCaawUGWnZBVty7GUx","management","North star, phase outcomes, goals and key results for all 14 stakeholders","scorecard, goals, kpi"],
+ ["matrix","Stakeholder Journey Matrix","Matrix","https://claude.ai/artifact/2tiABPstjE3739iRvTb8B4","ops","Role sheets: what each team does at every stage","raci, roles"],
+ ["personas","Blinksmart User Personas","Persona","https://claude.ai/artifact/X1R2E86aohXbzvx1py7M5h","success","14 personas with wants, objections and buying triggers","personas, segments"],
+ ["copy","Blinksmart Collateral Copy","Template","https://claude.ai/artifact/Tz1n7qpcoFdLzn2HZxqdxX","sales","Final words for every collateral item, templates and call scripts","collateral, scripts, whatsapp"],
+ ["b2cdeck","BlinkSmart Home: B2C Plan","Deck","https://claude.ai/artifact/LX2kWNmHq2fNRxUG1T9mxw","management","Pitch deck for taking Blinksmart to family car owners","b2c, pitch"],
+ ["b2cplan","Blinksmart B2C Plan","Playbook doc","https://claude.ai/artifact/C6TaWxfKPae6gno5P31MeX","management","The written B2C plan behind the deck","b2c"],
+ ["schools","Blinksmart for Schools","Reference","https://claude.ai/artifact/7AVSBAfi6oraGTDCBAukFs","sales","School transport offer","schools, segment"],
+ ["stages","Stages Matrix (PDF)","Matrix","","ops","Stage sheets: objective, steps, RACI, kit, risks and hand-off for all 11 stages. Add a Drive link.","stages, pdf"],
+ ["medium","Stakeholder × Stage × Medium (PDF)","Matrix","","ops","Which medium each stakeholder uses at each stage. Add a Drive link.","medium, channels, pdf"],
+ ["examples","Collateral Examples (PDF)","Template","","sales","Designed examples of the brochure, flyers and cards. Add a Drive link.","collateral, design, pdf"],
+ ["igpersonas","Personas one-pager (PDF)","Persona","","success","All 14 personas on one page with the 5-year vehicle funnel. Add a Drive link.","personas, funnel, pdf"],
+ ["site","Sapience Automata website","Reference","https://www.sapienceautomata.com","","Public website","brand"]
+].map(([id,title,kind,url,owner,note,tags])=>({id,title,kind,url,owner,note,tags}));
+const resources=()=>listOf("resources",RESOURCES);
+const safeUrl=u=>/^https?:\/\/[^\s"<>]+$/i.test(String(u||"").trim())?String(u).trim():"";
+const RULES=[["One owner per stage","Every stage has exactly one Accountable owner. Others do the work, advise or are kept informed."],["A stage closes with proof","A stage is done only when its document is logged and the next stage’s owner has accepted it."],["Red names the hand-off","When a result goes red, name the hand-off where it broke, not the person."],["Conflicts go to the phase outcome","Two roles in conflict take it to the shared phase outcome. Management decides if it is still open after the monthly review."],["The buyer signs, the driver decides","If drivers resent the device or the fleet manager ignores the app, no sale renews."],["Facts need a sign-off","Every number on customer-facing print comes from the investor deck and is signed off first."]];
+const FACTS=[["Brand line","Blinksmart™, part of the CoPilot AI ADAS ecosystem, by Sapience Automata."],["One-liner","India’s AI-powered accident prevention system that alerts drivers the moment they’re drowsy, distracted or driving rashly."],["Proof bar (check before print)","750+ vehicles protected · 29 Mn+ km travelled · Zero fatal accidents · 50+ B2B clients"],["Mandate","DDAWS (AIS-184) is mandated for buses and trucks: new models from 1 Oct 2027, all models from 1 Jan 2028."],["Contact block","www.sapienceautomata.com · info@sapienceautomata.com · +91 8100675937"],["Address","No 1012/B, Mes Builders’ Association, 1st Floor, 17th D Cross Road, Indiranagar, Bangalore 560038"]];
+const GLOSSARY=[["A / R / C / I","Accountable (owns the stage, one per stage), Responsible (does the work), Consulted (asked before), Informed (told after)."],["Moment of truth","A stage where the customer decides whether we kept our promise: installation, activation, support and warranty."],["DDAWS","Driver Drowsiness and Attention Warning System, the device category Blinksmart belongs to."],["AIS-184","The Indian standard DDAWS devices must meet under the CMVR (Sixth Amendment) Rules, 2025."],["GeM","Government e-Marketplace. Registration is needed to sell into state transport tenders."],["ITMS","Intelligent Transport Management System, run by telematics partners."],["RMA","Return Merchandise Authorisation: the approval to repair or replace a faulty unit."],["POD","Proof of delivery: the signed challan that closes dispatch."],["E-way bill","The GST document that must travel with every dispatch."],["L1 / L2 support","L1 is the helpline’s first fix; L2 is remote diagnosis by Technical / QA."],["OTA","Over-the-air firmware update."],["DOA","Dead on arrival: a unit that fails when first switched on."],["First-time-right","An installation that works with no repeat visit."],["NPS","Net Promoter Score: % promoters (9–10) minus % detractors (0–6)."],["QBR","Quarterly business review with a customer."],["Business days","Monday to Friday. Every time limit and SLA in this playbook counts business days."]];
+function renderResources(){const q=(ui.rq||"").toLowerCase(),hit=(...a)=>!q||a.join(" ").toLowerCase().includes(q);
+  const all=resources(),kinds=[...new Set([...RKINDS,...all.map(r=>r.kind).filter(Boolean)])];
+  $("rChips").innerHTML=[["","All",all.length],...kinds.map(k=>[k,k,all.filter(r=>r.kind===k).length]).filter(x=>x[2])].map(([k,l,n])=>`<button data-rk="${esc(k)}" aria-pressed="${ui.rk===k}">${esc(l)} <span class="n">${n}</span></button>`).join("");
+  const list=all.filter(r=>(!ui.rk||r.kind===ui.rk)&&hit(r.title,r.note,r.tags,r.kind,ownerName(r.owner)));
+  $("rLib").innerHTML=list.length?list.map(r=>{const u=safeUrl(r.url);return `<div class="res"><div class="res-top"><span class="pill">${esc(r.kind||"Link")}</span>${canWrite?`<button class="btn ghost small" data-res="${esc(r.id)}">Edit</button>`:""}</div>
+    ${u?`<a class="res-t" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(r.title)} <span aria-hidden="true">↗</span></a>`:`<span class="res-t">${esc(r.title)}</span>`}
+    ${r.note?`<p>${esc(r.note)}</p>`:""}<div class="res-meta">${r.owner?`<span>${esc(short(ownerName(r.owner)))}</span>`:""}${String(r.tags||"").split(",").map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${u?"":`<span class="late">No link yet</span>`}</div></div>`}).join(""):`<p class="ctx">No resources match.</p>`;
+  $("rRules").innerHTML=RULES.filter(([t,d])=>hit(t,d)).map(([t,d])=>`<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("")||`<li class="ctx">No rules match.</li>`;
+  $("rFacts").innerHTML=FACTS.filter(([t,d])=>hit(t,d)).map(([t,d],i)=>`<button class="fact" data-copy="${esc(d)}"><span class="ctx">${esc(t)}</span><span>${esc(d)}</span><span class="cp">Copy</span></button>`).join("")||`<p class="ctx">No facts match.</p>`;
+  $("rCall").innerHTML=`<div class="tscroll"><table class="dt" style="min-width:760px"><thead><tr><th>Stage</th><th>Owner</th><th>Contact</th><th>If it stalls</th></tr></thead><tbody>${STAGES.map(s0=>{const s=stage(s0.n),o=accountable(s.n),c=o?contact(o.k):null;if(!hit(s.name,o?o.name:"",c?c.name:"",s.esc))return"";return `<tr data-stage-go="${s.n}"><td data-l="Stage"><b>${s.n}. ${esc(s.name)}</b></td><td data-l="Owner">${o?esc(o.name):'<span class="late">No owner</span>'}</td><td data-l="Contact">${c&&c.name?esc(c.name)+(c.contact?`<div class="ctx">${esc(c.contact)}</div>`:""):'<span class="ctx">Not added</span>'}</td><td data-l="If it stalls" class="pre ctx">${esc(s.esc)}</td></tr>`}).join("")}</tbody></table></div>`;
+  $("rGloss").innerHTML=GLOSSARY.filter(([t,d])=>hit(t,d)).map(([t,d])=>`<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")||`<p class="ctx">No terms match.</p>`}
+function resEditor(id){if(!canWrite||sampleBlocked())return;const r=id?resources().find(x=>x.id===id):{title:"",kind:"Reference",url:"",owner:"",note:"",tags:""};if(!r)return;
+  openEditor({title:id?r.title:"Add resource",ctx:"A document, deck, template or link you want close at hand",saveLabel:id?"Save":"Add resource",
+   body:`<div class="f"><label for="rs-t">Title</label><input type="text" id="rs-t" value="${esc(r.title)}"></div>
+    <div class="f2"><div class="f"><label for="rs-k">Type</label><select id="rs-k">${[...new Set([...RKINDS,r.kind].filter(Boolean))].map(k=>`<option ${k===r.kind?"selected":""}>${esc(k)}</option>`).join("")}</select></div><div class="f"><label for="rs-o">Owner</label><select id="rs-o">${roleOpts(r.owner)}</select></div></div>
+    <div class="f"><label for="rs-u">Link</label><input type="text" id="rs-u" value="${esc(r.url)}" placeholder="https://drive.google.com/…"></div>
+    <div class="f"><label for="rs-n">What it’s for</label><textarea id="rs-n">${esc(r.note)}</textarea></div>
+    <div class="f"><label for="rs-g">Tags</label><input type="text" id="rs-g" value="${esc(r.tags)}" placeholder="Separate with commas"></div>`,
+   extra:id?`<button class="btn small" id="rs-del">${r.base?"Hide":"Delete"}</button>`:"",
+   init(){armDelete("rs-del",async()=>{const prev=over.resources[id]?{...over.resources[id]}:null;if(prev)delete prev.at;if(r.base)await put("resources",id,{...strip(r),hidden:true});else await del("resources",id);
+     toast(`${r.title} ${r.base?"hidden":"deleted"}`,async()=>{if(prev)await put("resources",id,prev);else await del("resources",id);toast("Resource restored")})})},
+   async save(){const t=$("rs-t").value.trim(),u=$("rs-u").value.trim();if(!t){toast("Add a title first");$("rs-t").focus();return false}
+     if(u&&!safeUrl(u)){toast("Links need to start with https://");$("rs-u").focus();return false}
+     await put("resources",id||newId("r"),{title:t,kind:$("rs-k").value,owner:$("rs-o").value,url:u,note:$("rs-n").value.trim(),tags:$("rs-g").value.trim(),hidden:false});toast(id?"Saved":"Resource added")}})}
+
 /* ---------- dates ---------- */
 const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
 const iso=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`};
@@ -947,18 +1060,18 @@ function bottleneck(){const per=stageTimes();let best=null;STAGES.forEach(s0=>{c
 
 /* ---------- store ---------- */
 function loadLocal(){try{const s=localStorage.getItem(LKEY);if(s){const p=JSON.parse(s);COLLS.forEach(c=>over[c]=p[c]||{})}}catch(e){}}
-function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify(over))}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify(store))}catch(e){}}
 const stamp=o=>({...o,at:new Date().toISOString()});
-async function put(c,id,obj){obj=stamp(obj);over[c][id]=obj;render();
+async function put(c,id,obj){if(sampleBlocked())return;obj=stamp(obj);over[c][id]=obj;render();
   if(db){try{await db.doc(`${c}/${id}`).set(obj)}catch(e){failWrite(e)}}else saveLocal()}
-async function del(c,id){delete over[c][id];render();
+async function del(c,id){if(sampleBlocked())return;delete over[c][id];render();
   if(db){try{await db.doc(`${c}/${id}`).delete()}catch(e){failWrite(e)}}else saveLocal()}
 function failWrite(e){if(e&&e.code==="invalid_argument"){canWrite=false;setStatus();render();toast("This copy is read-only. Open it from your own account to make changes.")}else if(e&&e.code==="quota_exceeded")toast("Storage is full. Delete closed customers to make room.");else toast("That change didn't save. Check your connection and try again.")}
 function setStatus(){const s=$("status");
   if(mode==="shared"&&canWrite){s.className="savestate";s.textContent="Saved to your account"}
   else if(mode==="shared"){s.className="savestate warn";s.textContent="Read only"}
   else{s.className="savestate";s.textContent="Saved in this browser"}
-  $("reset").hidden=!canWrite;["addDep","addDep2","addDec","editPlan","addPer","addColl","addChk"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
+  $("reset").hidden=!canWrite;["addDep","addDep2","addDec","editPlan","addPer","addColl","addChk","addRes"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
 async function initStore(){
   loadLocal();setStatus();render();
   const cl=window.claude;if(!cl||!cl.use)return;
@@ -972,7 +1085,7 @@ async function initStore(){
 }
 
 /* ---------- nav ---------- */
-const ICON={overview:"M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z",pipeline:"M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM22 19v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8",playbook:"M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 7h6",raci:"M4 4h16v16H4zM4 10h16M4 15h16M10 4v16",scorecard:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12.5v-1",personas:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21a7.5 7.5 0 0 1 15 0",collateral:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4",decisions:"M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM8.5 12.5l2.5 2.5 4.5-5.5"};
+const ICON={overview:"M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z",pipeline:"M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM22 19v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8",playbook:"M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 7h6",raci:"M4 4h16v16H4zM4 10h16M4 15h16M10 4v16",scorecard:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12.5v-1",personas:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21a7.5 7.5 0 0 1 15 0",collateral:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4",decisions:"M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM8.5 12.5l2.5 2.5 4.5-5.5",resources:"M6.5 3H18v18l-5.75-3.8L6.5 21z"};
 const icon=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k]}"/></svg>`;
 
 function renderTabs(){const n=deps().filter(d=>d.status!=="done"&&needsAttn(d)).length,od=Object.values(over.decisions).filter(d=>d.status!=="decided").length;
@@ -981,9 +1094,9 @@ function renderTabs(){const n=deps().filter(d=>d.status!=="done"&&needsAttn(d)).
   $("tabs").innerHTML=TABS.map(([k,l])=>`<button role="tab" id="t-${k}" aria-controls="p-${k}" aria-selected="${ui.tab===k}" tabindex="${ui.tab===k?0:-1}" data-tab="${k}"><span class="nl">${icon(k)}${l}</span>${badge[k]||""}</button>`).join("");
   TABS.forEach(([k])=>{$("p-"+k).hidden=ui.tab!==k})}
 function go(tab,patch){Object.assign(ui,patch||{});ui.tab=tab;try{history.replaceState(null,"","#"+tab)}catch(e){}render();window.scrollTo({top:0})}
-function renderBanner(){if(Object.keys(over.deployments).length)sample=false;
-  $("banner").innerHTML=sample?`<div class="banner"><span>You're looking at sample customers. Nothing here is saved.</span><button class="btn small" id="exitSample">Hide sample data</button></div>`:"";
-  const b=$("exitSample");if(b)b.onclick=()=>{sample=false;render()}}
+function renderBanner(){const sb=$("sampleBtn");if(sb)sb.textContent=sample?"Hide sample data":"Show sample data";
+  $("banner").innerHTML=sample?`<div class="banner"><span>You're looking at sample data in every section. Nothing here is saved, and your own data comes back when you hide it.</span><button class="btn small" id="exitSample">Hide sample data</button></div>`:"";
+  const b=$("exitSample");if(b)b.onclick=()=>{sample=false;sampleData=null;render()}}
 
 /* ---------- overview ---------- */
 function renderOverview(){
@@ -1130,6 +1243,7 @@ function renderFeed(){const items=[];
   Object.values(over.kpis).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.name}: ${KST[kst(x.status)][0].toLowerCase()}`})});
   Object.values(over.personas).forEach(x=>{if(x.at)items.push({at:x.at,t:`Persona ${x.hidden?"hidden":"updated"}: ${x.name}`})});
   Object.values(over.collateral).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.name}: ${CSTAT[cst(x.status)][0].toLowerCase()}`})});
+  Object.values(over.resources).forEach(x=>{if(x.at)items.push({at:x.at,t:`Resource ${x.hidden?"hidden":"updated"}: ${x.title}`})});
   Object.values(over.checks).forEach(x=>{if(x.at)items.push({at:x.at,t:`${x.done?"Signed off":"Sign-off updated"}: ${x.title}`})});
   items.sort((a,b)=>a.at<b.at?1:-1);const top=items.slice(0,10),feed=$("feed");
   if(!top.length){feed.innerHTML=`<li class="ctx">No changes yet.</li>`;return}
@@ -1163,7 +1277,7 @@ function renderPipeline(){
      <td class="act">${!d.sample&&canWrite&&d.status!=="done"?`<button class="btn small" data-adv="${d.id}">${d.stage<11?`Move to ${stage(d.stage+1).short}`:"Close"}</button>`:""}</td></tr>`}).join("")}</tbody></table></div>
    <div class="pad ctx">${plural(list.length,"customer")}, ${plural(list.reduce((a,d)=>a+Number(d.devices||0),0),"device")} and ${money(list.reduce((a,d)=>a+val(d),0))} shown. Time in stage counts business days.</div>`;
   el.onclick=e=>{const a=e.target.closest("[data-adv]");if(a){advance(a.dataset.adv);return}const r=e.target.closest("[data-row]");if(r&&!sample)depEditor(r.dataset.row)}}
-async function advance(id){const d=over.deployments[id];if(!d)return;const prev={...d};const undo=()=>{const {at,...rest}=prev;put("deployments",id,rest);toast("Change undone")};
+async function advance(id){if(sampleBlocked())return;const d=over.deployments[id];if(!d)return;const prev={...d};const undo=()=>{const {at,...rest}=prev;put("deployments",id,rest);toast("Change undone")};
   const h=[...(d.history||[{s:d.stage,at:d.since}])];
   if(d.stage>=11){await put("deployments",id,{...d,status:"done",since:iso(today()),closedAt:iso(today()),history:h});toast(`${d.customer} closed`,undo);return}
   const n=d.stage+1,o=accountable(n);h.push({s:n,at:iso(today())});
@@ -1309,13 +1423,13 @@ function checkEditor(id){if(!canWrite)return;const c=id?checks().find(x=>x.id===
      toast(`Sign-off ${c.base?"hidden":"deleted"}`,async()=>{if(prev)await put("checks",id,prev);else await del("checks",id);toast("Sign-off restored")})})},
    async save(){const t=$("ke-t").value.trim();if(!t){toast("Describe what needs signing off");$("ke-t").focus();return false}
      await put("checks",id||newId("c"),{kind:$("ke-k").value,title:t,detail:$("ke-d").value.trim(),owner:$("ke-o").value,due:$("ke-due").value,done:$("ke-done").checked,note:$("ke-n").value.trim(),hidden:false});toast(id?"Saved":"Sign-off added")}})}
-async function toggleCheck(id){const c=checks().find(x=>x.id===id);if(!c||!canWrite)return;const prev=over.checks[id]?{...over.checks[id]}:null;if(prev)delete prev.at;
+async function toggleCheck(id){if(sampleBlocked())return;const c=checks().find(x=>x.id===id);if(!c||!canWrite)return;const prev=over.checks[id]?{...over.checks[id]}:null;if(prev)delete prev.at;
   await put("checks",id,{...strip(c),done:!c.done});
   toast(c.done?"Marked not done":"Signed off",async()=>{if(prev)await put("checks",id,prev);else await del("checks",id);toast("Change undone")})}
 
 function render(){renderTabs();renderBanner();$("tip").hidden=true;
   if(ui.tab==="overview")renderOverview();else if(ui.tab==="pipeline")renderPipeline();else if(ui.tab==="playbook")renderPlaybook();else if(ui.tab==="raci")renderRaci();
-  else if(ui.tab==="scorecard")renderScore();else if(ui.tab==="personas")renderPersonas();else if(ui.tab==="collateral")renderCollateral();else renderDecisions()}
+  else if(ui.tab==="scorecard")renderScore();else if(ui.tab==="personas")renderPersonas();else if(ui.tab==="collateral")renderCollateral();else if(ui.tab==="resources")renderResources();else renderDecisions()}
 
 /* ---------- drawer editors ---------- */
 let ed=null,lastFocus=null;
@@ -1323,7 +1437,7 @@ function openEditor(cfg){ed=cfg;lastFocus=document.activeElement;$("ed-title").t
   $("editor").hidden=false;$("scrim").hidden=false;cfg.init&&cfg.init();($("ed-body").querySelector("textarea,input,select")||$("ed-save")).focus()}
 function closeEditor(){$("editor").hidden=true;$("scrim").hidden=true;ed=null;if(lastFocus&&document.contains(lastFocus))lastFocus.focus()}
 const roleOpts=sel=>`<option value="">Unassigned</option>`+ROLES.filter(r=>!r.external).map(r=>`<option value="${r.k}" ${r.k===sel?"selected":""}>${esc(r.name)}</option>`).join("");
-function armDelete(btnId,fn){const b=$(btnId);if(!b)return;let armed=false;b.onclick=async()=>{if(!armed){armed=true;b.textContent="Click again to delete";b.classList.add("danger-armed");return}closeEditor();await fn()}}
+function armDelete(btnId,fn){const b=$(btnId);if(!b)return;let armed=false;b.onclick=async()=>{if(sampleBlocked()){closeEditor();return}if(!armed){armed=true;b.textContent="Click again to delete";b.classList.add("danger-armed");return}closeEditor();await fn()}}
 function depEditor(id){if(!canWrite)return;const d=id?over.deployments[id]:{customer:"",devices:"",stage:1,since:iso(today()),golive:"",status:"on",note:""};if(!d)return;
   openEditor({title:id?d.customer:"Add customer",ctx:id?`Stage ${d.stage}, ${stage(d.stage).name}`:"One entry per customer rollout",saveLabel:id?"Save changes":"Add customer",
    body:`<div class="f"><label for="df-c">Customer</label><input type="text" id="df-c" value="${esc(d.customer)}" placeholder="Customer or fleet name"></div>
@@ -1380,7 +1494,7 @@ function stageEditor(n){const s=stage(n);
   openEditor({title:`${n}. ${s.name}`,ctx:"Edit the playbook for this stage",saveLabel:"Save stage",
    body:`<label class="f-check"><input type="checkbox" id="sf-mot" ${s.mot?"checked":""}><span><b>Moment of truth</b><br><span class="ctx">A stage where the customer decides whether we kept our promise</span></span></label>`+STAGE_FIELDS.map(([k,l])=>`<div class="f"><label for="sf-${k}">${l}</label>${k==="days"?`<input type="number" min="1" id="sf-${k}" value="${esc(s[k])}">`:["sla","to","promise"].includes(k)?`<input type="text" id="sf-${k}" value="${esc(s[k])}">`:`<textarea id="sf-${k}">${esc(s[k])}</textarea>`}</div>`).join(""),
    async save(){const o={confirmed:confirmed(n),mot:$("sf-mot").checked};STAGE_FIELDS.forEach(([k])=>o[k]=$("sf-"+k).value.trim());await writeStage(n,o);toast("Stage saved")}})}
-async function toggleConfirm(n){const s=stage(n),o={confirmed:!confirmed(n),mot:s.mot};STAGE_FIELDS.forEach(([k])=>o[k]=s[k]);await writeStage(n,o);
+async function toggleConfirm(n){if(sampleBlocked())return;const s=stage(n),o={confirmed:!confirmed(n),mot:s.mot};STAGE_FIELDS.forEach(([k])=>o[k]=s[k]);await writeStage(n,o);
   if(o.confirmed){const nx=STAGES.find(x=>!confirmed(x.n));toast(nx?`Stage ${n} confirmed. Next to review: ${nx.short}.`:"All 11 stages confirmed.")}else toast(`Stage ${n} marked as proposed`)}
 function contactEditor(rk){const r=roleBy(rk),c=contact(rk);
   openEditor({title:r.name,ctx:"Who to call for this team",saveLabel:"Save contact",
@@ -1412,6 +1526,14 @@ $("perGrid").addEventListener("click",e=>{const b=e.target.closest("[data-per]")
 $("colTable").addEventListener("click",e=>{const r=e.target.closest("[data-col]");if(r)collEditor(r.dataset.col)});
 $("chkGroups").addEventListener("click",e=>{const t=e.target.closest("[data-tick]");if(t){toggleCheck(t.dataset.tick);return}const b=e.target.closest("[data-chk]");if(b)checkEditor(b.dataset.chk)});
 $("addPer").onclick=()=>personaEditor();$("addColl").onclick=()=>collEditor();$("addChk").onclick=()=>checkEditor();
+$("rq").addEventListener("input",e=>{ui.rq=e.target.value.trim();renderResources()});
+$("rChips").addEventListener("click",e=>{const b=e.target.closest("[data-rk]");if(b){ui.rk=b.dataset.rk;renderResources()}});
+$("rLib").addEventListener("click",e=>{const b=e.target.closest("[data-res]");if(b)resEditor(b.dataset.res)});
+$("rFacts").addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(b)copyText(b.dataset.copy,"Copied")});
+$("rCall").addEventListener("click",e=>{const r=e.target.closest("[data-stage-go]");if(r)go("playbook",{sel:+r.dataset.stageGo})});
+$("addRes").onclick=()=>resEditor();
+$("sampleBtn").onclick=()=>{sample=!sample;sampleData=null;render();toast(sample?"Showing sample data in every section":"Back to your own data")};
+async function copyText(t,msg){try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){const x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();try{document.execCommand("copy");toast(msg)}catch(_){toast("Copy was blocked. Try again.")}x.remove()}}
 $("addDep").onclick=()=>depEditor();$("addDep2").onclick=()=>depEditor();$("addDec").onclick=()=>decEditor();$("editPlan").onclick=planEditor;
 $("rail").addEventListener("click",e=>{const b=e.target.closest("[data-step]");if(b){ui.sel=+b.dataset.step;render()}});
 $("view").addEventListener("click",e=>{const c=e.target.closest(".cell"),sh=e.target.closest(".stagehead"),rh=e.target.closest(".rolehead");
@@ -1425,7 +1547,7 @@ $("dAR").onclick=()=>{ui.ar=true;saveUi();render()};$("dAll").onclick=()=>{ui.ar
 $("vM").onclick=()=>{ui.cards=false;saveUi();render()};$("vC").onclick=()=>{ui.cards=true;saveUi();render()};
 $("hl").onclick=()=>{ui.hl=!ui.hl;render()};
 $("ed-cancel").onclick=closeEditor;$("scrim").onclick=closeEditor;
-$("ed-save").onclick=async()=>{const s=ed.save;const r=await s();if(r!==false)closeEditor()};
+$("ed-save").onclick=async()=>{if(sampleBlocked()){closeEditor();return}const s=ed.save;const r=await s();if(r!==false)closeEditor()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&ed){closeEditor();return}
   if(e.key==="Escape"&&ui.tab==="overview"&&ui.peek){openPeek(0);return}
   if(ed)return;const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);if(typing||e.metaKey||e.ctrlKey||e.altKey)return;
@@ -1443,6 +1565,7 @@ $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;le
   else if(ui.tab==="personas"){what="Personas";rows=[["Name","Who","Segment","In their words","Wants","What we say","Owner","Reach via","Validated","Notes"].map(q).join(",")];personas().forEach(p=>rows.push([p.name,p.title,p.seg,p.quote,p.wants,p.say,p.owner,p.reach,p.validated?"Yes":"No",p.note].map(q).join(",")))}
   else if(ui.tab==="collateral"){what="Collateral and sign-offs";rows=[["Item","Stage","Owner","Medium","Status","Due","Note"].map(q).join(",")];collat().forEach(x=>rows.push([x.name,x.stages,ownerName(x.owner),x.medium,CSTAT[x.status][0],x.due,x.note].map(q).join(",")));
     rows.push("");rows.push(["Sign-off","Type","Detail","Owner","Due","Done","Note"].map(q).join(","));checks().forEach(c=>rows.push([c.title,(KINDS.find(k=>k[0]===c.kind)||["",""])[1],c.detail,roleBy(c.owner)?roleBy(c.owner).name:"",c.due,c.done?"Yes":"No",c.note].map(q).join(",")))}
+  else if(ui.tab==="resources"){what="Resources";rows=[["Title","Type","Link","Owner","What it's for","Tags"].map(q).join(",")];resources().forEach(r=>rows.push([r.title,r.kind,r.url,r.owner?ownerName(r.owner):"",r.note,r.tags].map(q).join(",")))}
   else if(ui.tab==="decisions"){what="Decisions";rows=[["Decision","Owner","Due","Status","Outcome"].map(q).join(",")];Object.values(over.decisions).forEach(d=>rows.push([d.title,d.owner&&roleBy(d.owner)?roleBy(d.owner).name:"",d.due,d.status,d.outcome].map(q).join(",")))}
   else{what="Playbook and RACI";rows=[["Team","Contact",...STAGES.map(s=>`${s.n}. ${s.name}`)].map(q).join(",")];
     ROLES.forEach(r=>{const c=contact(r.k);rows.push([q(r.name),q([c.name,c.contact].filter(Boolean).join(", ")),...STAGES.map(s=>{const x=cell(r.k,s.n);return q(x.v?`${x.v}: ${x.t}`:"")})].join(","))});
@@ -1450,7 +1573,7 @@ $("csv").onclick=async()=>{const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;le
   const txt=rows.join("\n");
   try{await navigator.clipboard.writeText(txt);toast(`${what} copied as CSV`)}
   catch(e){const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast(`${what} copied as CSV`)}catch(_){toast("Copy was blocked. Try again.")}t.remove()}};
-let armed=false;$("reset").onclick=async e=>{const b=e.currentTarget;
+let armed=false;$("reset").onclick=async e=>{if(sampleBlocked())return;const b=e.currentTarget;
   if(!armed){armed=true;b.textContent="Click again to reset";b.classList.add("danger-armed");setTimeout(()=>{armed=false;b.textContent="Reset to defaults";b.classList.remove("danger-armed")},3500);return}
   armed=false;b.textContent="Reset to defaults";b.classList.remove("danger-armed");for(const c of ["cells","stages"])for(const id of Object.keys(over[c]))await del(c,id);toast("Playbook and RACI reset. Customers, decisions and contacts were kept.")};
 $("exp").onclick=()=>{const data={app:"sapience-experience-playbook",version:1,exported:new Date().toISOString(),data:over};
@@ -1504,8 +1627,8 @@ async function sheetRefresh(){if(!sheet)return;if(sheetQueue.length){sheetFlush(
   catch(e){sheetErr=sheetMsg(e)}
   setStatus()}
 
-put=async function(c,id,obj){obj=stamp(obj);over[c][id]=obj;saveLocal();render();if(sheet)sheetQueueOp({op:"put",coll:c,id,obj})};
-del=async function(c,id){delete over[c][id];saveLocal();render();if(sheet)sheetQueueOp({op:"del",coll:c,id})};
+put=async function(c,id,obj){if(sampleBlocked())return;obj=stamp(obj);over[c][id]=obj;saveLocal();render();if(sheet)sheetQueueOp({op:"put",coll:c,id,obj})};
+del=async function(c,id){if(sampleBlocked())return;delete over[c][id];saveLocal();render();if(sheet)sheetQueueOp({op:"del",coll:c,id})};
 function afterImport(prev){if(!sheet)return;COLLS.forEach(c=>{Object.keys(prev[c]||{}).forEach(id=>{if(!over[c][id])sheetQueue.push({op:"del",coll:c,id})});Object.entries(over[c]).forEach(([id,obj])=>sheetQueue.push({op:"put",coll:c,id,obj}))});saveQueue();sheetFlush()}
 
 const _baseStatus=setStatus;

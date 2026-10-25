@@ -14,9 +14,16 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 | **Personas** | The 14 personas with their words, wants, what we say, owner and how to reach them. Mark each one validated once interviews confirm it, add notes, add your own or hide one. |
 | **Collateral** | The 13 collateral items with stage, owner, medium, status (not started, copy final, in design, printed or live), due date and blocker; then the sign-offs: 8 claims to confirm before printing, 5 open copy items and 7 persona assumptions to validate. Tick a sign-off when it's done. |
 | **Resources** | Your knowledge base: a library of the playbook documents, decks and templates (add your own links, filter by type), the ground rules, brand facts you can copy with one click, who to call at every stage, and a glossary. One search box covers all of it. |
+| **Customer timeline** | Click any customer (in Customers, on the journey, in Needs you or in search) to open their page: every stage they passed through with the date and business days spent against the limit, totals, the slowest stage, notes you add along the way, and who owns the next step. |
+| **Review mode** | **Start review** on the Overview opens an agenda for the weekly, monthly or quarterly review, following the review rhythm. **Print or save as PDF** produces a clean handout for the leadership meeting. |
+| **Team view** | A read-only view for stage owners: their stages, what they do in each, the customers in those stages, their key results and what is on their list. Preview it from **Preview team view** in the left menu. |
 | **Decisions** | Open decisions with an owner, a decide-by date and the outcome. |
 
 **Sample data.** Click **Show sample data** at the bottom of the left menu to fill every section with realistic sample customers, targets, scorecard results, sign-offs, decisions and contacts. Nothing is saved while it is on, and your own data comes back when you hide it.
+
+**Quick search.** Press **Ctrl K** (⌘K on a Mac) or click **Search** to jump to any customer, stage, team, persona, key result, document or glossary term, or to start an action such as adding a customer or starting a review.
+
+**Edit in place.** Change a customer's status, a key result's target, current number and status, a collateral item's status and due date, or a persona's validated flag right on the page. In Who does what, click a cell and press A, R, C or I (or Delete to clear). Click a name to open the full editor.
 
 ## Run it
 
@@ -33,6 +40,12 @@ python3 -m http.server 8000
 2. In the repository, go to **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
 4. The dashboard will be live at `https://<your-username>.github.io/<repo-name>/`.
+
+## Read-only team links
+
+In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (different from `SECRET`) and deploy a new version. In the dashboard, open **Google Sheet settings** and add the same phrase as the read-only key. Then open **Preview team view**, choose a team and click **Copy link for this team**. Anyone with that link sees only the team view and can never change anything; to cut access, change `READ_KEY` and deploy again.
+
+In the hosted playbook on Claude, share the page from its Share menu. People you share it with see the team view and can only read; only you can make changes.
 
 ## Where your data is saved
 

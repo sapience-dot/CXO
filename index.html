@@ -724,6 +724,11 @@ table.rv-t{min-width:720px}
 .tcard .btn.ghost{align-self:flex-start;padding-left:0}
 .sp.mine{box-shadow:0 0 0 2px var(--amber)}
 #teamPick{min-width:220px}
+.tpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+.tp{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border-radius:14px;box-shadow:0 1px 2px rgba(15,31,71,.05),0 6px 20px rgba(15,31,71,.05);padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.tp b{font-family:var(--display);font-size:16px}
+.tp:hover{box-shadow:0 0 0 2px var(--amber),0 6px 20px rgba(15,31,71,.08)}
+.tp:focus-visible{outline:2px solid var(--amber)}
 /* ---- print ---- */
 @media print{
   @page{margin:14mm}
@@ -1259,13 +1264,14 @@ function renderTabs(){const n=deps().filter(d=>d.status!=="done"&&needsAttn(d)).
 function go(tab,patch){Object.assign(ui,patch||{});if(team.on&&!navTabs().some(t=>t[0]===tab)&&tab!=="customer")tab="team";closePop();ui.tab=tab;try{history.replaceState(null,"","#"+tab)}catch(e){}render();window.scrollTo({top:0})}
 function renderBanner(){const sb=$("sampleBtn"),tb=$("teamBtn");if(sb){sb.textContent=sample?"Hide sample data":"Show sample data";sb.hidden=team.on&&!team.preview}if(tb)tb.hidden=team.on||!canWrite;
   let h="";
-  if(team.on&&team.preview){const link=typeof window.teamLinkFor==="function"&&team.role?window.teamLinkFor(team.role):"";
-    h+=`<div class="banner team"><span>Previewing the team view${team.role?` as <b>${esc(roleBy(team.role).name)}</b>`:""}. Stage owners see exactly this, read only.</span><span class="row-flex">${link?`<button class="btn small" id="copyTeam">Copy link for this team</button>`:`<span class="ctx" style="color:inherit;font-weight:500">To share it, use this page's Share menu.</span>`}<button class="btn small" id="exitTeam">Exit preview</button></span></div>`}
+  if(team.on&&team.preview){const can=typeof window.teamLinkFor==="function"&&window.teamLinkFor("")!=="";
+    h+=`<div class="banner team"><span>Previewing the team view${team.role?` as <b>${esc(roleBy(team.role).name)}</b>`:""}. Stage owners see exactly this, read only.</span><span class="row-flex">${can?`<button class="btn small primary" id="copyCommon">Copy common link</button>${team.role?`<button class="btn small" id="copyTeam">Copy link for this team</button>`:""}`:typeof window.teamLinkFor==="function"?`<span style="font-weight:500">Add a read-only key in Google Sheet settings to get shareable links.</span>`:`<span style="font-weight:500">To share it, use the Share button above this page.</span>`}<button class="btn small" id="exitTeam">Exit preview</button></span></div>`}
   else if(team.on)h+=`<div class="banner team"><span>Team view · read only. Your CXO keeps this playbook up to date.</span></div>`;
   if(sample)h+=`<div class="banner"><span>You're looking at sample data in every section. Nothing here is saved, and your own data comes back when you hide it.</span><button class="btn small" id="exitSample">Hide sample data</button></div>`;
   $("banner").innerHTML=h;
   const b=$("exitSample");if(b)b.onclick=()=>{sample=false;sampleData=null;render()};const x=$("exitTeam");if(x)x.onclick=exitTeam;
-  const c=$("copyTeam");if(c)c.onclick=()=>copyText(window.teamLinkFor(team.role),"Team link copied. Anyone with it can read the playbook, not change it.")}
+  const c=$("copyTeam");if(c)c.onclick=()=>copyText(window.teamLinkFor(team.role),"Team link copied. Anyone with it can read the playbook, not change it.");
+  const cc=$("copyCommon");if(cc)cc.onclick=()=>copyText(window.teamLinkFor(""),"Common link copied. Each person picks their team when they open it.")}
 
 /* ---------- overview ---------- */
 function renderOverview(){
@@ -1787,7 +1793,8 @@ function enterTeam(preview,role){team.on=true;team.preview=!!preview;if(preview)
 function exitTeam(){team.on=false;if(team.stash){canWrite=team.stash.canWrite;team.stash=null}team.preview=false;ui.role="";ui.tab="overview";setStatus();render()}
 function renderTeam(){const el=$("teamView"),roles=contactRoles(),r=roleBy(team.role);
   const picker=`<label class="ctx" for="teamPick">Your team</label> <select id="teamPick"><option value="">Choose your team</option>${roles.map(x=>`<option value="${x.k}" ${x.k===team.role?"selected":""}>${esc(x.name)}</option>`).join("")}</select>`;
-  if(!r){el.innerHTML=`<div class="page-head"><div><h1>Your part of the journey</h1><p>Choose your team to see the stages you own, what you do in each, the customers in them and how your results are tracking.</p></div></div><div class="panel pad">${picker}</div>`;bindTeam();return}
+  if(!r){el.innerHTML=`<div class="page-head"><div><h1>Choose your team</h1><p>Pick the team you belong to. You'll see the stages you own, what you do in each, the customers in them and how your results are tracking. This page remembers your choice, and you can switch any time.</p></div></div>
+    <div class="tpick">${roles.map(x=>{const own=STAGES.filter(s0=>{const a=accountable(s0.n);return a&&a.k===x.k}).map(s0=>s0.n),doing=STAGES.filter(s0=>cell(x.k,s0.n).v==="R").length,c=contact(x.k);return `<button class="tp" data-tpick="${x.k}"><b>${esc(x.name)}</b><span class="ctx">${own.length?`Owns stage ${own.join(", ")}`:doing?`Works in ${plural(doing,"stage")}`:"Supports the stage owners"}</span>${c.name?`<span class="ctx">${esc(c.name)}</span>`:""}</button>`}).join("")}</div>`;bindTeam();return}
   const c=contact(r.k),mine=STAGES.map(s0=>({s:stage(s0.n),x:cell(r.k,s0.n)})).filter(o=>o.x.v),own=mine.filter(o=>o.x.v==="A"),doing=mine.filter(o=>o.x.v==="R"),loop=mine.filter(o=>o.x.v==="C"||o.x.v==="I"),active=deps().filter(d=>d.status!=="done");
   const card=({s,x})=>{const ds=active.filter(d=>d.stage===s.n),nx=s.n<11?stage(s.n+1):null;return `<div class="tcard" style="--hue:${s.hue}"><div class="gh"><h3>${s.n}. ${esc(s.name)}</h3><i class="chip ${x.v}">${x.v}</i></div><p class="gt">${esc(x.t)||"No task written yet"}</p><p class="ctx" style="margin:0"><b>Done when:</b> ${esc(s.exit)}</p>${x.v==="A"&&nx?`<p class="ctx" style="margin:0"><b>Hands to:</b> ${esc(s.to)}</p>`:""}
      <div class="tc-cust">${ds.length?ds.map(d=>`<button class="tc-c" data-tcust="${d.id}"><b>${esc(d.customer)}</b><span class="${overdue(d)?"late":"ctx"}">${bdays(d.since)} of ${s.days} days</span><span class="pill ${(STATUS[d.status]||STATUS.on)[1]}">${(STATUS[d.status]||STATUS.on)[0]}</span></button>`).join(""):`<span class="ctx">No customers in this stage right now.</span>`}</div>
@@ -1805,13 +1812,13 @@ function renderTeam(){const el=$("teamView"),roles=contactRoles(),r=roleBy(team.
    </div>`;
   bindTeam()}
 function bindTeam(){const el=$("teamView"),p=$("teamPick");if(p)p.onchange=()=>setTeamRole(p.value);
-  el.onclick=e=>{const c=e.target.closest("[data-tcust]");if(c){openCustomer(c.dataset.tcust);return}const s=e.target.closest("[data-tstage]");if(s)go("playbook",{sel:+s.dataset.tstage})}}
+  el.onclick=e=>{const tp=e.target.closest("[data-tpick]");if(tp){setTeamRole(tp.dataset.tpick);window.scrollTo({top:0});return}const c=e.target.closest("[data-tcust]");if(c){openCustomer(c.dataset.tcust);return}const s=e.target.closest("[data-tstage]");if(s)go("playbook",{sel:+s.dataset.tstage})}}
 
 /* ---------- Ctrl+K quick search ---------- */
 let cmdSel=0,cmdRes=[];const CMD_ORDER=["Actions","Go to","Customers","Stages","Teams","Key results","Personas","Decisions","Sign-offs","Collateral","Resources","Glossary"];
 function cmdItems(){const I=[],add=(group,label,sub,run,keys)=>I.push({group,label,sub:sub||"",run,keys:keys||""}),ed=canEditNow();
   if(ed){add("Actions","Add customer","New customer rollout",()=>depEditor(),"new create");add("Actions","Add decision","",()=>decEditor(),"new create");add("Actions","Add sign-off","Claim, open copy or assumption",()=>checkEditor(),"new create");add("Actions","Add collateral item","",()=>collEditor(),"new create");add("Actions","Add persona","",()=>personaEditor(),"new create");add("Actions","Add resource","Document, deck or link",()=>resEditor(),"new create");add("Actions","Set targets","Devices and customers for the quarter",()=>planEditor(),"plan quarter")}
-  if(!team.on){add("Actions","Start monthly review","Agenda view you can print",()=>startReview("monthly"),"meeting pdf print");add("Actions","Start weekly review","",()=>startReview("weekly"),"meeting");add("Actions","Start quarterly review","",()=>startReview("quarterly"),"meeting");add("Actions","Copy weekly brief","With everything overdue, by date",()=>$("brief").click(),"email summary");add("Actions",sample?"Hide sample data":"Show sample data","",()=>{sample=!sample;sampleData=null;render()},"demo example");add("Actions","Preview team view","See what a stage owner sees",()=>enterTeam(true),"read only share")}
+  if(!team.on){add("Actions","Start monthly review","Agenda view you can print",()=>startReview("monthly"),"meeting pdf print");add("Actions","Start weekly review","",()=>startReview("weekly"),"meeting");add("Actions","Start quarterly review","",()=>startReview("quarterly"),"meeting");add("Actions","Copy weekly brief","With everything overdue, by date",()=>$("brief").click(),"email summary");add("Actions",sample?"Hide sample data":"Show sample data","",()=>{sample=!sample;sampleData=null;render()},"demo example");add("Actions","Preview team view","See what a stage owner sees",()=>enterTeam(true),"read only share");if(typeof window.teamLinkFor==="function"&&window.teamLinkFor(""))add("Actions","Copy common team link","One link for every stakeholder; each picks their team",()=>copyText(window.teamLinkFor(""),"Common link copied. Each person picks their team when they open it."),"share stakeholders github pages")}
   navTabs().forEach(([k,l])=>add("Go to",l,"",()=>go(k),"tab section page"));
   deps().forEach(d=>add("Customers",d.customer,`Stage ${d.stage}, ${stage(d.stage).short} · ${(STATUS[d.status]||STATUS.on)[0]}`,()=>openCustomer(d.id),"customer timeline"));
   STAGES.forEach(s0=>{const s=stage(s0.n),o=accountable(s.n);add("Stages",`${s.n}. ${s.name}`,o?short(o.name):"",()=>go("playbook",{sel:s.n}),s.short+" stage playbook")});

@@ -43,7 +43,7 @@ python3 -m http.server 8000
 
 ## Read-only team links
 
-In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (different from `SECRET`) and deploy a new version. In the dashboard, open **Google Sheet settings** and add the same phrase as the read-only key. Then open **Preview team view**, choose a team and click **Copy link for this team**. Anyone with that link sees only the team view and can never change anything; to cut access, change `READ_KEY` and deploy again.
+In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (different from `SECRET`) and deploy a new version. In the dashboard, open **Google Sheet settings** and add the same phrase as the read-only key. Then open **Preview team view** and click **Copy common link**: one link for every stakeholder, where each person picks their team the first time (it is remembered after that). **Copy link for this team** gives a link that opens straight on one team. Anyone with that link sees only the team view and can never change anything; to cut access, change `READ_KEY` and deploy again.
 
 In the hosted playbook on Claude, share the page from its Share menu. People you share it with see the team view and can only read; only you can make changes.
 

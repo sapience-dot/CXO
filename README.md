@@ -21,9 +21,7 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 | **Device installations** | On each order's page: one row per device with its device ID, vehicle number, status (pending, installed or issue), installation date, installer and a note. **Add device** adds one; **Add several** takes a pasted list (device ID, then vehicle number, one per line, straight from a spreadsheet) and skips IDs already in the order. Change a status or date right in the table; marking a device installed fills in today's date. A progress bar and filters show what is done, pending or has a problem, and **Copy list** puts the list on your clipboard as CSV. Orders show "x installed" in Customers, devices with an issue appear under Needs you, and quick search finds an order by device ID or vehicle number. |
 | **Decisions** | Open decisions with an owner, a decide-by date and the outcome. |
 
-**Settings and data.** Everything that isn't a section sits under **Settings and data** at the bottom of the left menu (in **More** on phones): Preview team view, Show sample data, Google Sheet settings or Team access, Copy as CSV, Export backup and Import backup. The save status always stays visible above it.
-
-**Sample data.** Click **Show sample data** under **Settings and data** to fill every section with realistic sample customers, targets, scorecard results, sign-offs, decisions and contacts. Nothing is saved while it is on, and your own data comes back when you hide it.
+**Settings and data.** Everything that isn't a section sits under **Settings and data** at the bottom of the left menu (in **More** on phones): Preview team view, Copy as CSV, Export backup, Import backup, Team access and Sign out. The save status always stays visible above it.
 
 **On phones and tablets.** On a phone the menu moves to a tab bar at the bottom (Overview, Customers, Scorecard, Search and More); More opens every section and setting. Tablets keep the side menu. A short branded splash plays once per visit.
 
@@ -31,102 +29,59 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 
 **Edit in place.** Change a customer's status, a key result's target, current number and status, a collateral item's status and due date, or a persona's validated flag right on the page. In Who does what, click a cell and press A, R, C or I (or Delete to clear). Click a name to open the full editor.
 
-## Run it
+## Where the data lives
 
-No build step and no dependencies. Open `index.html` in a browser, or serve the folder:
+Everything is saved in one place: your Google Firebase project **cxo-playbook** (Cloud Firestore, free Spark plan). Nothing is kept in the code or the repository. Everyone signs in with Google. Changes sync live between computers and phones, work offline and catch up when the connection returns.
+
+- **Editor:** `marketing@sapienceautomata.com` can change everything.
+- **Readers:** everyone with a `@sapienceautomata.com` Google account, plus anyone you add under **Team access**, sees the read-only team view.
+- **Everyone else** who signs in sees "Not shared with you yet".
+
+To change who edits, update `editors` in `firebase-config.js` **and** `isEditor()` in `firebase/firestore.rules`, then publish the rules. To stop company-wide reading, change the domain line in the rules as its comment explains.
+
+## Go live (about 15 minutes, once)
+
+The web app keys are already in `firebase-config.js`. Finish these steps in the Firebase console (console.firebase.google.com ▸ **cxo-playbook**):
+
+1. **Firestore.** Build ▸ Firestore Database ▸ **Create database** ▸ location `asia-south1 (Mumbai)` ▸ **Start in production mode**.
+2. **Rules.** Firestore Database ▸ **Rules**: replace everything with the contents of `firebase/firestore.rules` and click **Publish**. Until you do, nobody can read or write, because production mode denies everything.
+3. **Google sign-in.** Build ▸ Authentication ▸ **Get started** ▸ Sign-in method ▸ **Google** ▸ Enable ▸ choose a support email ▸ Save.
+4. **Authorized domain.** Authentication ▸ Settings ▸ **Authorized domains** ▸ Add domain: your GitHub Pages address, for example `yourname.github.io` (just the host, no `https://` or path). `cxo-playbook.web.app` and `localhost` are allowed already.
+5. **Publish the site.** Push this folder to GitHub, then in the repository open **Settings ▸ Pages ▸ Deploy from a branch ▸ `main` / `(root)` ▸ Save**. The playbook is live at `https://<your-username>.github.io/<repo-name>/`.
+6. **First sign-in.** Open the link and sign in as `marketing@sapienceautomata.com`. The database starts empty: add your first customer, or use **Import backup** if you exported one from an earlier version.
+7. **Check the lock.** In a private window, sign in with a personal Gmail account that isn't on the list. It must show "Not shared with you yet". Then add a colleague under **Team access** and check they get the read-only view.
+
+**Alternative to GitHub Pages: Firebase Hosting (also free).** With Node.js installed: `npm install -g firebase-tools`, `firebase login`, then in this folder `firebase deploy`. That publishes the site to `https://cxo-playbook.web.app` and the security rules in one step (`firebase.json` and `.firebaserc` are set up for it). `firebase deploy --only firestore:rules` publishes just the rules.
+
+**If the page says…**
+
+| Message | What to do |
+|---|---|
+| Connect the database | `firebase-config.js` is missing a value, or `editors` still has the example address. |
+| This web address isn't allowed to sign in yet | Do step 4 for the address in your browser bar. |
+| Not shared with you yet | That Google account isn't the editor, isn't on your domain and isn't on Team access. |
+| Can't reach the database / Missing or insufficient permissions | Firestore isn't created yet (step 1) or the rules aren't published (step 2). |
+| The sign-in window closes straight away | Allow pop-ups for the site; it falls back to a full-page sign-in when pop-ups are blocked. |
+
+## Sharing with the team
+
+Send everyone the same link. Colleagues with a `@sapienceautomata.com` Google account can open it straight away. Add anyone else, such as distributors or the manufacturer, under **Settings and data ▸ Team access**: they sign in with that Google account and see the read-only team view. In **Preview team view**, **Copy common link** gives one link where each person picks their team the first time; **Copy link for this team** opens straight on one team (the link ends in `#team=ops`, for example).
+
+## Free limits and backups
+
+The Spark plan gives 1 GiB of storage, 50,000 document reads and 20,000 writes a day, with no card and no bill. The playbook is a few hundred small documents, so opening it reads a few hundred: comfortable for daily team use. If a daily limit is ever reached, the database pauses until it resets the next day.
+
+Use **Export backup** once a week and keep the file somewhere private: it contains customer names. **Import backup** (editors only) replaces the database with the file's contents.
+
+**Security.** The values in `firebase-config.js` are public by design; the published rules decide who can read and write. The rules only allow the playbook's own collections, only verified Google accounts, and only the editor to write. If the repository is public, the code is public but the data isn't: it lives in Firestore. Never commit backup files.
+
+## Run it on your computer
+
+Serve the folder and open it at `http://localhost:8000` (localhost is an allowed sign-in address):
 
 ```bash
 python3 -m http.server 8000
-# then open http://localhost:8000
 ```
-
-### Publish with GitHub Pages
-
-1. Push this folder to a GitHub repository.
-2. In the repository, go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
-4. The dashboard will be live at `https://<your-username>.github.io/<repo-name>/`.
-
-## Go-live checklist
-
-Pick one place to save data, then replace its placeholders before sharing the link:
-
-- **Firebase (recommended):** in `firebase-config.js`, fill in `apiKey`, `authDomain`, `projectId` and `appId`, and replace `cxo@example.com` with your Google account. In `firebase/firestore.rules`, replace `cxo@example.com` and `example[.]com` with the same account and your company domain, then publish the rules. Test with a Google account that is not on the list: it should see "Not shared with you yet".
-- **Google Sheet:** in `apps-script/Code.gs`, change `SECRET`, and also `READ_KEY` if you want team links. Then deploy a new version.
-- **Browser only:** nothing to set. Data stays in that one browser, so use **Export backup** every week.
-- Turn **Show sample data** off before the first real review. Sample data is never saved.
-
-## Read-only team links
-
-In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (different from `SECRET`) and deploy a new version. In the dashboard, open **Google Sheet settings** and add the same phrase as the read-only key. Then open **Preview team view** and click **Copy common link**: one link for every stakeholder, where each person picks their team the first time (it is remembered after that). **Copy link for this team** gives a link that opens straight on one team. Anyone with that link sees only the team view and can never change anything; to cut access, change `READ_KEY` and deploy again.
-
-In the hosted playbook on Claude, share the page from its Share menu. People you share it with see the team view and can only read; only you can make changes.
-
-## Free database: Google Firebase (recommended)
-
-A real cloud database on Firebase's free Spark plan: no credit card, it doesn't pause when idle, it syncs live between devices, works offline, and everyone signs in with Google. The CXO edits; everyone else you allow gets the read-only team view. Google Sheets and browser-only saving still work when this isn't set up.
-
-**Set up once (about 15 minutes):**
-
-1. Go to console.firebase.google.com, choose **Create a project** and name it, for example `sapience-playbook`. Google Analytics can be turned off. The project stays on the free Spark plan.
-2. **Build ▸ Firestore Database ▸ Create database.** Choose a location near you (for India, `asia-south1` Mumbai) and **Start in production mode**.
-3. **Build ▸ Authentication ▸ Get started ▸ Sign-in method ▸ Google ▸ Enable**, then Save.
-4. **Authentication ▸ Settings ▸ Authorized domains ▸ Add domain**: your GitHub Pages address, for example `yourname.github.io`.
-5. **Firestore Database ▸ Rules**: paste the contents of `firebase/firestore.rules`. Replace `cxo@example.com` with the CXO's Google account and `example[.]com` with your company domain (for example `sapienceautomata[.]com`), then **Publish**.
-6. **Project settings ▸ General ▸ Your apps ▸ Web (</>)**: register an app (no hosting needed) and copy `apiKey`, `authDomain`, `projectId` and `appId` into `firebase-config.js`. Put the same CXO email in `editors` and the domain in `viewerDomain`.
-7. Commit and push. Open your Pages link and sign in with the CXO account. If this browser or your Google Sheet already holds the playbook, it offers to copy it into the database.
-
-**Sharing.** Send the same link to everyone. Colleagues with a company Google account can open it straight away. Add anyone else, such as distributors or the manufacturer, under **Team access** in the left menu. They sign in with that Google account and see the read-only team view; links ending in `#team=ops` open straight on that team.
-
-**Free limits.** The Spark plan gives 1 GiB of storage, 50,000 reads and 20,000 writes a day. The playbook is a few hundred small records, so a full page load reads a few hundred documents: comfortable for a team using it daily. If a limit is reached, the database pauses until the next day's reset; it never bills you on Spark.
-
-**Security.** The values in `firebase-config.js` are public by design. Access is enforced by the rules you published in step 5: only the editor emails can write; only your domain and the Team access list can read.
-
-## Where your data is saved
-
-**With Google Sheets (recommended).** Connect the dashboard to a Google Sheet you own and every change is saved there. You can open the dashboard from any computer or phone, read and edit the data in Sheets, and Google keeps the version history.
-
-**Without it.** Data is saved only in this browser's local storage on this device. Use **Export backup** and **Import backup** to move or protect it.
-
-### Connect a Google Sheet (about 5 minutes, once)
-
-1. Create a blank Google Sheet, for example "Sapience Experience Playbook". Keep it private.
-2. In the sheet, open **Extensions ▸ Apps Script**. Delete what's there and paste in everything from `apps-script/Code.gs`.
-3. On the line `const SECRET = '...'`, replace the text with a long phrase only you know, for example `punchiry-blue-otter-2026`. Click **Save**.
-4. Choose `setup` in the function menu and click **Run**. Google will ask you to allow access to your own sheet: choose your account, then **Advanced ▸ Go to project ▸ Allow**. Eleven tabs appear: Customers, Decisions, Targets, Playbook, RACI, Contacts, Scorecard, Personas, Collateral, Sign-offs and Resources.
-5. Click **Deploy ▸ New deployment**. Choose type **Web app**. Set **Execute as: Me** and **Who has access: Anyone**. Click **Deploy** and copy the **Web app URL**. It ends in `/exec`. On a company Google Workspace account it looks like `https://script.google.com/a/macros/yourcompany.com/s/…/exec`; that's fine.
-6. Open the dashboard, click **Connect Google Sheet** at the bottom of the left menu, paste the URL and your secret phrase, then click **Connect**.
-
-If the sheet is empty, everything already in your browser is copied into it. If the sheet already has data, the dashboard loads from the sheet. On a second computer or phone, repeat step 6 only.
-
-**Check it works.** Before step 6, open your Web app URL with `?key=` and your phrase added, for example `https://script.google.com/macros/s/…/exec?key=punchiry-blue-otter-2026`, in a new browser tab. You should see `{"ok":true,"data":{…}}`.
-
-### If the dashboard says "Google didn't answer"
-
-Open the test link shown in the Connect panel, or the address above, and look at what Google shows:
-
-| What you see | What to do |
-|---|---|
-| `{"ok":true,…}` | The sheet works. Reload the dashboard and connect again. |
-| A Google sign-in page, or "You need access" | In **Deploy ▸ Manage deployments ▸ Edit**, set **Who has access** to **Anyone**. On a company Google Workspace account where only "Anyone within your company" is offered, choose that and stay signed in to that account in the same browser. |
-| "Script function not found: doGet" | Save the code, then **Deploy ▸ Manage deployments ▸ Edit ▸ Version: New version ▸ Deploy**. |
-| `{"ok":false,"error":"Set SECRET…"}` | Change `SECRET` in Code.gs, save, and deploy a new version. |
-| `{"ok":false,"error":"The secret key does not match…"}` | Type the same phrase in the dashboard as in Code.gs. |
-| "Authorization is required" or an error about permissions | Run `setup` again in Apps Script and click **Allow**. |
-
-Use the URL ending in `/exec`. The one ending in `/dev` only works inside Apps Script.
-
-**How syncing works.** Each change saves in the browser first and then goes to the sheet within a second or two. If you're offline, changes wait and send automatically when you're back; the status at the bottom of the left menu shows how many are waiting. Edits you make directly in the sheet appear in the dashboard when you return to its tab, or within a minute.
-
-**Editing in the sheet.** You can edit any cell. Keep the header row as it is, keep the `ID` column filled, and use the values shown in the header for Status and Role. Dates work typed as `2026-10-22` or picked from a date. You can add your own columns; the dashboard leaves them alone.
-
-**Updating from an earlier version.** Paste the new `Code.gs` over the old one (keep your `SECRET`), run `setup` once, then deploy a new version as below. Your data stays; the new tabs and columns are added.
-
-**Updating the script.** If you change `Code.gs` later, use **Deploy ▸ Manage deployments ▸ Edit ▸ Version: New version** so the URL stays the same.
-
-**Security.** The sheet stays private in your Google Drive. The dashboard reaches it only through the Web app URL together with your secret phrase, so keep both to yourself. Anyone who has both can read and change the playbook. To shut off access, change `SECRET` and deploy a new version, or archive the deployment.
-
-If the repository is public, the dashboard code is public, but your data is not: it lives in your Google Sheet or your browser and is never committed to the repo. Don't commit backup files if they contain customer names.
 
 ## Customizing
 
@@ -135,9 +90,9 @@ All stage definitions, experience promises, SLA defaults (in business days) and 
 ## Files
 
 - `index.html` — the whole app (HTML, CSS and JavaScript in one file)
-- `firebase-config.js` — free Firebase database settings (leave empty to skip)
-- `firebase/firestore.rules` — who can read and write the database
-- `apps-script/Code.gs` — the Google Sheets backend you paste into Apps Script
+- `firebase-config.js` — the Firebase project keys and the editor list
+- `firebase.json`, `.firebaserc` — optional: deploy the site and rules with the Firebase CLI
+- `firebase/firestore.rules` — who can read and write the database (paste into the console, or `firebase deploy`)
 - `README.md` — this file
 
 ## How the numbers work

@@ -1,7 +1,6 @@
-/* Sapience Experience Playbook: free database settings (Google Firebase, Spark plan).
-   Leave apiKey empty to keep using this browser or a Google Sheet instead.
+/* Sapience Experience Playbook: database settings (Google Firebase, project "cxo-playbook").
    These values are not secret: Firebase's security rules (firebase/firestore.rules) decide who can read and write.
-   Fill them in from Firebase console ▸ Project settings ▸ Your apps ▸ Web app ▸ SDK setup and configuration. */
+   If you change who can edit, change it here AND in firebase/firestore.rules, then publish the rules. */
 window.SAPIENCE_FIREBASE = {
   apiKey: "AIzaSyCzOSgRjx1XDD-JxCo7Jzfn3-X6dcagUkw",
   authDomain: "cxo-playbook.firebaseapp.com",
@@ -9,9 +8,8 @@ window.SAPIENCE_FIREBASE = {
   storageBucket: "cxo-playbook.firebasestorage.app",
   messagingSenderId: "965214592060",
   appId: "1:965214592060:web:41a1c3bcf5417b873cb739",
-  measurementId: "G-CBWTM0W04S"
-  // Google accounts that can edit (the CXO). Must match the list in firebase/firestore.rules.
-  editors: ["animesh@sapienceautomata.com"],
-  // Optional: everyone with this email domain can open the read-only team view. Must match the rules.
-  viewerDomain: ""
+  // Google accounts that can edit. Must match isEditor() in firebase/firestore.rules.
+  editors: ["marketing@sapienceautomata.com"],
+  // Everyone with a Google account on this domain can open the read-only team view. Must match isViewer() in the rules.
+  viewerDomain: "sapienceautomata.com"
 };

@@ -49,6 +49,26 @@ In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (di
 
 In the hosted playbook on Claude, share the page from its Share menu. People you share it with see the team view and can only read; only you can make changes.
 
+## Free database: Google Firebase (recommended)
+
+A real cloud database on Firebase's free Spark plan: no credit card, it doesn't pause when idle, it syncs live between devices, works offline, and everyone signs in with Google. The CXO edits; everyone else you allow gets the read-only team view. Google Sheets and browser-only saving still work when this isn't set up.
+
+**Set up once (about 15 minutes):**
+
+1. Go to console.firebase.google.com, choose **Create a project** and name it, for example `sapience-playbook`. Google Analytics can be turned off. The project stays on the free Spark plan.
+2. **Build ▸ Firestore Database ▸ Create database.** Choose a location near you (for India, `asia-south1` Mumbai) and **Start in production mode**.
+3. **Build ▸ Authentication ▸ Get started ▸ Sign-in method ▸ Google ▸ Enable**, then Save.
+4. **Authentication ▸ Settings ▸ Authorized domains ▸ Add domain**: your GitHub Pages address, for example `yourname.github.io`.
+5. **Firestore Database ▸ Rules**: paste the contents of `firebase/firestore.rules`. Replace `cxo@example.com` with the CXO's Google account and `example[.]com` with your company domain (for example `sapienceautomata[.]com`), then **Publish**.
+6. **Project settings ▸ General ▸ Your apps ▸ Web (</>)**: register an app (no hosting needed) and copy `apiKey`, `authDomain`, `projectId` and `appId` into `firebase-config.js`. Put the same CXO email in `editors` and the domain in `viewerDomain`.
+7. Commit and push. Open your Pages link and sign in with the CXO account. If this browser or your Google Sheet already holds the playbook, it offers to copy it into the database.
+
+**Sharing.** Send the same link to everyone. Colleagues with a company Google account can open it straight away. Add anyone else, such as distributors or the manufacturer, under **Team access** in the left menu. They sign in with that Google account and see the read-only team view; links ending in `#team=ops` open straight on that team.
+
+**Free limits.** The Spark plan gives 1 GiB of storage, 50,000 reads and 20,000 writes a day. The playbook is a few hundred small records, so a full page load reads a few hundred documents: comfortable for a team using it daily. If a limit is reached, the database pauses until the next day's reset; it never bills you on Spark.
+
+**Security.** The values in `firebase-config.js` are public by design. Access is enforced by the rules you published in step 5: only the editor emails can write; only your domain and the Team access list can read.
+
 ## Where your data is saved
 
 **With Google Sheets (recommended).** Connect the dashboard to a Google Sheet you own and every change is saved there. You can open the dashboard from any computer or phone, read and edit the data in Sheets, and Google keeps the version history.
@@ -102,6 +122,8 @@ All stage definitions, experience promises, SLA defaults (in business days) and 
 ## Files
 
 - `index.html` — the whole app (HTML, CSS and JavaScript in one file)
+- `firebase-config.js` — free Firebase database settings (leave empty to skip)
+- `firebase/firestore.rules` — who can read and write the database
 - `apps-script/Code.gs` — the Google Sheets backend you paste into Apps Script
 - `README.md` — this file
 

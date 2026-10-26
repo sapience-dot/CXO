@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="firebase-config.js"></script>
 <meta name="description" content="Sapience Experience Playbook: the Blinksmart customer journey, customers, stage promises, RACI and decisions.">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
@@ -2150,6 +2151,121 @@ initStore=async function(){
 window.addEventListener("focus",()=>{if(sheet&&!ed)sheetRefresh()});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&sheet&&!ed)sheetRefresh()});
 setInterval(()=>{if(sheet&&!document.hidden&&!ed)sheetRefresh()},60000);
+
+/* ---------- Free database: Google Firebase (Cloud Firestore, Spark plan) ----------
+   Turns on when firebase-config.js is filled in. Everyone signs in with Google.
+   Editors (the CXO) can change everything; everyone else the rules allow gets the read-only team view.
+   Data syncs live, works offline and catches up when the connection returns. */
+(()=>{
+const FB=window.SAPIENCE_FIREBASE&&window.SAPIENCE_FIREBASE.projectId&&window.SAPIENCE_FIREBASE.apiKey?window.SAPIENCE_FIREBASE:null;
+if(!FB)return;
+const V="10.12.2",U=m=>`https://www.gstatic.com/firebasejs/${V}/firebase-${m}.js`;
+const EDITORS=(FB.editors||[]).map(e=>String(e).trim().toLowerCase()).filter(Boolean);
+const LOGO=(document.querySelector(".sp-sa")||{}).src||"";
+let A=null,S=null,fdb=null,auth=null,user=null,unsubs=[],loaded=new Set(),pending=false,cached=false,err="",offered=false,accessDocs={},accessUnsub=null;
+window.FIREBASE_MODE=true;
+/* Sheets sync is replaced by the database in this mode. */
+try{sheet=null;sheetQueue=[]}catch(e){}
+
+const css=document.createElement("style");css.textContent=`
+.gate{position:fixed;inset:0;z-index:95;background:#0F1B2D;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
+.gate-in{max-width:420px;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;font-family:var(--body)}
+.gate-in img{width:min(260px,70vw);height:auto}
+.gate-in h1{margin:6px 0 0;font-family:var(--display);font-size:26px;font-weight:800}
+.gate-in p{margin:0;color:#C9D2DF;font-size:14.5px;line-height:1.5}
+.gate-in .gate-msg{background:rgba(245,165,36,.14);color:#FFD8A0;border-radius:10px;padding:10px 12px;font-size:13.5px}
+.gate-in .gbtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:10px;background:#fff;color:#0F1B2D;font-weight:700;font-size:15px;padding:12px 20px;border-radius:12px;min-height:48px}
+.gate-in .gbtn:focus-visible{outline:2px solid #F5A524;outline-offset:3px}
+.gate-in .glink{all:unset;cursor:pointer;color:#C9D2DF;text-decoration:underline;font-size:13.5px}
+.acc-row{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:9px;padding:8px 10px;font-size:13.5px}
+.acc-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+`;document.head.appendChild(css);
+
+function gate(html){let g=$("gate");if(!g){g=document.createElement("div");g.id="gate";g.className="gate";g.setAttribute("role","dialog");g.setAttribute("aria-modal","true");g.setAttribute("aria-label","Sign in");document.body.appendChild(g)}g.innerHTML=`<div class="gate-in">${LOGO?`<img src="${LOGO}" alt="Sapience Automata">`:""}${html}</div>`;g.hidden=false;const f=g.querySelector("button");if(f)setTimeout(()=>f.focus(),50)}
+function ungate(){const g=$("gate");if(g)g.hidden=true}
+const GICON=`<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.5 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.3 5.7c4.3-4 7-9.9 7-16.7z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-3-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.8-5.8l-7.3-5.7c-2 1.4-4.7 2.3-8.5 2.3-6.3 0-11.6-4.1-13.4-9.9l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>`;
+function signInScreen(msg){gate(`<h1>Experience Playbook</h1><p>Sign in with your Google account to open the playbook.</p>${msg?`<p class="gate-msg">${msg}</p>`:""}<button class="gbtn" id="gIn">${GICON}Sign in with Google</button>`);$("gIn").onclick=signIn}
+function noAccess(){stopAll();gate(`<h1>Not shared with you yet</h1><p>You're signed in as <b>${esc(user&&user.email)}</b>, but this playbook hasn't been shared with that account.</p><p>Ask your CXO to add this email under Team access, then open the link again.</p><button class="gbtn" id="gOut">Use a different account</button>`);$("gOut").onclick=()=>S.auth.signOut(auth)}
+function errScreen(m){gate(`<h1>Can't reach the database</h1><p class="gate-msg">${esc(m)}</p><button class="gbtn" id="gRe">Try again</button>`);$("gRe").onclick=()=>location.reload()}
+async function signIn(){const p=new S.auth.GoogleAuthProvider();p.setCustomParameters({prompt:"select_account"});
+  try{await S.auth.signInWithPopup(auth,p)}catch(e){const c=e&&e.code||"";
+    if(/popup-blocked|operation-not-supported|web-storage-unsupported/.test(c)){try{await S.auth.signInWithRedirect(auth,p)}catch(x){signInScreen(esc(x.message||"Sign-in failed."))}}
+    else if(/popup-closed|cancelled-popup/.test(c))signInScreen("");
+    else if(/unauthorized-domain/.test(c))signInScreen("This web address isn't allowed to sign in yet. In Firebase, add it under Authentication ▸ Settings ▸ Authorized domains.");
+    else signInScreen(esc(e.message||"Sign-in failed."))}}
+
+const clean=o=>JSON.parse(JSON.stringify(o));
+function stopAll(){unsubs.forEach(u=>{try{u()}catch(e){}});unsubs=[];loaded=new Set();if(accessUnsub){try{accessUnsub()}catch(e){}accessUnsub=null}}
+function fail(e){const c=e&&e.code||"";if(c==="permission-denied")toast("Only an editor can change the playbook.");else toast("That change didn't save: "+(e&&e.message||"unknown error"))}
+const isEditor=()=>!!(user&&EDITORS.includes(String(user.email||"").toLowerCase()));
+
+put=async function(c,id,obj){if(sampleBlocked())return;obj=stamp(obj);over[c][id]=obj;render();
+  if(!fdb||!user){toast("Sign in to save changes.");return}
+  pending=true;setStatus();S.fs.setDoc(S.fs.doc(fdb,c,id),clean(obj)).catch(fail)};
+del=async function(c,id){if(sampleBlocked())return;delete over[c][id];render();
+  if(!fdb||!user){toast("Sign in to save changes.");return}
+  pending=true;setStatus();S.fs.deleteDoc(S.fs.doc(fdb,c,id)).catch(fail)};
+async function batchWrite(ops){/* ops: [{op,c,id,obj}] in chunks Firestore accepts */
+  for(let i=0;i<ops.length;i+=400){const b=S.fs.writeBatch(fdb);ops.slice(i,i+400).forEach(o=>{const r=S.fs.doc(fdb,o.c,o.id);if(o.op==="del")b.delete(r);else b.set(r,clean(o.obj))});await b.commit()}}
+afterImport=function(prev){if(!fdb||!isEditor())return;const ops=[];COLLS.forEach(c=>{Object.keys(prev[c]||{}).forEach(id=>{if(!over[c][id])ops.push({op:"del",c,id})});Object.entries(over[c]).forEach(([id,obj])=>ops.push({op:"put",c,id,obj}))});
+  batchWrite(ops).then(()=>toast("Backup saved to the database")).catch(fail)};
+
+window.teamLinkFor=role=>location.href.split("#")[0]+(role?"#team="+encodeURIComponent(role):"");
+
+const _st=setStatus;
+setStatus=function(){_st();const s=$("status"),b=$("sheetBtn");if(b)b.hidden=true;if(!s)return;
+  ["fbOut","accessBtn"].forEach(id=>{const x=$(id);if(x)x.hidden=!user||(id==="accessBtn"&&!isEditor())});
+  if(!user){s.className="savestate warn";s.textContent="Not signed in";return}
+  const who=user.email||"signed in";
+  if(err){s.className="savestate warn";s.textContent="Can't reach the database";s.title=err;return}
+  if(!navigator.onLine||(cached&&pending)){s.className="savestate warn";s.textContent="Offline · changes sync when you're back";s.title=who;return}
+  if(pending){s.className="savestate warn";s.textContent="Saving to database…";s.title=who;return}
+  s.className=team.on&&!team.preview?"savestate warn":"savestate";s.textContent=team.on&&!team.preview?`Read only · ${who}`:`Saved to database · ${who}`;s.title=who};
+window.addEventListener("online",()=>setStatus());window.addEventListener("offline",()=>setStatus());
+
+function start(){err="";const ed=isEditor();canWrite=ed;
+  const role=new URLSearchParams((location.hash||"").slice(1)).get("team");
+  if(!ed)enterTeam(false,role&&contactRoles().some(r=>r.k===role)?role:"");else if(team.on&&!team.preview)exitTeam();
+  ungate();COLLS.forEach(c=>over[c]={});setStatus();render();
+  COLLS.forEach(c=>unsubs.push(S.fs.onSnapshot(S.fs.collection(fdb,c),{includeMetadataChanges:true},snap=>{const m={};snap.forEach(d=>{m[d.id]=d.data()});over[c]=m;
+      pending=snap.metadata.hasPendingWrites;cached=snap.metadata.fromCache;loaded.add(c);setStatus();render();if(loaded.size===COLLS.length&&ed&&!offered)offerMove()},
+    e=>{if(e&&e.code==="permission-denied")noAccess();else{err=e&&e.message||"error";setStatus()}})));
+  if(ed)accessUnsub=S.fs.onSnapshot(S.fs.collection(fdb,"access"),snap=>{const m={};snap.forEach(d=>{m[d.id]=d.data()});accessDocs=m},()=>{})}
+
+/* Moving existing data in: from this browser, or from the Google Sheet used before. */
+function offerMove(){offered=true;if(COLLS.some(c=>Object.keys(over[c]).length))return;
+  let local=null,sheetCfg=null;try{local=JSON.parse(localStorage.getItem(LKEY)||"null")}catch(e){}try{sheetCfg=JSON.parse(localStorage.getItem("blinksmart-sheet")||"null")}catch(e){}
+  const n=local?COLLS.reduce((a,c)=>a+Object.keys(local[c]||{}).length,0):0;if(!n&&!sheetCfg)return;
+  openEditor({title:"Move your playbook into the database",ctx:"The database is empty",saveLabel:n?"Copy from this browser":"Copy from Google Sheet",
+    body:`<p style="margin:0">Your new database has no data yet.${n?` This browser holds <b>${plural(n,"record")}</b> from before.`:""}${sheetCfg?" You were also connected to a Google Sheet.":""} Copy it in once, and from then on everything saves to the database.</p>`,
+    extra:n&&sheetCfg?`<button class="btn small" id="mvSheet">Copy from Google Sheet instead</button>`:"",
+    init(){const b=$("mvSheet");if(b)b.onclick=async()=>{closeEditor();await moveFromSheet(sheetCfg)}},
+    async save(){if(n){const ops=[];COLLS.forEach(c=>Object.entries(local[c]||{}).forEach(([id,obj])=>ops.push({op:"put",c,id,obj})));try{await batchWrite(ops);toast(`Copied ${plural(ops.length,"record")} into the database`)}catch(e){fail(e)}}else await moveFromSheet(sheetCfg)}})}
+async function moveFromSheet(cfg){toast("Reading your Google Sheet…");try{const data=await sheetLoad(cfg);const ops=[];COLLS.forEach(c=>Object.entries(data[c]||{}).forEach(([id,obj])=>ops.push({op:"put",c,id,obj})));await batchWrite(ops);toast(`Copied ${plural(ops.length,"record")} from the sheet`)}catch(e){toast("Couldn't read the sheet: "+(e.message||e))}}
+
+/* Team access: who can open the read-only view. */
+function accessEditor(){if(!isEditor())return;const rows=()=>Object.keys(accessDocs).sort().map(e=>`<div class="acc-row"><span>${esc(e)}</span><button class="btn small" data-rm="${esc(e)}">Remove</button></div>`).join("")||`<p class="ctx" style="margin:0">No one added yet.</p>`;
+  openEditor({title:"Team access",ctx:"People who can open the read-only team view",saveLabel:"Add",
+    body:`${FB.viewerDomain?`<p class="ctx" style="margin:0">Everyone with an <b>@${esc(FB.viewerDomain)}</b> Google account can already read it.</p>`:""}
+      <div class="f"><label for="acc-e">Add a Google account email</label><input type="text" id="acc-e" placeholder="name@company.com" autocomplete="off"></div><div id="acc-list" style="display:flex;flex-direction:column;gap:6px">${rows()}</div>
+      <p class="ctx" style="margin:0">Then send them this site's link. They sign in with that Google account and see the playbook, read only. Editors are set in firebase-config.js and the security rules.</p>`,
+    init(){$("acc-list").onclick=async e=>{const b=e.target.closest("[data-rm]");if(!b)return;try{await S.fs.deleteDoc(S.fs.doc(fdb,"access",b.dataset.rm));delete accessDocs[b.dataset.rm];$("acc-list").innerHTML=rows();toast("Access removed")}catch(x){fail(x)}}},
+    async save(){const e=$("acc-e").value.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){toast("Enter a full email address");$("acc-e").focus();return false}
+      try{await S.fs.setDoc(S.fs.doc(fdb,"access",e),{email:e,addedBy:user.email,at:new Date().toISOString()});accessDocs[e]={email:e};$("acc-e").value="";$("acc-list").innerHTML=rows();toast(`${e} can now open the team view`)}catch(x){fail(x)}return false}})}
+
+/* Rail buttons */
+const foot=document.querySelector(".rail-foot");
+if(foot){foot.insertAdjacentHTML("beforeend",`<button class="rbtn" id="accessBtn" hidden>Team access</button><button class="rbtn" id="fbOut" hidden>Sign out</button>`);
+  $("accessBtn").onclick=accessEditor;$("fbOut").onclick=()=>{stopAll();S.auth.signOut(auth)}}
+
+initStore=async function(){setStatus();render();
+  try{const [app,authM,fs]=await Promise.all([import(U("app")),import(U("auth")),import(U("firestore"))]);S={auth:authM,fs};
+    const cfg={};["apiKey","authDomain","projectId","appId","storageBucket","messagingSenderId"].forEach(k=>{if(FB[k])cfg[k]=FB[k]});A=app.initializeApp(cfg);
+    try{fdb=fs.initializeFirestore(A,{localCache:fs.persistentLocalCache({tabManager:fs.persistentMultipleTabManager()})})}catch(e){fdb=fs.getFirestore(A)}
+    auth=authM.getAuth(A);authM.getRedirectResult(auth).catch(e=>signInScreen(esc(e.message||"")));
+    await new Promise(res=>{let first=true;authM.onAuthStateChanged(auth,u=>{stopAll();user=u;offered=false;if(!u){canWrite=false;COLLS.forEach(c=>over[c]={});setStatus();render();signInScreen("")}else start();if(first){first=false;res()}})})}
+  catch(e){errScreen("The database didn't load: "+(e&&e.message||e)+". Check your internet connection.")}};
+})();
 
 Promise.resolve(initStore()).catch(()=>{}).then(hideSplash);
 </script>

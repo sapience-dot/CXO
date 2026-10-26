@@ -48,6 +48,17 @@ button{font:inherit;cursor:pointer;color:inherit}
 .rail-foot .rbtn{all:unset;box-sizing:border-box;cursor:pointer;font-size:13px;color:var(--rail-muted);padding:6px 6px;border-radius:6px}
 .rail-foot .rbtn:hover{color:var(--accent);background:var(--surface-2)}
 .rail-foot .rbtn:focus-visible{outline:2px solid var(--accent)}
+.setbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);padding:8px 8px;border-radius:8px}
+.setbtn:hover{background:var(--surface-2)}
+.setbtn:focus-visible{outline:2px solid var(--accent)}
+.setbtn svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.setbtn span{flex:1}
+.setbtn .chev{width:15px;height:15px;color:var(--muted);transition:transform .15s}
+.setbtn[aria-expanded="false"] .chev{transform:rotate(180deg)}
+.setmenu{display:flex;flex-direction:column;gap:2px;padding:4px 0 6px 6px;margin-left:8px;border-left:2px solid var(--line)}
+.setmenu .seth{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:8px 6px 2px}
+.setgrp{display:flex;flex-direction:column;gap:2px}
+.setmenu .rbtn[hidden]{display:none}
 .savestate{font-size:12px;color:var(--rail-muted);display:flex;gap:7px;align-items:center;padding:6px}
 .savestate::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok-fg);flex:none}
 .savestate.warn::before{background:var(--warn-fg)}
@@ -189,6 +200,61 @@ table.dt{border-collapse:collapse;width:100%;min-width:960px;font-size:13.5px}
 .dt tr.sub td:first-child::after{content:"";position:absolute;left:14px;top:0;bottom:0;width:2px;background:var(--line)}
 .dt tr.sub .cust{font-weight:600;font-size:13.5px}
 .cv-orders tr.cur td{background:var(--surface-2)}
+.ins-hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.ins-hero .hero-n{font-size:56px;line-height:1;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.ins-hero>div>b{font-size:16px}
+.ins-hero p{margin-top:4px;max-width:70ch}
+.ins-hero>div:last-child{flex:1 1 280px;min-width:0}
+.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.vgrid{grid-template-columns:minmax(0,1fr)}}
+.vscroll{overflow-x:auto;margin:0 -4px;padding:0 4px;-webkit-overflow-scrolling:touch}
+.river svg,.vline svg{display:block}
+.swipe{display:none;font-size:12.5px;margin-top:6px}
+@media (max-width:900px){.swipe{display:block}}
+.vt-ax{font-size:11.5px;fill:#898781;font-variant-numeric:tabular-nums}
+.vt-mu{font-size:11.5px;fill:#898781}
+.vt-st{font-size:12.5px;font-weight:600;fill:#0b0b0b}
+.vt-lab{font-size:12px;font-weight:600;fill:#52514e}
+.vdot{cursor:pointer;outline:none}
+.vdot:hover circle+circle,.vdot:focus-visible circle+circle{stroke:#0b0b0b}
+.vlegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2,#52514e);margin:6px 0 10px}
+.vlegend span{display:inline-flex;align-items:center;gap:6px}
+.vlegend b{font-weight:700;color:var(--ink)}
+.vlegend .lk{width:14px;height:2px;border-radius:1px;display:inline-block}
+.vlegend .lk.lv{width:2px;height:12px;background:#0b0b0b}
+.vlegend .ck{width:10px;height:10px;border-radius:50%;display:inline-block}
+.vlegend .bk{width:14px;height:10px;border-radius:3px;display:inline-block;background:rgba(42,120,214,.16)}
+.vlegend .dk{width:9px;height:9px;transform:rotate(45deg);display:inline-block;background:#F5A524;border-radius:1px}
+.vtip{position:fixed;z-index:90;pointer-events:none;background:#fff;color:#0b0b0b;border-radius:10px;padding:9px 12px;font-size:12.5px;box-shadow:0 0 0 1px rgba(11,11,11,.1),0 8px 24px rgba(15,27,45,.16);max-width:260px}
+.vtip .th{font-weight:700;margin-bottom:3px}
+.vtip .th b{font-weight:700}
+.vtip .tr span{color:#52514e}
+.vtip .tr b{font-weight:700;font-variant-numeric:tabular-nums}
+.sbars{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.sbar{display:grid;grid-template-columns:118px minmax(0,1fr) 84px;gap:10px;align-items:center;font-size:13px;padding:2px 0;border-radius:6px;outline:none}
+.sbar:focus-visible{box-shadow:0 0 0 2px #F5A524}
+.sbar:hover .sb-t{background:#eceae4}
+.sb-l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-2,#52514e)}
+.sb-t{position:relative;height:14px;background:#f4f3ef;border-radius:0 4px 4px 0}
+.sb-b{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0}
+.sb-lim{position:absolute;top:-3px;bottom:-3px;width:2px;background:#0b0b0b;border-radius:1px;margin-left:-1px}
+.sb-v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sb-v small{font-weight:500;color:var(--muted)}
+.sb-over{font-style:normal;font-size:11px;font-weight:700;color:#b42318;margin-left:4px}
+.stk{display:flex;gap:2px;height:22px;border-radius:5px;overflow:hidden;margin-top:6px}
+.stk i{display:block;min-width:4px;outline:none}
+.stk i:hover,.stk i:focus-visible{filter:brightness(1.12)}
+.stk.sm{height:14px;flex:1;margin:0}
+.stk-l{margin-top:10px}
+.sc-row{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:12px;align-items:center;font-size:13px;margin:8px 0}
+.sc-n{color:var(--ink-2,#52514e);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:520px){.sc-row{grid-template-columns:minmax(0,1fr)}.sbar{grid-template-columns:96px minmax(0,1fr) 70px}}
+.vsub{margin-top:22px}
+.vsub h3{font-size:15px;margin:0}
+.vdata{margin-top:12px;font-size:13px}
+.vdata summary{cursor:pointer;color:var(--ink-2,#52514e);font-weight:600;font-size:12.5px}
+.vdata table{margin-top:8px}
+.vt td.num{text-align:right;font-variant-numeric:tabular-nums}
 .umeter{display:flex;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin:4px 0 12px}
 .umeter i{display:block;height:100%;background:var(--ok-fg,#13804F)}
 .umeter i.iss{background:var(--crit-fg,#B42318)}
@@ -859,13 +925,20 @@ table.rv-t{min-width:720px}
     <nav class="nav" role="tablist" aria-label="Sections" id="tabs"></nav>
     <div class="rail-foot">
       <span class="savestate" id="status">Connecting</span>
-      <button class="rbtn" id="teamBtn">Preview team view</button>
-      <button class="rbtn" id="sampleBtn">Show sample data</button>
-      <button class="rbtn" id="sheetBtn">Connect Google Sheet</button>
+      <button class="setbtn" id="setBtn" aria-expanded="false" aria-controls="setMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings and data</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+      <div class="setmenu" id="setMenu" hidden>
+        <span class="seth">View</span>
+        <button class="rbtn" id="teamBtn">Preview team view</button>
+        <button class="rbtn" id="sampleBtn">Show sample data</button>
+        <span class="seth">Data</span>
+        <div class="setgrp" id="setData">
+        <button class="rbtn" id="sheetBtn">Connect Google Sheet</button>
       <button class="rbtn" id="csv">Copy as CSV</button>
       <button class="rbtn" id="exp">Export backup</button>
       <button class="rbtn" id="imp">Import backup</button>
       <input type="file" id="impFile" accept="application/json,.json" hidden>
+        </div>
+      </div>
     </div>
   </aside></div>
   <main class="main">
@@ -961,6 +1034,11 @@ table.rv-t{min-width:720px}
       <div class="panel pad" id="chkGroups"></div>
     </section>
 
+    <section id="p-insights" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
+      <div class="page-head"><div><h1>Insights</h1><p>The whole customer experience in pictures: where every order is, where time is lost, how installations are going and how the scorecard stands.</p></div></div>
+      <div id="ins" style="display:flex;flex-direction:column;gap:20px"></div>
+      <div class="vtip" id="vtip" role="tooltip" hidden></div>
+    </section>
     <section id="p-decisions" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
       <div class="page-head"><div><h1>Decisions</h1><p>Calls that shape the experience, with an owner and a date.</p></div><button class="btn primary" id="addDec">Add decision</button></div>
       <div class="panel pad"><div class="dec" id="decs"></div></div>
@@ -1094,7 +1172,7 @@ const ROLES=[
  {k:"warranty",name:"Warranty / Service Coordinator",cells:["", "", "", "", "", "I|Device serial installed", "", "R|Register warranty, issue warranty card", "R|Review warranty eligibility", "A|Approve RMA / repair / replacement", "R|Update device status & inventory"]},
  {k:"management",name:"Management",cells:["", "C|Approve large deals & discounts", "", "", "", "", "", "C|Review exceptions & escalations", "I|Service performance & CSAT", "C|Approve high-value replacements", "R|Review growth, renewals & QBR"]}];
 const STATUS={on:["On track","ok"],risk:["At risk","warn"],blocked:["Blocked","crit"],done:["Closed",""]};
-const TABS=[["overview","Overview"],["pipeline","Customers"],["decisions","Decisions"],["playbook","Stage playbook"],["raci","Who does what"],["scorecard","Scorecard"],["personas","Personas"],["collateral","Collateral"],["resources","Resources"]];
+const TABS=[["overview","Overview"],["insights","Insights"],["pipeline","Customers"],["decisions","Decisions"],["playbook","Stage playbook"],["raci","Who does what"],["scorecard","Scorecard"],["personas","Personas"],["collateral","Collateral"],["resources","Resources"]];
 const NGROUP={overview:"Run",playbook:"Plan",personas:"Brand",resources:"Library"};
 
 const BASE={};ROLES.forEach(r=>r.cells.forEach((s,i)=>{const [v,...t]=s.split("|");BASE[`${r.k}--s${i+1}`]={v:s?v:"",t:s?t.join("|"):""}}));
@@ -1364,7 +1442,7 @@ async function initStore(){
 }
 
 /* ---------- nav ---------- */
-const ICON={overview:"M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z",pipeline:"M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM22 19v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8",playbook:"M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 7h6",raci:"M4 4h16v16H4zM4 10h16M4 15h16M10 4v16",scorecard:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12.5v-1",personas:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21a7.5 7.5 0 0 1 15 0",collateral:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4",decisions:"M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM8.5 12.5l2.5 2.5 4.5-5.5",resources:"M6.5 3H18v18l-5.75-3.8L6.5 21z"};
+const ICON={overview:"M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z",insights:"M3 20h18M6 16v-5M11 16V6M16 16v-8M20 16v-3",pipeline:"M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM22 19v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8",playbook:"M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 7h6",raci:"M4 4h16v16H4zM4 10h16M4 15h16M10 4v16",scorecard:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12.5v-1",personas:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21a7.5 7.5 0 0 1 15 0",collateral:"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4",decisions:"M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM8.5 12.5l2.5 2.5 4.5-5.5",resources:"M6.5 3H18v18l-5.75-3.8L6.5 21z"};
 const icon=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k]}"/></svg>`;
 
 function renderTabs(){const n=deps().filter(d=>d.status!=="done"&&needsAttn(d)).length,od=Object.values(over.decisions).filter(d=>d.status!=="decided").length;
@@ -1727,8 +1805,136 @@ async function toggleCheck(id){if(sampleBlocked())return;const c=checks().find(x
   await put("checks",id,{...strip(c),done:!c.done});
   toast(c.done?"Marked not done":"Signed off",async()=>{if(prev)await put("checks",id,prev);else await del("checks",id);toast("Change undone")})}
 
+/* ---------- insights ---------- */
+const VZ={s1:"#2a78d6",good:"#0ca30c",warn:"#fab219",ser:"#ec835a",crit:"#d03b3b",none:"#c3c2b7",faint:"#e1e0d9",grid:"#e1e0d9",axis:"#c3c2b7",muted:"#898781",ink:"#0b0b0b",ink2:"#52514e",surf:"#ffffff",amber:"#F5A524"};
+const OSL={good:"On track",warn:"At risk",ser:"Over the stage limit",crit:"Blocked",done:"Closed"};
+const oState=d=>d.status==="done"?"done":d.status==="blocked"?"crit":overdue(d)?"ser":d.status==="risk"?"warn":"good";
+let TT={},ttN=0;
+const tt=rows=>{const k="t"+(ttN++);TT[k]=rows;return k};
+const nfmt=n=>n>=1e5?(n/1e5).toFixed(n>=1e6?0:1).replace(/\.0$/,"")+" L":n>=1000?(n/1000).toFixed(n>=1e4?0:1).replace(/\.0$/,"")+"K":String(Math.round(n));
+const r1=x=>Math.round(x*10)/10;
+function stageStats(){const S=STAGES.map(s0=>({n:s0.n,vis:0,ontime:0,sum:0,cnt:0,orders:[],dev:0}));
+  deps().forEach(d=>{const {M}=custStages(d);Object.entries(M).forEach(([n,m])=>{const st=S[+n-1];if(!st)return;const lim=Number(stage(+n).days)||0;
+      st.sum+=m.days;st.cnt++;if(!m.now){st.vis++;if(m.days<=lim)st.ontime++}else if(m.days>lim)st.vis++});
+    if(d.status!=="done"){const st=S[d.stage-1];if(st){st.orders.push(d);st.dev+=Number(d.devices||0)}}});
+  S.forEach(s=>{s.rate=s.vis?s.ontime/s.vis:null;s.avg=s.cnt?s.sum/s.cnt:null});return S}
+function installEvents(){const E=[];deps().forEach(d=>{const U=unitsOf(d);
+  if(U.length)U.forEach(u=>{if(u.st!=="pending"&&u.on)E.push([u.on,1])});
+  else{const h=(d.history||[]).find(x=>x.s===7),at=d.installed||(h&&h.at)||(d.stage>=7||d.status==="done"?d.liveAt:"");if(at)E.push([at,Number(d.devices||0)])}});return E.sort((a,b)=>a[0]<b[0]?-1:1)}
+
+function renderInsights(){TT={};ttN=0;const el=$("ins"),A=deps(),act=A.filter(d=>d.status!=="done");
+  if(!A.length){el.innerHTML=`<div class="panel pad"><div class="empty-state"><b>Nothing to chart yet</b><p>Insights build from your customers, their stage history and device installations. Add a customer, or look at the charts with sample data.</p><div class="row-flex" style="justify-content:center">${canEditNow()?`<button class="btn primary" data-ia="add">Add customer</button>`:""}<button class="btn" data-ia="sample">Show sample data</button></div></div></div>`;
+    el.onclick=e=>{const b=e.target.closest("[data-ia]");if(!b)return;if(b.dataset.ia==="add")depEditor();else{sample=true;sampleData=null;render()}};return}
+  const S=stageStats(),vis=S.reduce((a,s)=>a+s.vis,0),ok=S.reduce((a,s)=>a+s.ontime,0),rate=vis?Math.round(ok/vis*100):null;
+  const worst=S.filter(s=>s.rate!=null&&s.vis>=1).sort((a,b)=>a.rate-b.rate)[0];
+  el.innerHTML=`<div class="panel pad ins-hero"><div class="hero-n">${rate==null?"–":rate+"%"}</div><div><b>of stage hand-offs finished within their time limit</b><p class="ctx">${vis?`${ok} of ${vis} completed or overdue stage visits, across ${plural(clientsOf(A),"customer")} and ${plural(A.length,"order")}.`:"No stage has been completed yet."}${worst&&worst.rate<1?` The experience leaks most at <b>${esc(stage(worst.n).name)}</b>, where ${Math.round(worst.rate*100)}% finish on time.`:""}</p></div></div>
+   <div class="panel pad"><div class="head-row"><div><h2>The experience river</h2><p class="ctx">Every live order flowing through the 11 stages. The stream widens where devices are piling up; the line above shows how often each stage is finished on time.</p></div></div>
+     <div class="vlegend" id="rivLeg"></div><div class="vscroll"><div id="river" class="river"></div></div><p class="ctx swipe">Swipe sideways to see all 11 stages. Tap a dot to open the order.</p>
+     ${dataTable(["Stage","On time","Average days","Limit","Orders now","Devices now"],S.map(s=>[`${s.n}. ${stage(s.n).name}`,s.rate==null?"–":Math.round(s.rate*100)+"% of "+s.vis,s.avg==null?"–":r1(s.avg),stage(s.n).days,s.orders.length,s.dev]))}</div>
+   <div class="vgrid">
+     <div class="panel pad"><div class="head-row"><div><h2>Devices installed</h2><p class="ctx">Running total over the last 12 weeks</p></div></div><div id="instLine" class="vline"></div><div id="instTbl"></div></div>
+     <div class="panel pad"><div class="head-row"><div><h2>Time in each stage</h2><p class="ctx">Average business days against the limit</p></div></div><div id="stageBars"></div></div>
+     <div class="panel pad"><div class="head-row"><div><h2>Where orders stand</h2><p class="ctx">${plural(A.length,"order")}${clientsOf(A)<A.length?` from ${plural(clientsOf(A),"customer")}`:""}</p></div></div><div id="ordStack"></div>
+       <div class="vsub"><h3>Device installations</h3><p class="ctx">Live orders, device by device</p></div><div id="devStack"></div></div>
+     <div class="panel pad"><div class="head-row"><div><h2>Scorecard by phase</h2><p class="ctx">Key results by their latest status</p></div></div><div id="scoreStack"></div></div>
+   </div>`;
+  drawRiver(S);drawInstalls();drawStageBars(S);drawStacks(A,act);
+  el.onclick=e=>{const o=e.target.closest("[data-open]");if(o){hideTip();openCustomer(o.dataset.open)}};
+  el.onkeydown=e=>{const o=e.target.closest("[data-open]");if(o&&(e.key==="Enter"||e.key===" ")){e.preventDefault();hideTip();openCustomer(o.dataset.open)}};
+  wireTips(el)}
+
+function dataTable(head,rows){return `<details class="vdata"><summary>Show the numbers</summary><div class="tscroll"><table class="rv-t vt"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td${i?' class="num"':""}>${esc(String(c))}</td>`).join("")}</tr>`).join("")}</tbody></table></div></details>`}
+const sw=(c,shape)=>shape==="line"?`<i class="lk" style="background:${c}"></i>`:shape==="dia"?`<i class="dk"></i>`:shape==="band"?`<i class="bk"></i>`:`<i class="ck" style="background:${c}"></i>`;
+
+function drawRiver(S){const box=$("river");if(!box)return;const cw=box.parentElement.clientWidth||900,W=Math.max(960,cw),H=410,pl=52,pr=14,cwid=(W-pl-pr)/11,cx=i=>pl+cwid*(i+.5);
+  const yT=46,yB=150,yr=v=>yB-(yB-yT)*v,mid=258,maxDev=Math.max(1,...S.map(s=>s.dev)),hh=s=>6+Math.sqrt(s.dev/maxDev)*62;
+  let g="";
+  // column hit areas (stage summaries)
+  S.forEach((s,i)=>{const st=stage(s.n),o=accountable(s.n);g+=`<rect class="vcol" x="${cx(i)-cwid/2}" y="0" width="${cwid}" height="${H}" fill="transparent" data-tt="${tt([[`${s.n}. ${st.name}`,""],[s.rate==null?"No stage finished yet":`${Math.round(s.rate*100)}%`,s.rate==null?"":`on time (${s.ontime} of ${s.vis})`],[s.avg==null?"–":`${r1(s.avg)} of ${st.days} days`,"average time in stage"],[`${s.orders.length} · ${s.dev.toLocaleString()}`,"orders · devices here now"],[o?short(o.name):"No owner","accountable"]])}"/>`});
+  // grid
+  [0,.5,1].forEach(v=>{g+=`<line x1="${pl}" x2="${W-pr}" y1="${yr(v)}" y2="${yr(v)}" stroke="${VZ.grid}" stroke-width="1"/><text x="${pl-8}" y="${yr(v)+4}" text-anchor="end" class="vt-ax">${v*100}%</text>`});
+  g+=`<text x="${pl}" y="${yT-26}" class="vt-ax">On time</text>`;
+  // moments of truth
+  S.forEach((s,i)=>{if(stage(s.n).mot)g+=`<path d="M${cx(i)} ${yT-22}l6 6-6 6-6-6z" fill="${VZ.amber}"/>`});
+  // river band
+  const top=S.map((s,i)=>[cx(i),mid-hh(s)]),bot=S.map((s,i)=>[cx(i),mid+hh(s)]);
+  const curve=P=>P.map((p,i)=>i?`C${(P[i-1][0]+p[0])/2} ${P[i-1][1]} ${(P[i-1][0]+p[0])/2} ${p[1]} ${p[0]} ${p[1]}`:`M${pl} ${p[1]}L${p[0]} ${p[1]}`).join("")+`L${W-pr} ${P[P.length-1][1]}`;
+  const rb=bot.slice().reverse();
+  g+=`<path d="${curve(top)}L${W-pr} ${rb[0][1]}${rb.map((p,i)=>i?`C${(rb[i-1][0]+p[0])/2} ${rb[i-1][1]} ${(rb[i-1][0]+p[0])/2} ${p[1]} ${p[0]} ${p[1]}`:`L${p[0]} ${p[1]}`).join("")}L${pl} ${rb[rb.length-1][1]}Z" fill="${VZ.s1}" fill-opacity=".12"/>`;
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${mid}" y2="${mid}" stroke="${VZ.s1}" stroke-opacity=".18" stroke-width="1"/>`;
+  // on-time line, broken where a stage has no data
+  let seg=[],segs=[];S.forEach((s,i)=>{if(s.rate==null){if(seg.length)segs.push(seg);seg=[]}else seg.push([cx(i),yr(s.rate)])});if(seg.length)segs.push(seg);
+  segs.forEach(P=>{if(P.length>1)g+=`<path d="${P.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join("")}" fill="none" stroke="${VZ.s1}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`});
+  const rated=S.filter(s=>s.rate!=null),lo=rated.slice().sort((a,b)=>a.rate-b.rate)[0];
+  S.forEach((s,i)=>{if(s.rate==null){g+=`<text x="${cx(i)}" y="${yr(.5)+4}" text-anchor="middle" class="vt-mu">no data</text>`;return}
+    g+=`<circle cx="${cx(i)}" cy="${yr(s.rate)}" r="4" fill="${VZ.s1}" stroke="${VZ.surf}" stroke-width="2"/>`;
+    if(lo&&s===lo&&rated.length>1&&lo.rate<1)g+=`<text x="${cx(i)}" y="${yr(s.rate)+(s.rate>.85?-12:18)}" text-anchor="middle" class="vt-lab">${Math.round(s.rate*100)}% on time</text>`});
+  // orders as dots inside the stream
+  S.forEach((s,i)=>{const L=s.orders.slice().sort((a,b)=>Number(b.devices||0)-Number(a.devices||0));if(!L.length)return;
+    const rad=d=>Math.max(5,Math.min(13,3+Math.sqrt(Number(d.devices||0))*.85)),rm=rad(L[0]),step=2*rm+5,cap=Math.max(1,Math.floor((2*Math.max(hh(s),26))/step)),cols=Math.ceil(L.length/cap),colStep=Math.min(step,(cwid-10)/Math.max(cols,1));
+    L.forEach((d,j)=>{const c=Math.floor(j/cap),k=j%cap,inCol=Math.min(cap,L.length-c*cap),x=cx(i)+(c-(cols-1)/2)*colStep,y=mid+(k-(inCol-1)/2)*step,r=rad(d),stt=oState(d),bd=bdays(d.since);
+      g+=`<g class="vdot" tabindex="0" role="button" aria-label="${esc(dn(d))}, ${OSL[stt]}" data-open="${d.id}" data-tt="${tt([[dn(d),""],[`${Number(d.devices||0).toLocaleString()} devices`,""],[OSL[stt],"status"],[`${bd} of ${stage(d.stage).days} days`,"in "+stage(d.stage).short],["Open the order","click"]])}"><circle cx="${x}" cy="${y}" r="${r+8}" fill="transparent"/><circle cx="${x}" cy="${y}" r="${r}" fill="${VZ[stt]||VZ.none}" stroke="${VZ.surf}" stroke-width="2"/></g>`})});
+  // stage labels
+  S.forEach((s,i)=>{const st=stage(s.n);g+=`<text x="${cx(i)}" y="${H-46}" text-anchor="middle" class="vt-st">${esc(st.short)}</text><text x="${cx(i)}" y="${H-28}" text-anchor="middle" class="vt-mu">${s.n} · ${s.dev?nfmt(s.dev)+" dev.":"none"}</text>`});
+  box.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Experience river: on-time rate per stage and live orders in each stage">${g}</svg>`;
+  $("rivLeg").innerHTML=`<span>${sw(VZ.s1,"line")}On time in the stage</span><span>${sw(0,"band")}Width = devices in the stage now</span><span>${sw(VZ.good)}On track</span><span>${sw(VZ.warn)}At risk</span><span>${sw(VZ.ser)}Over the stage limit</span><span>${sw(VZ.crit)}Blocked</span><span>${sw(0,"dia")}Moment of truth</span><span class="ctx">Dot size = devices in the order</span>`}
+
+function drawInstalls(){const box=$("instLine");if(!box)return;const E=installEvents(),p=plan(),W=Math.max(200,box.clientWidth||520),H=230,pl=44,pr=56,pt=16,pb=30;
+  const t=today(),wk=[];for(let i=12;i>=0;i--){const d=new Date(t);d.setDate(d.getDate()-i*7);wk.push(iso(d))}
+  const before=E.filter(e=>e[0]<=wk[0]).reduce((a,e)=>a+e[1],0);const cum=wk.map(w=>E.filter(e=>e[0]<=w).reduce((a,e)=>a+e[1],0));
+  const tgt=Number(p.deviceTarget)||0,top=Math.max(4,...cum,tgt),raw=top/4,mag=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mag).find(v=>v>=raw),ymax=Math.ceil(top*1.02/stp)*stp;
+  const x=i=>pl+(W-pl-pr)*i/12,y=v=>pt+(H-pt-pb)*(1-v/ymax);let g="";
+  Array.from({length:Math.round(ymax/stp)+1},(_,k)=>k*stp/ymax).forEach(f=>{const v=ymax*f;g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="${f?VZ.grid:VZ.axis}" stroke-width="1"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end" class="vt-ax">${nfmt(v)}</text>`});
+  wk.forEach((w,i)=>{if(i%4===0||i===12)g+=`<text x="${x(i)}" y="${H-8}" text-anchor="${i===0?"start":i===12?"end":"middle"}" class="vt-ax">${i===12?"Today":new Date(w+"T12:00:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}</text>`});
+  if(tgt&&tgt<=ymax)g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(tgt)}" y2="${y(tgt)}" stroke="${VZ.ink2}" stroke-width="1"/><text x="${W-pr+6}" y="${y(tgt)+4}" class="vt-lab">Target</text>`;
+  const pts=cum.map((v,i)=>[x(i),y(v)]);
+  g+=`<path d="M${pts[0][0]} ${y(0)}${pts.map(p=>`L${p[0]} ${p[1]}`).join("")}L${pts[12][0]} ${y(0)}Z" fill="${VZ.s1}" fill-opacity=".1"/><path d="${pts.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join("")}" fill="none" stroke="${VZ.s1}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  g+=`<circle cx="${pts[12][0]}" cy="${pts[12][1]}" r="4" fill="${VZ.s1}" stroke="${VZ.surf}" stroke-width="2"/><text x="${pts[12][0]+8}" y="${pts[12][1]+4}" class="vt-lab">${nfmt(cum[12])}</text>`;
+  g+=`<g class="xh" hidden><line y1="${pt}" y2="${H-pb}" stroke="${VZ.ink2}" stroke-width="1"/><circle r="4" fill="${VZ.s1}" stroke="${VZ.surf}" stroke-width="2"/></g><rect class="xhit" x="${pl}" y="0" width="${W-pl-pr}" height="${H}" fill="transparent" tabindex="0" aria-label="Devices installed, week by week. Use the arrow keys to step through weeks."/>`;
+  box.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Devices installed over the last 12 weeks: ${cum[12]} in total">${g}</svg>`;
+  const svg=box.querySelector("svg"),xh=svg.querySelector(".xh"),hit=svg.querySelector(".xhit");let cur=12;
+  const show=i=>{cur=i;xh.hidden=false;xh.querySelector("line").setAttribute("x1",x(i));xh.querySelector("line").setAttribute("x2",x(i));const c=xh.querySelector("circle");c.setAttribute("cx",x(i));c.setAttribute("cy",y(cum[i]));
+    const r=svg.getBoundingClientRect(),add=i?cum[i]-cum[i-1]:cum[0]-before;showTip([[cum[i].toLocaleString(),"devices installed so far"],[(add>=0?"+":"")+add.toLocaleString(),"in the week to "+new Date(wk[i]+"T12:00:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})],...(tgt?[[tgt.toLocaleString(),"target"]]:[])],r.left+x(i),r.top+y(cum[i]))};
+  hit.addEventListener("pointermove",e=>{const r=svg.getBoundingClientRect(),i=Math.max(0,Math.min(12,Math.round((e.clientX-r.left-pl)/((W-pl-pr)/12))));show(i)});
+  hit.addEventListener("pointerleave",()=>{xh.hidden=true;hideTip()});hit.addEventListener("focus",()=>show(cur));hit.addEventListener("blur",()=>{xh.hidden=true;hideTip()});
+  hit.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();show(Math.max(0,Math.min(12,cur+(e.key==="ArrowLeft"?-1:1))))}});
+  $("instTbl").innerHTML=dataTable(["Week to","Installed that week","Running total"],wk.map((w,i)=>[fmtDate(w),i?cum[i]-cum[i-1]:cum[0]-before,cum[i]]))}
+
+function drawStageBars(S){const box=$("stageBars");if(!box)return;const mx=Math.max(1,...S.map(s=>Math.max(s.avg||0,Number(stage(s.n).days)||0)))*1.05;
+  box.innerHTML=`<div class="sbars">${S.map(s=>{const st=stage(s.n),lim=Number(st.days)||0,a=s.avg,over=a!=null&&a>lim;
+    return `<div class="sbar" tabindex="0" data-tt="${tt([[a==null?"No data":`${r1(a)} days`,"average in "+st.name],[`${lim} days`,"limit"],...(s.vis?[[`${Math.round(s.rate*100)}%`,"finished on time"]]:[])])}"><span class="sb-l">${s.n}. ${esc(st.short)}</span><span class="sb-t">${a!=null?`<i class="sb-b" style="width:${a/mx*100}%;background:${over?VZ.crit:VZ.s1}"></i>`:""}<i class="sb-lim" style="left:${lim/mx*100}%"></i></span><span class="sb-v">${a==null?"–":`${r1(a)}<small>/${lim}</small>`}${over?' <em class="sb-over">Over</em>':""}</span></div>`}).join("")}</div>
+  <div class="vlegend"><span>${sw(VZ.s1)}Within the limit</span><span>${sw(VZ.crit)}Over the limit</span><span><i class="lk lv"></i>Stage limit</span></div>
+  ${dataTable(["Stage","Average days","Limit"],S.map(s=>[`${s.n}. ${stage(s.n).name}`,s.avg==null?"–":r1(s.avg),stage(s.n).days]))}`}
+
+function stackBar(parts,label){const tot=parts.reduce((a,p)=>a+p[1],0);if(!tot)return `<p class="ctx">Nothing to show yet.</p>`;
+  return `<div class="stk" role="img" aria-label="${esc(label)}: ${parts.filter(p=>p[1]).map(p=>`${p[1]} ${p[0]}`).join(", ")}">${parts.filter(p=>p[1]).map(p=>`<i tabindex="0" style="flex:${p[1]};background:${p[2]}" data-tt="${tt([[p[1].toLocaleString(),p[0]],[Math.round(p[1]/tot*100)+"%","of "+tot.toLocaleString()]])}"></i>`).join("")}</div>
+   <div class="vlegend stk-l">${parts.map(p=>`<span>${sw(p[2])}${esc(p[0])} <b>${p[1].toLocaleString()}</b></span>`).join("")}</div>`}
+function drawStacks(A,act){const cnt=k=>A.filter(d=>oState(d)===k).length;
+  $("ordStack").innerHTML=stackBar([["On track",cnt("good"),VZ.good],["At risk",cnt("warn"),VZ.warn],["Over the stage limit",cnt("ser"),VZ.ser],["Blocked",cnt("crit"),VZ.crit],["Closed",cnt("done"),VZ.none]],"Orders by status");
+  let ins=0,iss=0,pen=0,notAdded=0,noTrack=0;act.forEach(d=>{const U=unitsOf(d),c=uCount(d);if(!U.length){noTrack+=Number(d.devices||0);return}ins+=c.ins;iss+=c.iss;pen+=U.length-c.ins-c.iss;notAdded+=Math.max(0,Number(d.devices||0)-U.length)});
+  $("devStack").innerHTML=stackBar([["Installed",ins,VZ.good],["Issue",iss,VZ.crit],["Pending",pen,VZ.none],["Not added yet",notAdded,VZ.faint]],"Device installations")+(noTrack?`<p class="ctx" style="margin-top:6px">${noTrack.toLocaleString()} devices are in orders that don't track devices one by one yet.</p>`:"");
+  const ph=GOALS.filter(g=>g.phase);
+  $("scoreStack").innerHTML=ph.map(g=>{const by={on:0,risk:0,off:0,"":0};g.krs.forEach((_,i)=>by[kst(krv(`${g.k}-${i}`).status)]++);const tot=g.krs.length;
+    return `<div class="sc-row"><span class="sc-n">${esc(g.name)}</span><div class="stk sm">${[["On track",by.on,VZ.good],["At risk",by.risk,VZ.warn],["Off track",by.off,VZ.crit],["Not reviewed",by[""],VZ.faint]].filter(p=>p[1]).map(p=>`<i tabindex="0" style="flex:${p[1]};background:${p[2]}" data-tt="${tt([[`${p[1]} of ${tot}`,p[0]],[g.name,""]])}"></i>`).join("")}</div></div>`}).join("")+
+   `<div class="vlegend"><span>${sw(VZ.good)}On track</span><span>${sw(VZ.warn)}At risk</span><span>${sw(VZ.crit)}Off track</span><span>${sw(VZ.faint)}Not reviewed</span></div>`+
+   dataTable(["Phase","On track","At risk","Off track","Not reviewed"],ph.map(g=>{const by={on:0,risk:0,off:0,"":0};g.krs.forEach((_,i)=>by[kst(krv(`${g.k}-${i}`).status)]++);return [g.name,by.on,by.risk,by.off,by[""]]}))}
+
+function showTip(rows,px,py){const t=$("vtip");if(!t||!rows)return;t.replaceChildren();rows.forEach(([v,l],i)=>{const r=document.createElement("div");r.className=i?"tr":"th";const b=document.createElement("b");b.textContent=v;r.appendChild(b);if(l){const s=document.createElement("span");s.textContent=" "+l;r.appendChild(s)}t.appendChild(r)});
+  t.hidden=false;const w=t.offsetWidth,h=t.offsetHeight;let x=px+14,y=py-h-12;if(x+w>innerWidth-8)x=px-w-14;if(x<8)x=8;if(y<8)y=py+16;t.style.left=x+"px";t.style.top=y+"px"}
+function hideTip(){const t=$("vtip");if(t)t.hidden=true}
+function wireTips(el){const pick=e=>e.target.closest&&e.target.closest("[data-tt]");
+  el.onpointermove=e=>{const m=pick(e);if(!m||m.classList.contains("xhit"))return;showTip(TT[m.dataset.tt],e.clientX,e.clientY)};
+  el.onpointerout=e=>{const m=pick(e);if(m&&!m.contains(e.relatedTarget))hideTip()};
+  el.onfocusin=e=>{const m=pick(e);if(!m)return;const r=m.getBoundingClientRect();showTip(TT[m.dataset.tt],r.left+r.width/2,r.top)};
+  el.onfocusout=()=>hideTip()}
+let insRz=0;addEventListener("resize",()=>{clearTimeout(insRz);insRz=setTimeout(()=>{if(ui.tab==="insights")renderInsights()},180)});
+addEventListener("scroll",hideTip,{passive:true});
+
+(()=>{const b=$("setBtn"),m=$("setMenu");if(!b||!m)return;let open=false;try{open=localStorage.getItem("sx-set")==="1"}catch(e){}
+  const set=(v,u)=>{open=v;m.hidden=!v;b.setAttribute("aria-expanded",String(v));if(v&&u)setTimeout(()=>m.scrollIntoView({block:"nearest",behavior:"smooth"}),30);try{localStorage.setItem("sx-set",v?"1":"0")}catch(e){}};set(open);
+  b.onclick=()=>set(!open,true);m.addEventListener("keydown",e=>{if(e.key==="Escape"){set(false);b.focus()}})})();
 function render(){renderTabs();renderBanner();$("tip").hidden=true;
-  if(ui.tab==="overview")renderOverview();else if(ui.tab==="pipeline")renderPipeline();else if(ui.tab==="playbook")renderPlaybook();else if(ui.tab==="raci")renderRaci();
+  hideTip&&hideTip();if(ui.tab==="overview")renderOverview();else if(ui.tab==="insights")renderInsights();else if(ui.tab==="pipeline")renderPipeline();else if(ui.tab==="playbook")renderPlaybook();else if(ui.tab==="raci")renderRaci();
   else if(ui.tab==="scorecard")renderScore();else if(ui.tab==="personas")renderPersonas();else if(ui.tab==="collateral")renderCollateral();else if(ui.tab==="resources")renderResources();else if(ui.tab==="customer")renderCustomer();else if(ui.tab==="review")renderReview();else if(ui.tab==="team")renderTeam();else renderDecisions()}
 
 /* ---------- drawer editors ---------- */
@@ -2357,7 +2563,7 @@ function accessEditor(){if(!isEditor())return;const rows=()=>Object.keys(accessD
       try{await S.fs.setDoc(S.fs.doc(fdb,"access",e),{email:e,addedBy:user.email,at:new Date().toISOString()});accessDocs[e]={email:e};$("acc-e").value="";$("acc-list").innerHTML=rows();toast(`${e} can now open the team view`)}catch(x){fail(x)}return false}})}
 
 /* Rail buttons */
-const foot=document.querySelector(".rail-foot");
+const foot=document.getElementById("setData")||document.querySelector(".rail-foot");
 if(foot){foot.insertAdjacentHTML("beforeend",`<button class="rbtn" id="accessBtn" hidden>Team access</button><button class="rbtn" id="fbOut" hidden>Sign out</button>`);
   $("accessBtn").onclick=accessEditor;$("fbOut").onclick=()=>{stopAll();S.auth.signOut(auth)}}
 

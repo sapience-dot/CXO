@@ -43,6 +43,15 @@ python3 -m http.server 8000
 3. Under **Build and deployment**, choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
 4. The dashboard will be live at `https://<your-username>.github.io/<repo-name>/`.
 
+## Go-live checklist
+
+Pick one place to save data, then replace its placeholders before sharing the link:
+
+- **Firebase (recommended):** in `firebase-config.js`, fill in `apiKey`, `authDomain`, `projectId` and `appId`, and replace `cxo@example.com` with your Google account. In `firebase/firestore.rules`, replace `cxo@example.com` and `example[.]com` with the same account and your company domain, then publish the rules. Test with a Google account that is not on the list: it should see "Not shared with you yet".
+- **Google Sheet:** in `apps-script/Code.gs`, change `SECRET`, and also `READ_KEY` if you want team links. Then deploy a new version.
+- **Browser only:** nothing to set. Data stays in that one browser, so use **Export backup** every week.
+- Turn **Show sample data** off before the first real review. Sample data is never saved.
+
 ## Read-only team links
 
 In the Google Sheets version, set `READ_KEY` in `Code.gs` to a second phrase (different from `SECRET`) and deploy a new version. In the dashboard, open **Google Sheet settings** and add the same phrase as the read-only key. Then open **Preview team view** and click **Copy common link**: one link for every stakeholder, where each person picks their team the first time (it is remembered after that). **Copy link for this team** gives a link that opens straight on one team. Anyone with that link sees only the team view and can never change anything; to cut access, change `READ_KEY` and deploy again.

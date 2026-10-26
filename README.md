@@ -21,6 +21,8 @@ A single-page playbook for creating the Blinksmart customer experience at Sapien
 
 **Sample data.** Click **Show sample data** at the bottom of the left menu to fill every section with realistic sample customers, targets, scorecard results, sign-offs, decisions and contacts. Nothing is saved while it is on, and your own data comes back when you hide it.
 
+**On phones and tablets.** On a phone the menu moves to a tab bar at the bottom (Overview, Customers, Scorecard, Search and More); More opens every section and setting. Tablets keep the side menu. A short branded splash plays once per visit.
+
 **Quick search.** Press **Ctrl K** (⌘K on a Mac) or click **Search** to jump to any customer, stage, team, persona, key result, document or glossary term, or to start an action such as adding a customer or starting a review.
 
 **Edit in place.** Change a customer's status, a key result's target, current number and status, a collateral item's status and due date, or a persona's validated flag right on the page. In Who does what, click a cell and press A, R, C or I (or Delete to clear). Click a name to open the full editor.

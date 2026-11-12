@@ -935,6 +935,7 @@ table.rv-t{min-width:720px}
         <div class="setgrp" id="setData">
         <button class="rbtn" id="csv" hidden>Copy as CSV</button>
       <button class="rbtn" id="exp" hidden>Export backup</button>
+      <button class="rbtn" id="impCsv2" hidden>Import customers (CSV)</button>
       <button class="rbtn" id="imp" hidden>Import backup</button>
       <input type="file" id="impFile" accept="application/json,.json" hidden>
         </div>
@@ -967,7 +968,7 @@ table.rv-t{min-width:720px}
     </section>
 
     <section id="p-pipeline" role="tabpanel" hidden style="display:flex;flex-direction:column;gap:20px">
-      <div class="page-head"><div><h1>Customers</h1><p>Every customer rollout, where it sits in the journey, and how long it has been there.</p></div><button class="btn primary" id="addDep2">Add customer</button></div>
+      <div class="page-head"><div><h1>Customers</h1><p>Every customer rollout, where it sits in the journey, and how long it has been there.</p></div><div class="row-flex" style="gap:8px;flex-wrap:wrap"><button class="btn" id="impCsv">Import CSV</button><button class="btn primary" id="addDep2">Add customer</button></div></div>
       <div class="panel">
         <div class="pad"><div class="filters">
           <input type="search" id="pq" placeholder="Search customers" aria-label="Search customers">
@@ -1427,7 +1428,7 @@ function setStatus(){const s=$("status");
   else if(mode==="shared"){s.className="savestate warn";s.textContent="Read only"}
   else{s.className="savestate warn";s.textContent="Saving in this browser only"}
   if(team.on){s.className="savestate warn";s.textContent=team.preview?"Team view preview":"Read only"}
-  $("reset").hidden=!canWrite;["addDep","addDep2","addDec","editPlan","addPer","addColl","addChk","addRes"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
+  $("reset").hidden=!canWrite;["addDep","addDep2","impCsv","addDec","editPlan","addPer","addColl","addChk","addRes"].forEach(id=>$(id).hidden=!canWrite);document.body.classList.toggle("ro",!canWrite)}
 async function initStore(){
   loadLocal();setStatus();render();
   const cl=window.claude;if(!cl||!cl.use)return;
@@ -1970,6 +1971,105 @@ function depEditor(id,preset){if(!canWrite)return;const d=id?over.deployments[id
      if(!old||old.stage!==o.stage)h.push({s:o.stage,at:o.since});else if(h.length)h[h.length-1]={...h[h.length-1],at:o.since};
      o.history=h;o.liveAt=(old&&old.liveAt)||(o.stage>=8?o.since:"");if(!o.installed&&old&&old.stage<7&&o.stage>=7)o.installed=o.since;if(o.status==="done")o.closedAt=(old&&old.closedAt)||iso(today());
      sample=false;await put("deployments",id||("d"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),o);toast(id?"Changes saved":preset&&preset.customer?"Order added":"Customer added")}})}
+/* bulk writes: one call for many records (the database block below swaps in batched Firestore writes) */
+let bulkSave=async ops=>{if(db){for(let i=0;i<ops.length;i+=20){await Promise.all(ops.slice(i,i+20).map(o=>(o.op==="del"?db.doc(`${o.c}/${o.id}`).delete():db.doc(`${o.c}/${o.id}`).set(o.obj)).catch(failWrite)))}}else saveLocal()};
+/* ---------- import customers from CSV ---------- */
+const CSV_COLS=[
+ ["customer","Customer",["customer","customername","client","clientname","fleet","fleetname","company","companyname","account","accountname"]],
+ ["batch","Order or batch",["orderorbatch","order","batch","ordername","orderno","ordernumber","po","ponumber"]],
+ ["site","Installation site",["installationsite","site","depot","location","address","city"]],
+ ["devices","Devices",["devices","devicecount","noofdevices","numberofdevices","qty","quantity","units"]],
+ ["value","Contract value (₹ lakh)",["contractvaluelakh","contractvalue","value","dealvalue","valuelakh","amountlakh","amount"]],
+ ["nps","NPS",["nps","latestnps","npsscore","latestnpsscore010"]],
+ ["stage","Stage",["stage","currentstage","journeystage"]],
+ ["since","In this stage since",["inthisstagesince","since","stagesince","stagedate","stagestarted"]],
+ ["golive","Promised install date",["promisedinstalldate","promiseddate","golive","golivedate","plannedinstall","plannedinstalldate","installdate","startedusingon"]],
+ ["installed","Installed on",["installedon","installed","installationdate","installeddate"]],
+ ["status","Status",["status","orderstatus"]],
+ ["note","Note",["note","notes","noteorblocker","blocker","remarks","comments","comment"]]];
+const csvKey=h=>String(h||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+function parseCsvText(txt){txt=String(txt||"").replace(/^﻿/,"");const first=(txt.split(/\r?\n/).find(l=>l.trim())||"");
+  const delim=[["\t",(first.match(/\t/g)||[]).length],[";",(first.match(/;/g)||[]).length],[",",(first.match(/,/g)||[]).length]].sort((a,b)=>b[1]-a[1])[0];const D=delim[1]?delim[0]:",";
+  const rows=[];let row=[],cur="",q=false;
+  for(let i=0;i<txt.length;i++){const ch=txt[i];
+    if(q){if(ch==='"'){if(txt[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch;continue}
+    if(ch==='"'&&cur===""){q=true;continue}
+    if(ch===D){row.push(cur);cur="";continue}
+    if(ch==="\n"||ch==="\r"){if(ch==="\r"&&txt[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(c=>c.trim()!==""))rows.push(row);row=[];continue}
+    cur+=ch}
+  row.push(cur);if(row.some(c=>c.trim()!==""))rows.push(row);return rows}
+const MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12};
+function csvDate(v){v=String(v||"").trim();if(!v)return {v:""};let y,m,d,x;
+  if(/^\d{5}(\.\d+)?$/.test(v)){const t=new Date(Date.UTC(1899,11,30)+Math.floor(+v)*864e5);return {v:`${t.getUTCFullYear()}-${String(t.getUTCMonth()+1).padStart(2,"0")}-${String(t.getUTCDate()).padStart(2,"0")}`}}
+  if((x=v.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/)))[y,m,d]=[+x[1],+x[2],+x[3]];
+  else if((x=v.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})$/)))[d,m,y]=[+x[1],+x[2],+x[3]];
+  else if((x=v.match(/^(\d{1,2})[\s-]+([a-z]{3,9})[\s,-]+(\d{2,4})$/i)))[d,m,y]=[+x[1],MON[x[2].toLowerCase().slice(0,x[2].length>3&&x[2].toLowerCase().startsWith("sept")?4:3)],+x[3]];
+  else if((x=v.match(/^([a-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})$/i)))[m,d,y]=[MON[x[1].toLowerCase().slice(0,3)],+x[2],+x[3]];
+  if(y!=null&&y<100)y+=2000;
+  if(!y||!m||!d||m>12||d>31)return {v:"",bad:true};
+  return {v:`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`}}
+function csvStage(v){v=String(v||"").trim();if(!v)return {v:1};const n=parseInt(v,10);if(n>=1&&n<=STAGES.length)return {v:n};
+  const k=csvKey(v);const s=STAGES.find(s=>csvKey(s.name)===k||csvKey(s.short)===k||csvKey(stage(s.n).name)===k);return s?{v:s.n}:{v:1,bad:true}}
+function csvStatus(v){const k=csvKey(v);if(!k)return {v:"on"};if(STATUS[k])return {v:k};
+  const e=Object.entries(STATUS).find(([,[l]])=>csvKey(l)===k);if(e)return {v:e[0]};
+  const alias={ontrack:"on",ok:"on",green:"on",open:"on",active:"on",atrisk:"risk",amber:"risk",risky:"risk",red:"blocked",block:"blocked",closed:"done",complete:"done",completed:"done"};return alias[k]?{v:alias[k]}:{v:"on",bad:true}}
+const csvNum=v=>{const s=String(v||"").replace(/[₹,\s]/g,"").replace(/lakh|lac|l$/i,"");return s===""?null:Number(s)};
+const depMatch=o=>{const k=[ckey(o),(o.batch||"").trim().toLowerCase(),(o.site||"").trim().toLowerCase()].join("|");return Object.entries(over.deployments).find(([,x])=>[ckey(x),(x.batch||"").trim().toLowerCase(),(x.site||"").trim().toLowerCase()].join("|")===k)};
+function csvBuild(text){const rows=parseCsvText(text);if(rows.length<2)return {err:rows.length?"Only a header row was found. Add one row per customer order under it.":"No rows found."};
+  const head=rows[0],map={},unknown=[];
+  head.forEach((h,i)=>{const k=csvKey(h);const c=CSV_COLS.find(([f,,al])=>al.includes(k)&&map[f]==null);if(c)map[c[0]]=i;else if(k)unknown.push(String(h).trim())});
+  if(map.customer==null)return {err:`There's no Customer column. Name one column "Customer" (found: ${head.map(h=>String(h).trim()).filter(Boolean).slice(0,8).join(", ")}).`};
+  const today0=iso(today());
+  const items=rows.slice(1).map((r,ix)=>{const g=f=>map[f]==null?"":String(r[map[f]]??"").trim();const issues=[];
+    const customer=g("customer");if(!customer)return {line:ix+2,skip:true,issues:["No customer name"]};
+    if(r.length>head.length&&r.slice(head.length).some(c=>String(c).trim()))return {line:ix+2,skip:true,name:customer,issues:[`Has ${r.length-head.length} more cell${r.length-head.length>1?"s":""} than the header. A value probably contains a comma without quotes.`]};
+    const st=csvStage(g("stage"));if(st.bad)issues.push(`Stage "${g("stage")}" not recognised, set to 1`);
+    const ss=csvStatus(g("status"));if(ss.bad)issues.push(`Status "${g("status")}" not recognised, set to On track`);
+    const dv=csvNum(g("devices"));if(g("devices")&&(dv==null||isNaN(dv)))issues.push(`Devices "${g("devices")}" isn't a number`);
+    const vv=csvNum(g("value"));if(g("value")&&(vv==null||isNaN(vv)))issues.push(`Value "${g("value")}" isn't a number`);
+    const np=csvNum(g("nps"));if(g("nps")&&(np==null||isNaN(np)||np<0||np>10))issues.push(`NPS "${g("nps")}" must be 0 to 10`);
+    const dates={};["since","golive","installed"].forEach(f=>{const x=csvDate(g(f));if(x.bad)issues.push(`Date "${g(f)}" not recognised`);dates[f]=x.v});
+    const o={customer,batch:g("batch"),site:g("site"),devices:Math.max(0,Math.round(dv&&!isNaN(dv)?dv:0)),value:Math.max(0,vv&&!isNaN(vv)?vv:0),
+      nps:np!=null&&!isNaN(np)&&np>=0&&np<=10?Math.round(np):"",stage:st.v,since:dates.since||today0,golive:dates.golive,installed:dates.installed,status:ss.v,note:g("note")};
+    o.history=[{s:o.stage,at:o.since}];o.liveAt=o.stage>=8?o.since:"";if(o.status==="done")o.closedAt=today0;
+    const m=depMatch(o);return {line:ix+2,o,issues,match:m?m[0]:null}});
+  return {items,map,unknown,head}}
+function csvEditor(){if(!canEditNow()){if(sample)sampleBlocked();return}let res=null;
+  const tmpl=CSV_COLS.map(c=>c[1]).join(",")+"\n"+["Example Fleet Co.","Order 1","Hosur Road depot","120","180","","2","2026-11-12","2026-12-15","","On track","Waiting on depot access"].join(",");
+  const preview=()=>{const box=$("cx-prev");if(!res){box.innerHTML="";$("ed-save").textContent="Import";return}
+    if(res.err){box.innerHTML=`<p class="late" role="alert">${esc(res.err)}</p>`;$("ed-save").textContent="Import";return}
+    const upd=$("cx-upd")&&$("cx-upd").checked;const ok=res.items.filter(x=>!x.skip),dup=ok.filter(x=>x.match),nw=ok.filter(x=>!x.match),warn=ok.filter(x=>x.issues.length),skip=res.items.filter(x=>x.skip);
+    const n=nw.length+(upd?dup.length:0);$("ed-save").textContent=n?`Import ${plural(n,"order")}`:"Nothing to import";
+    const found=CSV_COLS.filter(([f])=>res.map[f]!=null).map(c=>c[1]);
+    box.innerHTML=`<div class="row-flex" style="flex-wrap:wrap;gap:6px;margin:4px 0 10px"><span class="pill ok">${plural(nw.length,"new order")}</span>${dup.length?`<span class="pill warn">${plural(dup.length,"already here","already here")}</span>`:""}${warn.length?`<span class="pill warn">${plural(warn.length,"row")} with fixes</span>`:""}${skip.length?`<span class="pill crit">${plural(skip.length,"row")} skipped</span>`:""}</div>
+     ${dup.length?`<label class="ctx" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px"><input type="checkbox" id="cx-upd" ${upd?"checked":""}> Update the ${plural(dup.length,"order")} that already exist (same customer, order and site) instead of skipping them. Their stage history is kept.</label>`:""}
+     <p class="ctx" style="margin:0 0 8px">Columns used: ${esc(found.join(", "))}.${res.unknown.length?` Ignored: ${esc(res.unknown.join(", "))}.`:""}</p>
+     <div class="tscroll"><table class="dt" style="font-size:13px"><thead><tr><th scope="col" style="width:44px">Row</th><th scope="col">Customer</th><th scope="col">Order</th><th scope="col" style="text-align:right">Devices</th><th scope="col">Stage</th><th scope="col">Status</th><th scope="col">Check</th></tr></thead><tbody>
+     ${res.items.slice(0,50).map(x=>x.skip?`<tr><td>${x.line}</td><td colspan="5">${x.name?esc(x.name):'<span class="ctx">No customer name</span>'}</td><td class="late" style="font-size:12px">Skipped. ${esc(x.issues[0])}</td></tr>`:`<tr><td>${x.line}</td><td><b>${esc(x.o.customer)}</b>${x.o.site?`<div class="ctx">${esc(x.o.site)}</div>`:""}</td><td>${esc(x.o.batch||"–")}</td><td style="text-align:right">${x.o.devices}</td><td>${x.o.stage}. ${esc(stage(x.o.stage).short)}</td><td>${(STATUS[x.o.status]||STATUS.on)[0]}</td><td>${x.match?`<span class="ctx">${upd?"Will update":"Already here, skipped"}</span>`:""}${x.issues.map(i=>`<div class="late" style="font-size:12px">${esc(i)}</div>`).join("")}${!x.match&&!x.issues.length?'<span class="ctx">New</span>':""}</td></tr>`).join("")}
+     </tbody></table></div>${res.items.length>50?`<p class="ctx">Showing the first 50 of ${res.items.length} rows. All of them will be imported.</p>`:""}`;
+    const u=$("cx-upd");if(u)u.onchange=preview};
+  const load=t=>{res=csvBuild(t);preview()};
+  openEditor({title:"Import customers from CSV",ctx:"Add many customer orders at once from a spreadsheet: one row per order.",saveLabel:"Import",
+   body:`<div class="f"><label for="cx-file">CSV file</label><input type="file" id="cx-file" accept=".csv,text/csv,.tsv,.txt"><span class="ctx">Save your Excel or Google Sheet as CSV. The first row must hold the column names. Only <b>Customer</b> is required.</span></div>
+    <div class="f"><label for="cx-paste">Or paste rows from a spreadsheet</label><textarea id="cx-paste" rows="4" placeholder="Copy the cells including the header row, then paste here"></textarea></div>
+    <p class="ctx" style="margin:0">Columns it understands: ${esc(CSV_COLS.map(c=>c[1]).join(", "))}. Stage can be a number (1 to ${STAGES.length}) or its name. Status: On track, At risk, Blocked or Closed. Dates: 2026-11-12 or 12/11/2026. <button type="button" class="btn small ghost" id="cx-tmpl">Download template</button></p>
+    <div id="cx-prev" aria-live="polite"></div>`,
+   init(){$("cx-file").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("cx-paste").value="";load(await f.text())};
+     let t;$("cx-paste").oninput=e=>{clearTimeout(t);t=setTimeout(()=>{const v=e.target.value;v.trim()?load(v):(res=null,preview())},250)};
+     $("cx-tmpl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+tmpl],{type:"text/csv;charset=utf-8"}));a.download="customers-template.csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}},
+   async save(){if(!res||res.err){toast(res&&res.err?res.err:"Choose a CSV file or paste rows first");return false}
+     const upd=$("cx-upd")&&$("cx-upd").checked;const todo=res.items.filter(x=>!x.skip&&(!x.match||upd));if(!todo.length){toast("Nothing new to import");return false}
+     if(sampleBlocked())return;sample=false;const added=[],prev={},writes=[];
+     todo.forEach((x,i)=>{let id,o=x.o;if(x.match){id=x.match;const old=over.deployments[id];prev[id]={...old};delete prev[id].at;
+         const h=old.history?[...old.history]:[{s:old.stage,at:old.since}];if(old.stage!==o.stage)h.push({s:o.stage,at:o.since});o={...old,...o,history:h,liveAt:old.liveAt||o.liveAt,units:old.units||[]};delete o.at}
+       else{id="d"+Date.now().toString(36)+i.toString(36)+Math.random().toString(36).slice(2,5);added.push(id)}
+       const obj=stamp(o);over.deployments[id]=obj;writes.push([id,obj])});
+     render();await bulkSave(writes.map(([id,obj])=>({op:"put",c:"deployments",id,obj})));
+     const nU=Object.keys(prev).length;
+     toast(`${added.length?plural(added.length,"order")+" imported":""}${added.length&&nU?", ":""}${nU?plural(nU,"order")+" updated":""}`,async()=>{const ops=[];for(const id of added){delete over.deployments[id];ops.push({op:"del",c:"deployments",id})}
+       for(const [id,o] of Object.entries(prev)){const obj=stamp(o);over.deployments[id]=obj;ops.push({op:"put",c:"deployments",id,obj})}
+       render();await bulkSave(ops);toast("Import undone")});
+     if(ui.tab!=="pipeline")go("pipeline")}})}
 function decEditor(id){if(!canWrite)return;const d=id?over.decisions[id]:{title:"",owner:"",due:"",status:"open",outcome:"",context:""};if(!d)return;
   openEditor({title:id?"Decision":"Add decision",ctx:id?d.title:"A call that needs making, with an owner and a date",saveLabel:id?"Save changes":"Add decision",
    body:`<div class="f"><label for="xf-t">Decision needed</label><input type="text" id="xf-t" value="${esc(d.title)}"></div>
@@ -2205,7 +2305,7 @@ function bindTeam(){const el=$("teamView"),p=$("teamPick");if(p)p.onchange=()=>s
 /* ---------- Ctrl+K quick search ---------- */
 let cmdSel=0,cmdRes=[];const CMD_ORDER=["Actions","Go to","Customers","Stages","Teams","Key results","Personas","Decisions","Sign-offs","Collateral","Resources","Glossary"];
 function cmdItems(){const I=[],add=(group,label,sub,run,keys)=>I.push({group,label,sub:sub||"",run,keys:keys||""}),ed=canEditNow();
-  if(ed){add("Actions","Add customer","New customer or order",()=>depEditor(),"new create");add("Actions","Add decision","",()=>decEditor(),"new create");add("Actions","Add sign-off","Claim, open copy or assumption",()=>checkEditor(),"new create");add("Actions","Add collateral item","",()=>collEditor(),"new create");add("Actions","Add persona","",()=>personaEditor(),"new create");add("Actions","Add resource","Document, deck or link",()=>resEditor(),"new create");add("Actions","Set targets","Devices and customers for the quarter",()=>planEditor(),"plan quarter")}
+  if(ed){add("Actions","Add customer","New customer or order",()=>depEditor(),"new create");add("Actions","Import customers from CSV","Many orders at once from a spreadsheet",()=>csvEditor(),"import csv upload bulk excel");add("Actions","Add decision","",()=>decEditor(),"new create");add("Actions","Add sign-off","Claim, open copy or assumption",()=>checkEditor(),"new create");add("Actions","Add collateral item","",()=>collEditor(),"new create");add("Actions","Add persona","",()=>personaEditor(),"new create");add("Actions","Add resource","Document, deck or link",()=>resEditor(),"new create");add("Actions","Set targets","Devices and customers for the quarter",()=>planEditor(),"plan quarter")}
   if(!team.on){add("Actions","Start monthly review","Agenda view you can print",()=>startReview("monthly"),"meeting pdf print");add("Actions","Start weekly review","",()=>startReview("weekly"),"meeting");add("Actions","Start quarterly review","",()=>startReview("quarterly"),"meeting");add("Actions","Copy weekly brief","With everything overdue, by date",()=>$("brief").click(),"email summary");add("Actions",sample?"Hide sample data":"Show sample data","",()=>{sample=!sample;sampleData=null;render()},"demo example");add("Actions","Preview team view","See what a stage owner sees",()=>enterTeam(true),"read only share");if(typeof window.teamLinkFor==="function"&&window.teamLinkFor(""))add("Actions","Copy common team link","One link for every stakeholder; each picks their team",()=>copyText(window.teamLinkFor(""),"Common link copied. Each person picks their team when they open it."),"share stakeholders github pages")}
   navTabs().forEach(([k,l])=>add("Go to",l,"",()=>go(k),"tab section page"));
   deps().forEach(d=>add("Customers",dn(d),`Stage ${d.stage}, ${stage(d.stage).short} · ${(STATUS[d.status]||STATUS.on)[0]}`,()=>openCustomer(d.id),"customer timeline order batch "+(d.customer||"")+" "+(d.site||"")+" "+unitsOf(d).map(u=>(u.sn||"")+" "+(u.veh||"")).join(" ")));
@@ -2272,7 +2372,7 @@ $("cmdkList").addEventListener("mousemove",e=>{const li=e.target.closest("[data-
 try{if(/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent))$("cmdkKbd").textContent="⌘K"}catch(e){}
 $("startReview").onclick=()=>startReview();
 $("teamBtn").onclick=()=>enterTeam(true);
-$("addDep").onclick=()=>depEditor();$("addDep2").onclick=()=>depEditor();$("addDec").onclick=()=>decEditor();$("editPlan").onclick=planEditor;
+$("addDep").onclick=()=>depEditor();$("impCsv").onclick=()=>csvEditor();$("impCsv2").onclick=()=>csvEditor();$("addDep2").onclick=()=>depEditor();$("addDec").onclick=()=>decEditor();$("editPlan").onclick=planEditor;
 $("rail").addEventListener("click",e=>{const b=e.target.closest("[data-step]");if(b){ui.sel=+b.dataset.step;render()}});
 $("pop").addEventListener("click",e=>{if(!popAt)return;const b=e.target.closest("[data-pl]");if(b){setLetter(popAt.rk,popAt.n,b.dataset.pl);return}if(e.target.closest("[data-pl-more]")){const {rk,n}=popAt;closePop();cellEditor(rk,n)}});
 $("pop").addEventListener("keydown",e=>{const bs=[...$("pop").querySelectorAll("[data-pl]")],i=bs.indexOf(document.activeElement);if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();const j=(i+(e.key==="ArrowRight"?1:-1)+bs.length)%bs.length;bs[j].focus()}else if(/^[arciARCI]$/.test(e.key)){e.preventDefault();setLetter(popAt.rk,popAt.n,e.key.toUpperCase())}else if(e.key==="Backspace"||e.key==="Delete"){e.preventDefault();setLetter(popAt.rk,popAt.n,"")}});
@@ -2419,11 +2519,13 @@ async function batchWrite(ops){/* ops: [{op,c,id,obj}] in chunks Firestore accep
 afterImport=function(prev){if(!fdb||!isEditor())return;const ops=[];COLLS.forEach(c=>{Object.keys(prev[c]||{}).forEach(id=>{if(!over[c][id])ops.push({op:"del",c,id})});Object.entries(over[c]).forEach(([id,obj])=>ops.push({op:"put",c,id,obj}))});
   batchWrite(ops).then(()=>toast("Backup saved to the database")).catch(fail)};
 
+bulkSave=async function(ops){if(!fdb||!user){toast("Sign in to save changes.");return}if(!ops.length)return;pending=true;setStatus();try{await batchWrite(ops)}catch(e){fail(e)}};
+
 window.teamLinkFor=role=>location.href.split("#")[0]+(role?"#team="+encodeURIComponent(role):"");
 
 const _st=setStatus;
 setStatus=function(){const s=$("status");if(!s)return;
-  ["fbOut","accessBtn","imp"].forEach(id=>{const x=$(id);if(x)x.hidden=!user||(id!=="fbOut"&&!isEditor())});["exp","csv"].forEach(id=>{const x=$(id);if(x)x.hidden=!user});
+  ["fbOut","accessBtn","imp","impCsv2"].forEach(id=>{const x=$(id);if(x)x.hidden=!user||(id!=="fbOut"&&!isEditor())});["exp","csv"].forEach(id=>{const x=$(id);if(x)x.hidden=!user});
   if(!user){s.className="savestate warn";s.textContent="Not signed in";return}
   const who=user.email||"signed in";
   if(err){s.className="savestate warn";s.textContent="Can't reach the database";s.title=err;return}
